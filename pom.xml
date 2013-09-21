@@ -37,6 +37,8 @@
         <reportingModuleVersion>0.7.8</reportingModuleVersion>
         <uiframeworkModuleVersion>3.0</uiframeworkModuleVersion>
         <appuiModuleVersion>1.0-SNAPSHOT</appuiModuleVersion>
+        <serializationxstreamModuleVersion>0.2.7</serializationxstreamModuleVersion>
+        <calculationModuleVersion>1.0</calculationModuleVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -67,6 +69,18 @@
             <groupId>org.openmrs.module</groupId>
             <artifactId>reporting-api</artifactId>
             <version>${reportingModuleVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>serialization.xstream-api</artifactId>
+            <version>${serializationxstreamModuleVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>calculation-api</artifactId>
+            <version>${calculationModuleVersion}</version>
             <scope>provided</scope>
         </dependency>
 
