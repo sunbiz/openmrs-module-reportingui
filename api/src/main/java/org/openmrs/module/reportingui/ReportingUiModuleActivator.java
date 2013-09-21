@@ -23,23 +23,23 @@ import org.openmrs.module.ModuleActivator;
  * This class contains the logic that is run every time this module is either started or stopped.
  */
 public class ReportingUiModuleActivator extends BaseModuleActivator {
-	
-	private Log log = LogFactory.getLog(getClass());
 
-	/**
-	 * @see ModuleActivator#started()
-	 */
-    @Override
-	public void started() {
-		log.info("Reporting UI Module started");
-	}
+    private Log log = LogFactory.getLog(getClass());
 
-	/**
-	 * @see ModuleActivator#stopped()
-	 */
+    /**
+     * @see ModuleActivator#started()
+     */
     @Override
-	public void stopped() {
-		log.info("Reporting UI Module stopped");
-	}
-		
+    public void started() {
+        log.info("Reporting UI Module started");
+    }
+
+    /**
+     * @see ModuleActivator#stopped()
+     */
+    @Override
+    public void stopped() {
+        log.info("Reporting UI Module stopped");
+    }
+
 }
