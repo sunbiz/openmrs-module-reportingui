@@ -1,4 +1,11 @@
-var runReportApp = angular.module("runReportApp", [ ]);
+var runReportApp = angular.module("runReportApp", [ ]).
+    filter('translate', function() {
+        return function(input, prefix) {
+            var code = prefix ? prefix + input : input;
+            var translated = emr.translate(code);
+            return translated === code ? input : translated;
+        }
+    });
 
 runReportApp.controller('RunReportController', ['$scope', '$http', '$window', '$timeout', function($scope, $http, $window, $timeout) {
 

@@ -26,6 +26,7 @@ public class RunReportPageController {
     public void get(@SpringBean ReportDefinitionService reportDefinitionService,
                     @SpringBean ReportService reportService,
                     @RequestParam("reportDefinition") String reportDefinitionUuid,
+                    @RequestParam(value = "breadcrumb", required = false) String breadcrumb,
                     PageModel model) throws Exception {
 
         ReportDefinition reportDefinition = reportDefinitionService.getDefinitionByUuid(reportDefinitionUuid);
@@ -34,6 +35,7 @@ public class RunReportPageController {
         }
         model.addAttribute("reportDefinition", reportDefinition);
         model.addAttribute("renderingModes", reportService.getRenderingModes(reportDefinition));
+        model.addAttribute("breadcrumb", breadcrumb);
     }
 
     public String post(@SpringBean ReportDefinitionService reportDefinitionService,
@@ -70,7 +72,6 @@ public class RunReportPageController {
         ReportRequest reportRequest = new ReportRequest();
         reportRequest.setReportDefinition(new Mapped<ReportDefinition>(reportDefinition, parameterValues));
         reportRequest.setRenderingMode(renderingMode);
-        reportRequest.setPriority(ReportRequest.Priority.NORMAL);
         //rr.setBaseCohort(command.getBaseCohort());
 	    //rr.setSchedule(command.getSchedule());
 
@@ -79,7 +80,7 @@ public class RunReportPageController {
         reportRequest = reportService.queueReport(reportRequest);
         reportService.processNextQueuedReports();
 
-        return "redirect:" + ui.pageLink("mirebalaisreports", "runReport", SimpleObject.create("reportDefinition", reportDefinitionUuid));
+        return "redirect:" + ui.pageLink("reportingui", "runReport", SimpleObject.create("reportDefinition", reportDefinitionUuid));
     }
 
 }

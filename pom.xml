@@ -34,7 +34,7 @@
 
     <properties>
         <openmrsCoreVersion>1.9.3</openmrsCoreVersion>
-        <reportingModuleVersion>0.7.8</reportingModuleVersion>
+        <reportingModuleVersion>0.8-SNAPSHOT</reportingModuleVersion>
         <uiframeworkModuleVersion>3.0</uiframeworkModuleVersion>
         <appuiModuleVersion>1.0-SNAPSHOT</appuiModuleVersion>
         <serializationxstreamModuleVersion>0.2.7</serializationxstreamModuleVersion>
@@ -128,6 +128,22 @@
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                         <tagNameFormat>@{project.version}</tagNameFormat>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jasig.maven</groupId>
+                    <artifactId>sass-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <sassSourceDirectory>${basedir}/src/main/webapp</sassSourceDirectory>
+                        <outputDirectory>${basedir}/src/main/webapp/resources/styles</outputDirectory>
+                        <baseOutputDirectory>${basedir}/src/main/webapp/resources/styles</baseOutputDirectory>
+                        <skin>scss</skin>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>de.saumya.mojo</groupId>
+                    <artifactId>gem-maven-plugin</artifactId>
+                    <version>0.28.6</version>
                 </plugin>
             </plugins>
         </pluginManagement>

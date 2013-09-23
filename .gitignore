@@ -1,8 +1,10 @@
 *.iml
 *.idea
+
 target
 api/target
 omod/target
+omod/src/main/compass/.sass-cache
 
 /.settings
 /.project

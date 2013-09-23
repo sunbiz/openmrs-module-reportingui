@@ -58,10 +58,12 @@ public class RunReportPageControllerTest {
     public void testGet() throws Exception {
         PageModel model = new PageModel();
         RunReportPageController controller = new RunReportPageController();
-        controller.get(reportDefinitionService, reportService, reportDefinitionUuid, model);
+        String breadcrumb = "breadcrumb";
+        controller.get(reportDefinitionService, reportService, reportDefinitionUuid, breadcrumb, model);
 
         assertThat((ReportDefinition) model.getAttribute("reportDefinition"), is(reportDefinition));
         assertThat((List<RenderingMode>) model.getAttribute("renderingModes"), is(renderingModes));
+        assertThat((String) model.getAttribute("breadcrumb"), is(breadcrumb));
     }
 
 }
