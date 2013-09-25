@@ -35,6 +35,52 @@ ${ ui.includeFragment("appui", "translations", [ codes:
     <h3>${ reportDefinition.description }</h3>
 
     <div class="past-reports">
+        <fieldset ng-show="queue" class="report-list">
+            <legend>${ ui.message("reportingui.runReport.queue.legend") }</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>${ ui.message("reporting.reportRequest.status") }</th>
+                        <th>${ ui.message("reporting.reportRequest.parameters") }</th>
+                        <th>${ ui.message("reportingui.ReportRequest.requested") }</th>
+                        <th>${ ui.message("reporting.reportRequest.actions") }</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="request in queue">
+                        <td>
+                            <img class="right small" ng-show="request.status=='PROCESSING'" src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
+                            {{request.status | translate:'reporting.status.'}}
+                            <span ng-show="request.status=='REQUESTED'">
+                                <br/>
+                                ${ ui.message("reporting.reportRequest.priority") }: {{request.priority | translate:'reporting.ReportRequest.Priority.'}} <br/>
+                                ${ ui.message("reporting.reportRequest.position") }: {{request.positionInQueue}}
+                            </span>
+                            <span ng-hide="request.status=='REQUESTED'">
+                                <br/>
+                                {{request.evaluateCompleteDatetime}}
+                            </span>
+                        </td>
+                        <td>
+                            <span ng-repeat="param in request.reportDefinition.mappings">
+                                {{ param.value }} <br/>
+                            </span>
+                        </td>
+                        <td>
+                            {{request.requestedBy}} <br/>
+                            {{request.requestDate}}
+                        </td>
+                        <td>
+                            <a ng-show="request.status=='REQUESTED'" ng-click="cancelRequest(request)">
+                                <i class="small icon-remove"></i>
+                                ${ ui.message("emr.cancel") }
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
         <fieldset class="report-list">
             <legend>${ ui.message("reportingui.runReport.completed.legend") }</legend>
             <span ng-hide="completed">
@@ -66,15 +112,20 @@ ${ ui.includeFragment("appui", "translations", [ codes:
                         </td>
                         <td>
                             <span class="download" ng-show="request.status == 'COMPLETED' || request.status == 'SAVED'">
-                                <a class="button" href="${ ui.pageLink("reportingui", "viewReportRequest") }?request={{ request.uuid }}">
+                                <a href="${ ui.pageLink("reportingui", "viewReportRequest") }?request={{ request.uuid }}">
                                     <span ng-show="request.renderingMode.interactive">
-                                        <i class="icon-eye-open"></i>
+                                        <i class="icon-eye-open small"></i>
                                         ${ ui.message("reporting.reportHistory.open") }
                                     </span>
                                     <span ng-hide="request.renderingMode.interactive">
-                                        <i class="icon-download"></i>
+                                        <i class="icon-download small"></i>
                                         ${ ui.message("uicommons.downloadButtonLabel") }
                                     </span>
+                                </a>
+                                <br/>
+                                <a ng-show="canSave(request)" ng-click="saveRequest(request)">
+                                    <i class="icon-save small"></i>
+                                    ${ ui.message("reportingui.reportRequest.save.action") }
                                 </a>
                             </span>
                         </td>
@@ -85,37 +136,6 @@ ${ ui.includeFragment("appui", "translations", [ codes:
     </div>
 
     <div class="running-reports">
-        <fieldset ng-show="queue" class="report-list">
-            <legend>${ ui.message("reportingui.runReport.queue.legend") }</legend>
-            <table ng-show-"queue">
-                <thead>
-                    <tr>
-                        <th>${ ui.message("reporting.reportRequest.status") }</th>
-                        <th>${ ui.message("reporting.reportRequest.parameters") }</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="request in queue">
-                        <td>
-                            {{request.status | translate:'reporting.status.'}}
-                            <img class="right small" ng-show="request.status=='PROCESSING' || request.status=='REQUESTED'" src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
-                            <br/>
-                            <span ng-show="request.status=='REQUESTED'">
-                                ${ ui.message("reporting.reportRequest.priority") }: {{request.priority | translate:'reporting.ReportRequest.Priority.'}} <br/>
-                            </span>
-                            {{request.requestedBy}} <br/>
-                            {{request.requestDate}}
-                        </td>
-                        <td>
-                            <span ng-repeat="param in request.reportDefinition.mappings">
-                                {{ param.value }} <br/>
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </fieldset>
-
         <fieldset>
             <legend>${ ui.message("reportingui.runReport.run.legend") }</legend>
 
