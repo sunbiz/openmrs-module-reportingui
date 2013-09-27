@@ -8,6 +8,8 @@ var runReportApp = angular.module("runReportApp", [ ]).
 
 runReportApp.controller('RunReportController', ['$scope', '$http', '$window', '$timeout', function($scope, $http, $window, $timeout) {
 
+    $scope.loading = true;
+
     $scope.queue = [];
 
     $scope.completed = [];
@@ -16,6 +18,7 @@ runReportApp.controller('RunReportController', ['$scope', '$http', '$window', '$
         $http.get("reportStatus/getQueuedRequests.action?reportDefinition=" + $window.reportDefinition.uuid).
             success(function(data, status, headers, config) {
                 $scope.queue = data;
+                $scope.loading = false;
                 if ($scope.queue.length > 0) {
                     $timeout($scope.refreshHistory, 10000);
                 }

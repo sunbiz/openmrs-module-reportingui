@@ -87,10 +87,17 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
 
         <fieldset class="report-list">
             <legend>${ ui.message("reportingui.runReport.completed.legend") }</legend>
-            <span ng-hide="completed">
+
+            <span ng-show="loading">
+                ${ ui.message("uicommons.loading.placeholder") }
+                <img src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
+            </span>
+
+            <span ng-hide="completed || loading">
                 ${ ui.message("emr.none") }
             </span>
-            <table ng-show="completed">
+
+            <table ng-show="completed && !loading">
                 <thead>
                     <tr>
                         <th>${ ui.message("reportingui.reportRequest.status") }</th>
