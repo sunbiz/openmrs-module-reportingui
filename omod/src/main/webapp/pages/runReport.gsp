@@ -17,7 +17,7 @@
         <% if (breadcrumb) { %>
             ${ breadcrumb },
         <% } %>
-        { label: "${ ui.format(reportDefinition) }", link: "${ ui.escapeJs(ui.thisUrl()) }" }
+        { label: "${ ui.message(ui.format(reportDefinition)) }", link: "${ ui.escapeJs(ui.thisUrl()) }" }
     ];
 
     window.reportDefinition = {
@@ -25,9 +25,13 @@
     };
 </script>
 
-${ ui.includeFragment("appui", "messages", [ codes:
-        [ "reporting.status.PROCESSING", "reporting.status.COMPLETED", "reporting.status.SCHEDULE_COMPLETED",
-                "reporting.status.SAVED", "reporting.status.FAILED" ] ])}
+${ ui.includeFragment("appui", "messages", [ codes: [
+        "reportingui.reportRequest.Status.REQUESTED", "reportingui.reportRequest.Status.SCHEDULED", "reportingui.reportRequest.Status.PROCESSING",
+        "reportingui.reportRequest.Status.FAILED", "reportingui.reportRequest.Status.COMPLETED", "reportingui.reportRequest.Status.SCHEDULE_COMPLETED",
+        "reportingui.reportRequest.Status.SAVED",
+        "reportingui.reportRequest.Priority.HIGHEST", "reportingui.reportRequest.Priority.HIGH", "reportingui.reportRequest.Priority.NORMAL",
+        "reportingui.reportRequest.Priority.LOW", "reportingui.reportRequest.Priority.LOWEST"]
+])}
 
 <div ng-app="runReportApp" ng-controller="RunReportController" ng-init="refreshHistory()">
 
