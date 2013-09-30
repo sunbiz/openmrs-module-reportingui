@@ -34,7 +34,7 @@
 
     <properties>
         <openmrsCoreVersion>1.9.3</openmrsCoreVersion>
-        <reportingModuleVersion>0.8-SNAPSHOT</reportingModuleVersion>
+        <reportingModuleVersion>0.8</reportingModuleVersion>
         <uiframeworkModuleVersion>3.0</uiframeworkModuleVersion>
         <appuiModuleVersion>1.0-SNAPSHOT</appuiModuleVersion>
         <serializationxstreamModuleVersion>0.2.7</serializationxstreamModuleVersion>
@@ -97,6 +97,17 @@
             <version>${appuiModuleVersion}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- we explicitly use version 3.2.10 since 3.2.11 has a bug which was giving us issues,
+        can probably remove this after next sass release -->
+        <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>sass</artifactId>
+            <version>3.2.10</version>
+            <type>gem</type>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -132,7 +143,7 @@
                 <plugin>
                     <groupId>org.jasig.maven</groupId>
                     <artifactId>sass-maven-plugin</artifactId>
-                    <version>1.0.0</version>
+                    <version>1.1.1</version>
                     <configuration>
                         <sassSourceDirectory>${basedir}/src/main/webapp</sassSourceDirectory>
                         <outputDirectory>${basedir}/src/main/webapp/resources/styles</outputDirectory>
@@ -159,6 +170,10 @@
             <id>openmrs-repo-modules</id>
             <name>OpenMRS Modules Nexus Repository</name>
             <url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules</url>
+        </repository>
+        <repository>
+            <id>rubygems-releases</id>
+            <url>http://rubygems-proxy.torquebox.org/releases</url>
         </repository>
     </repositories>
 
