@@ -93,11 +93,11 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
                 <img src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
             </span>
 
-            <span ng-hide="completed || loading">
+            <span ng-show="hasNoResults()">
                 ${ ui.message("emr.none") }
             </span>
 
-            <table ng-show="completed && !loading">
+            <table ng-show="hasResults()">
                 <thead>
                     <tr>
                         <th>${ ui.message("reportingui.reportRequest.status") }</th>

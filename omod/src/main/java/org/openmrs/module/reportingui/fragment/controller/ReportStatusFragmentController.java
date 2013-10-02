@@ -50,7 +50,7 @@ public class ReportStatusFragmentController {
 
         ReportDefinition reportDefinition = null;
         if (reportDefinitionUuid != null) {
-            reportDefinitionService.getDefinitionByUuid(reportDefinitionUuid);
+            reportDefinition = reportDefinitionService.getDefinitionByUuid(reportDefinitionUuid);
         }
         List<ReportRequest> requests = reportService.getReportRequests(reportDefinition, null, null, ReportRequest.Status.REQUESTED, ReportRequest.Status.PROCESSING);
 
@@ -89,7 +89,7 @@ public class ReportStatusFragmentController {
                                                    UiUtils ui) {
         ReportDefinition reportDefinition = null;
         if (reportDefinitionUuid != null) {
-            reportDefinitionService.getDefinitionByUuid(reportDefinitionUuid);
+            reportDefinition = reportDefinitionService.getDefinitionByUuid(reportDefinitionUuid);
         }
 
         List<ReportRequest> requests = reportService.getReportRequests(reportDefinition, null, null, 10, ReportRequest.Status.FAILED, ReportRequest.Status.COMPLETED, ReportRequest.Status.SAVED);

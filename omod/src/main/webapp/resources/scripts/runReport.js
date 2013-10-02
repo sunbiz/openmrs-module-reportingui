@@ -38,6 +38,14 @@ runReportApp.controller('RunReportController', ['$scope', '$http', '$window', '$
             });
     }
 
+    $scope.hasResults = function() {
+        return !$scope.loading && $scope.completed.length > 0;
+    }
+
+    $scope.hasNoResults = function() {
+        return !$scope.loading && $scope.completed.length == 0;
+    }
+
     var defaultSuccessAction = function(data, status, headers, config) {
         emr.successMessage(data.message);
         $scope.refreshHistory();
