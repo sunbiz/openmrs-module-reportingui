@@ -35,8 +35,8 @@
     <properties>
         <openmrsCoreVersion>1.9.3</openmrsCoreVersion>
         <reportingModuleVersion>0.8</reportingModuleVersion>
-        <uiframeworkModuleVersion>3.0</uiframeworkModuleVersion>
-        <appuiModuleVersion>1.0-SNAPSHOT</appuiModuleVersion>
+        <uiframeworkModuleVersion>3.1</uiframeworkModuleVersion>
+        <appuiModuleVersion>1.0</appuiModuleVersion>
         <serializationxstreamModuleVersion>0.2.7</serializationxstreamModuleVersion>
         <calculationModuleVersion>1.0</calculationModuleVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
