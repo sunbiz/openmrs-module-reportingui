@@ -169,17 +169,30 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
                     <% } %>
                 </p>
                 <% } %>
-                ${ ui.includeFragment("uicommons", "field/dropDown", [
-                        formFieldName: "renderingMode",
-                        label: ui.message("reportingui.reportRequest.outputFormat"),
-                        hideEmptyLabel: true,
-                        options: renderingModes.findAll {
-                                    !isInteractive(it)
-                                }
-                                .collect {
-                                    [ value: it.descriptor, label: ui.message(it.label) ]
-                                }
-                ]) }
+                <%
+                    def renderingOptions = renderingModes.findAll {
+                        !isInteractive(it)
+                    }
+                    .collect {
+                        [ value: it.descriptor, label: ui.message(it.label) ]
+                    }
+                %>
+                <% if (renderingOptions.size() == 1) { %>
+                    <p>
+                        <label>
+                            ${ ui.message("reportingui.reportRequest.outputFormat") }
+                        </label>
+                        <input type="hidden" name="renderingMode" value="${ ui.escapeAttribute(renderingOptions[0].value) }"/>
+                        ${ renderingOptions[0].label }
+                    </p>
+                <% } else { %>
+                    ${ ui.includeFragment("uicommons", "field/dropDown", [
+                            formFieldName: "renderingMode",
+                            label: ui.message("reportingui.reportRequest.outputFormat"),
+                            hideEmptyLabel: true,
+                            options: renderingOptions
+                    ]) }
+                <% } %>
 
                 <button type="submit" class="confirm right">
                     <i class="icon-play"></i>
