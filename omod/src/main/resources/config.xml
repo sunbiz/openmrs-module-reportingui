@@ -27,7 +27,7 @@
         <require_module version="3.0">
             org.openmrs.module.uiframework
         </require_module>
-        <require_module version="1.0-SNAPSHOT">
+        <require_module version="1.0">
             org.openmrs.module.appui
         </require_module>
     </require_modules>
