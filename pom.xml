@@ -33,11 +33,12 @@
     </modules>
 
     <properties>
-        <openmrsCoreVersion>1.9.3</openmrsCoreVersion>
-        <reportingModuleVersion>0.8</reportingModuleVersion>
-        <uiframeworkModuleVersion>3.1</uiframeworkModuleVersion>
+        <openmrsCoreVersion>1.9.4</openmrsCoreVersion>
+        <reportingModuleVersion>0.8.1-SNAPSHOT</reportingModuleVersion>
+        <uiframeworkModuleVersion>3.2-SNAPSHOT</uiframeworkModuleVersion>
         <appuiModuleVersion>1.0</appuiModuleVersion>
         <serializationxstreamModuleVersion>0.2.7</serializationxstreamModuleVersion>
+        <appframeworkModuleVersion>2.0</appframeworkModuleVersion>
         <calculationModuleVersion>1.0</calculationModuleVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -93,9 +94,22 @@
 
         <dependency>
             <groupId>org.openmrs.module</groupId>
+            <artifactId>appframework-api</artifactId>
+            <version>${appframeworkModuleVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
             <artifactId>appui-api</artifactId>
             <version>${appuiModuleVersion}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>appui-api</artifactId>
+            <version>${appuiModuleVersion}</version>
+            <scope>test</scope>
+            <type>test-jar</type>
         </dependency>
 
         <!-- we explicitly use version 3.2.10 since 3.2.11 has a bug which was giving us issues,
