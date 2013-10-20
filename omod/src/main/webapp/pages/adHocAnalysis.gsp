@@ -38,8 +38,6 @@
         <input type="text" id="row-search" placeholder="Add a patient search" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
 
-        <a href="">Show me my options</a>
-
         <ul>
             <li class="item" ng-repeat="rowQuery in rowQueries">
                 <label>{{ \$index + 1 }}.</label>
