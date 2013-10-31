@@ -14,6 +14,8 @@ runReportApp.controller('RunReportController', ['$scope', '$http', '$window', '$
 
     $scope.completed = [];
 
+    $scope.submitting = false;
+
     $scope.refreshHistory = function() {
         $http.get("reportStatus/getQueuedRequests.action?reportDefinition=" + $window.reportDefinition.uuid).
             success(function(data, status, headers, config) {
@@ -70,6 +72,31 @@ runReportApp.controller('RunReportController', ['$scope', '$http', '$window', '$
         $http.post("reportStatus/saveRequest.action?reportRequest=" + request.uuid).
             success(defaultSuccessAction).
             error(defaultErrorAction);
+    }
+
+    $scope.runReport = function() {
+        // this is a plain old form, not really using angular. need to rewrite the datepickers to be angular-friendly
+        var form = angular.element('#run-report');
+        var submission = form.serializeArray();
+        var missingParams = [ ];
+        console.log(submission);
+        for (var i = 0; i < submission.length; ++i) {
+            var p = submission[i];
+            if (p.name.indexOf("parameterValues[") == 0) {
+                if (!p.value) {
+                    missingParams.push(p.name);
+                }
+            }
+        }
+        if (missingParams.length > 0) {
+            emr.errorMessage(emr.message("reportingui.runReport.missingParameter", "Missing parameter values"));
+        }
+        else {
+            $scope.submitting = true;
+            $.post("runReport.page?reportDefinition=" + $window.reportDefinition.uuid, submission, function() {
+                location.href = location.href;
+            });
+        }
     }
 
 }]);

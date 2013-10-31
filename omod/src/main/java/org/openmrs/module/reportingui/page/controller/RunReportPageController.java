@@ -10,11 +10,14 @@ import org.openmrs.module.reporting.report.renderer.RenderingMode;
 import org.openmrs.module.reporting.report.service.ReportService;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
+import org.openmrs.ui.framework.WebConstants;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,8 +44,8 @@ public class RunReportPageController {
     public String post(@SpringBean ReportDefinitionService reportDefinitionService,
                      @SpringBean ReportService reportService,
                      UiUtils ui,
-                     @RequestParam("reportDefinition") String reportDefinitionUuid,
                      HttpServletRequest request,
+                     @RequestParam("reportDefinition") String reportDefinitionUuid,
                      @RequestParam("renderingMode") String renderingModeDescriptor) {
 
         ReportDefinition reportDefinition = reportDefinitionService.getDefinitionByUuid(reportDefinitionUuid);
@@ -54,6 +57,7 @@ public class RunReportPageController {
             }
         }
 
+        Collection<Parameter> missingParameters = new ArrayList<Parameter>();
         Map<String, Object> parameterValues = new HashMap<String, Object>();
         for (Parameter parameter : reportDefinition.getParameters()) {
             String submitted = request.getParameter("parameterValues[" + parameter.getName() + "]");
@@ -66,7 +70,14 @@ public class RunReportPageController {
             } else {
                 converted = ui.convert(submitted, parameter.getType());
             }
+            if (converted == null) {
+                missingParameters.add(parameter);
+            }
             parameterValues.put(parameter.getName(), converted);
+        }
+        if (missingParameters.size() > 0) {
+            request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, ui.message("reportingui.runReport.missingParameter"));
+            return "redirect:" + ui.pageLink("reportingui", "runReport", SimpleObject.create("reportDefinition", reportDefinitionUuid));
         }
 
         ReportRequest reportRequest = new ReportRequest();

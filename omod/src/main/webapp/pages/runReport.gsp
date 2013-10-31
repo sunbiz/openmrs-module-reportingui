@@ -150,7 +150,7 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
         <fieldset>
             <legend>${ ui.message("reportingui.runReport.run.legend") }</legend>
 
-            <form method="post" action="runReport.page?reportDefinition=${ reportDefinition.uuid }" id="run-report">
+            <form method="post" ng-submit="runReport()" id="run-report">
                 <% reportDefinition.parameters.each { %>
                 <p>
                     <% if (it.collectionType) { %>
@@ -194,7 +194,7 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
                     ]) }
                 <% } %>
 
-                <button type="submit" class="confirm right">
+                <button type="submit" class="confirm right" ng-class="{disabled: submitting}" ng-disabled="submitting">
                     <i class="icon-play"></i>
                     ${ ui.message("reportingui.runButtonLabel") }
                 </button>
