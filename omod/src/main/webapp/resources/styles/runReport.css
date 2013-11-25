@@ -1,0 +1,98 @@
+/* line 1, ../../../compass/sass/runReport.scss */
+.past-reports {
+  display: inline-block;
+  vertical-align: top;
+  width: 60%;
+}
+/* line 6, ../../../compass/sass/runReport.scss */
+.past-reports table {
+  font-size: 0.8em;
+}
+/* line 10, ../../../compass/sass/runReport.scss */
+.past-reports a {
+  cursor: pointer;
+}
+
+/* line 15, ../../../compass/sass/runReport.scss */
+.running-reports {
+  display: inline-block;
+  vertical-align: top;
+  width: 38%;
+}
+/* line 20, ../../../compass/sass/runReport.scss */
+.running-reports table {
+  font-size: 0.9em;
+}
+
+/* line 25, ../../../compass/sass/runReport.scss */
+.report-list {
+  margin-bottom: 1em;
+}
+
+/* line 29, ../../../compass/sass/runReport.scss */
+img.small {
+  width: 24px;
+  height: 24px;
+}
+
+/* line 35, ../../../compass/sass/runReport.scss */
+.ad-hock-report input {
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+/* line 40, ../../../compass/sass/runReport.scss */
+.ad-hock-report h1 {
+  margin-bottom: 5px;
+}
+/* line 44, ../../../compass/sass/runReport.scss */
+.ad-hock-report h6 {
+  margin-top: 20px;
+  font-size: 1em;
+}
+/* line 49, ../../../compass/sass/runReport.scss */
+.ad-hock-report fieldset {
+  padding: 5px;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+/* line 60, ../../../compass/sass/runReport.scss */
+.ad-hock-report a.button {
+  min-width: 80px;
+}
+/* line 65, ../../../compass/sass/runReport.scss */
+.ad-hock-report .confirm {
+  margin-top: 20px;
+}
+/* line 69, ../../../compass/sass/runReport.scss */
+.ad-hock-report p {
+  margin-bottom: 10px;
+}
+/* line 72, ../../../compass/sass/runReport.scss */
+.ad-hock-report p label {
+  display: block;
+  margin-left: 5px;
+}
+/* line 78, ../../../compass/sass/runReport.scss */
+.ad-hock-report li {
+  margin-bottom: 10px;
+  display: inline-block;
+  margin-right: 10px;
+}
+/* line 84, ../../../compass/sass/runReport.scss */
+.ad-hock-report .item {
+  background: #363463;
+  color: white;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 3px;
+}
+/* line 92, ../../../compass/sass/runReport.scss */
+.ad-hock-report .item label {
+  padding-right: 10px;
+}
+/* line 96, ../../../compass/sass/runReport.scss */
+.ad-hock-report .actions a, .ad-hock-report .actions a:active, .ad-hock-report .actions a:visited {
+  color: white;
+  cursor: pointer;
+}

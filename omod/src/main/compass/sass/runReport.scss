@@ -30,3 +30,71 @@ img.small {
   width: 24px;
   height: 24px;
 }
+
+.ad-hock-report {
+  input {
+    margin-left: 5px;
+    margin-bottom: 5px;
+  }
+
+  h1 {
+    margin-bottom: 5px;
+  }
+
+  h6 {
+    margin-top: 20px;
+    font-size: 1em;
+  }
+
+  fieldset {
+    padding: 5px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    ul {
+
+    }
+  }
+
+  a.button {
+    min-width: 80px;
+
+  }
+
+  .confirm {
+    margin-top: 20px;
+  }
+
+  p {
+    margin-bottom: 10px;
+
+    label {
+      display: block;
+      margin-left: 5px;
+    }
+  }
+
+  li {
+    margin-bottom: 10px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .item {
+    background: darken(#5B57A6, 20%);
+    color: white;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 3px;
+  }
+
+  .item label {
+    padding-right: 10px;
+  }
+
+  .actions a, .actions a:active, .actions a:visited {
+    color: white;
+    cursor: pointer;
+  }
+}

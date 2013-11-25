@@ -1,41 +1,31 @@
 <%
     ui.decorateWith("appui", "standardEmrPage")
-
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeJavascript("reportingui", "adHocAnalysis.js")
+    ui.includeCss("reportingui", "runReport.css")
 %>
 
-<style type="text/css">
-    fieldset {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-    .item {
-        border: 1px black solid;
-        margin: 5px;
-        padding: 5px;
-        border-radius: 5px;
-    }
+<div class="ad-hock-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController">
+    <h1>Patient Ad Hock Report</h1>
 
-    .item label {
-        padding-right: 10px;
-    }
-
-    .item .actions {
-        float: right;
-    }
-
-    .actions a {
-        cursor: pointer;
-    }
-</style>
-
-<div ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController">
+    <h3>Timeframe</h3>
+    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+        id: "startDate",
+        label: "Start Date",
+        formFieldName: "startDate",
+        useTime: false
+    ])}
+    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+        id: "endDate",
+        label: "End Date",
+        formFieldName: "endDate",
+        useTime: false
+    ])}
 
     <fieldset>
-        <legend>Which Patients?</legend>
+        <h3>Patient Search</h3>
 
-        <input type="text" id="row-search" placeholder="Add a patient search" definitionsearch action="addRow"
+        <input type="text" id="row-search" placeholder="+ add a patient search" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
 
         <ul>
@@ -43,16 +33,15 @@
                 <label>{{ \$index + 1 }}.</label>
                 {{ rowQuery.name }}
                 <span class="actions">
-                    <a ng-click="removeRow(\$index)">X</a>
+                    <a ng-click="removeRow(\$index)"><i class="icon-remove"></i></a>
                 </span>
             </li>
         </ul>
     </fieldset>
-
     <fieldset>
-        <legend>Which Columns?</legend>
+        <h3>Columns</h3>
 
-        <input type="text" id="column-search" placeholder="Add a column" definitionsearch action="addColumn"
+        <input type="text" id="column-search" placeholder="+ add a column" definitionsearch action="addColumn"
                definition-type="org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition" />
 
         <ul>
@@ -71,9 +60,7 @@
         </ul>
     </fieldset>
 
-    <button ng-click="preview()">
-        Preview
-    </button>
+    <button class="confirm" ng-click="preview()">Preview</button>
 
     <fieldset ng-show="results">
         <label>
@@ -92,6 +79,8 @@
                 </tr>
             </tbody>
         </table>
+
+        <button class="confirm" ng-click="preview()"><i class="icon-download"></i>Download</button>
     </fieldset>
 
 </div>
