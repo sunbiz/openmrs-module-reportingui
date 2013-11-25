@@ -22,11 +22,5 @@
 			Encounters
 			</a>
 		</li>
-		<li>
-			<a class="button" href="${ui.pageLink("reportingui", "adHocAnalysis") }">
-			<i class="icon-check-in"></i>
-			Visits
-			</a>
-		</li>
 	</ul>
 </div>

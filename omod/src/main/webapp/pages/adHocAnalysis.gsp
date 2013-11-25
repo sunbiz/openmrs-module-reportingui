@@ -25,8 +25,10 @@
     <fieldset>
         <h3>Patient Search</h3>
 
-        <input type="text" id="row-search" placeholder="+ add a patient search" definitionsearch action="addRow"
+        <input type="text" id="row-search" placeholder="add search criteria" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
+
+        <a class="view-all" href="javascript:void(0)">view all</a>
 
         <ul>
             <li class="item" ng-repeat="rowQuery in rowQueries">
@@ -41,8 +43,10 @@
     <fieldset>
         <h3>Columns</h3>
 
-        <input type="text" id="column-search" placeholder="+ add a column" definitionsearch action="addColumn"
+        <input type="text" id="column-search" placeholder="add a column" definitionsearch action="addColumn"
                definition-type="org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition" />
+
+        <a class="view-all" href="javascript:void(0)">view all</a>
 
         <ul>
             <li class="item" ng-repeat="col in columns">
@@ -60,9 +64,9 @@
         </ul>
     </fieldset>
 
-    <button class="confirm" ng-click="preview()">Preview</button>
+    <button ng-click="preview()">Preview</button>
 
-    <fieldset ng-show="results">
+    <div ng-show="results">
         <label>
             Preview of {{ results.allRows.length }} results
         </label>
@@ -80,7 +84,31 @@
             </tbody>
         </table>
 
-        <button class="confirm" ng-click="preview()"><i class="icon-download"></i>Download</button>
-    </fieldset>
-
+        <button class="confirm" ng-click="preview()">Download Report</button>
+    </div>
 </div>
+
+<div id="search-criteria-dialog" class="dialog" style="display: none">
+    <div class="dialog-header">
+        <h3>Select a search criteria to add</h3>
+    </div>
+    <div class="dialog-content form">
+        <p>
+
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    viewAllDialog = null;
+
+    jq(function() {
+        viewAllDialog = emr.setupConfirmationDialog({
+            selector: '#search-criteria-dialog'
+        });
+    });
+
+    jq('.view-all').click(function() {
+        viewAllDialog.show();
+    })
+</script>

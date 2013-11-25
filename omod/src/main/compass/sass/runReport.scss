@@ -57,13 +57,17 @@ img.small {
     }
   }
 
-  a.button {
-    min-width: 80px;
-
+  h3 {
+    margin-left: 5px;
+    margin-top: 0;
   }
 
-  .confirm {
-    margin-top: 20px;
+  a.button {
+    min-width: 80px;
+  }
+
+  button {
+    margin: 20px 0;
   }
 
   p {
