@@ -102,6 +102,7 @@ var app = angular.module('adHocAnalysis', [ ]).
 
             else if($scope.currentView == 'columns') {
                 $scope.currentView = 'preview';
+                $scope.preview();
             }
         }
 

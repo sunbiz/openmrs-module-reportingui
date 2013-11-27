@@ -8,6 +8,36 @@
 <div class="ad-hoc-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController">
     <h1>Patient Ad Hoc Report</h1>
 
+    <div class="summary">
+        <span ng-show="parameters.length > 0" class="summary-parameter">
+            <em>Timeframe</em>
+            <div>
+                Start date
+                <span>20 April 2013</span>
+            </div>
+            <div>
+                End date
+                <span>23 April 2013</span>
+            </div>
+        </span>
+        <span ng-show="rowQueries.length > 0" class="summary-parameter">
+            <em>Searches</em>
+            <ul>
+                <li ng-repeat="rowQuery in rowQueries">
+                    {{ rowQuery.name }}
+                </li>
+            </ul>
+        </span>
+        <span ng-show="columns.length > 0" class="summary-parameter">
+            <em>Columns</em>
+            <ul>
+                <li ng-repeat="col in columns">
+                    {{ col.name }}
+                </li>
+            </ul>
+        </span>
+    </div>
+
     <div ng-show="currentView == 'timeframe'">
         <h3>Timeframe</h3>
         ${ ui.includeFragment("uicommons", "field/datetimepicker", [
@@ -27,20 +57,6 @@
     </div>
 
     <div ng-show="currentView == 'searches'">
-        <div class="summary">
-            <span class="summary-parameter">
-                <em>Timeframe</em>
-                <div>
-                    Start date
-                    <span>20 April 2013</span>
-                </div>
-                <div>
-                    End date
-                    <span>23 April 2013</span>
-                </div>
-            </span>
-        </div>
-        
         <h2>Patient Search</h2>
         <input type="text" id="row-search" placeholder="add search criteria" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
@@ -60,28 +76,6 @@
         <button ng-click="next()">Next</button>
     </div>
     <div ng-show="currentView == 'columns'">
-        <div class="summary">
-            <span class="summary-parameter">
-                <em>Timeframe</em>
-                <div>
-                    Start date
-                    <span>20 April 2013</span>
-                </div>
-                <div>
-                    End date
-                    <span>23 April 2013</span>
-                </div>
-            </span>
-            <span class="summary-parameter">
-                <em>Searches</em>
-                <ul>
-                    <li ng-repeat="rowQuery in rowQueries">
-                        {{ rowQuery.name }}
-                    </li>
-                </ul>
-            </span>
-        </div>
-
         <h3>Columns</h3>
 
         <input type="text" id="column-search" placeholder="add a column" definitionsearch action="addColumn"
@@ -108,38 +102,6 @@
     </div>
 
     <div ng-show="currentView == 'preview'">
-         <div class="summary">
-            <span class="summary-parameter">
-                <em>Timeframe</em>
-                <div>
-                    Start date
-                    <span>20 April 2013</span>
-                </div>
-                <div>
-                    End date
-                    <span>23 April 2013</span>
-                </div>
-            </span>
-            <span class="summary-parameter">
-                <em>Searches</em>
-                <ul>
-                    <li ng-repeat="rowQuery in rowQueries">
-                        {{ rowQuery.name }}
-                    </li>
-                </ul>
-            </span>
-            <span class="summary-parameter">
-                <em>Columns</em>
-                <ul>
-                    <li ng-repeat="col in columns">
-                        {{ col.name }}
-                    </li>
-                </ul>
-            </span>
-        </div>
-
-        <button ng-click="preview()">Preview</button>
-
         <div ng-show="results">
             <label>
                 Preview of {{ results.allRows.length }} results
