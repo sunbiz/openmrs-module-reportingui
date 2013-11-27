@@ -74,6 +74,8 @@ var app = angular.module('adHocAnalysis', [ ]).
             }
         ];
 
+        $scope.currentView = 'timeframe';
+
         $scope.rowQueries = [];
 
         $scope.columns = [];
@@ -87,6 +89,20 @@ var app = angular.module('adHocAnalysis', [ ]).
             var temp = array[idx1];
             array[idx1] = array[idx2];
             array[idx2] = temp;
+        }
+
+        $scope.next = function() {
+            if($scope.currentView == 'timeframe') {
+                $scope.currentView = 'searches';
+            }
+
+            else if($scope.currentView == 'searches') {
+                $scope.currentView = 'columns';
+            }
+
+            else if($scope.currentView == 'columns') {
+                $scope.currentView = 'preview';
+            }
         }
 
         $scope.addRow = function(definition) {
