@@ -56,7 +56,7 @@ public class AdHocAnalysisFragmentController {
             // }
             i += 1;
             CohortDefinition cohortDefinition = allDefinitionLibraries.getDefinition(CohortDefinition.class, rowQuery.get("key").getTextValue());
-            composition.addSearch("" + i, cohortDefinition, null);
+            composition.addSearch("" + i, cohortDefinition, "");
         }
 
         composition.setCompositionString(OpenmrsUtil.join(composition.getSearches().keySet(), " AND "));
