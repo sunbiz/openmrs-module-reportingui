@@ -6,7 +6,7 @@
 %>
 
 <div class="ad-hock-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController">
-    <h1>Patient Ad Hock Report</h1>
+    <h1>Patient Ad Hoc Report</h1>
 
     <h3>Timeframe</h3>
     ${ ui.includeFragment("uicommons", "field/datetimepicker", [
