@@ -25,6 +25,7 @@ var app = angular.module('adHocAnalysis', [ ]).
         // expect { type: ..., key: ..., name: ..., description: ..., parameters: [ ... ] }
 
         return function(scope, element, attrs) {
+            var allowedParameters = _.pluck(scope.parameters, 'name');
             var onSelectAction = scope[attrs['action']];
             element.autocomplete({
                 source: [ 'Loading...' ],
@@ -34,6 +35,17 @@ var app = angular.module('adHocAnalysis', [ ]).
                     });
                     element.val('');
                     return false;
+                },
+                response: function(event, ui) {
+                    var i = ui.content.length - 1;
+                    while (i >= 0) {
+                        var paramNames = _.pluck(ui.content[i].parameters, 'name');
+                        var notAllowed = _.without(paramNames, allowedParameters);
+                        if (notAllowed.length > 0) {
+                            ui.content.splice(i, 1);
+                        }
+                        --i;
+                    }
                 },
                 change: function(event, ui) {
                     element.val('');
@@ -48,6 +60,19 @@ var app = angular.module('adHocAnalysis', [ ]).
     }).
 
     controller('AdHocAnalysisController', ['$scope', '$http', function($scope, $http) {
+
+        $scope.parameters = [
+            {
+                "name": "startDate",
+                "type": "java.util.Date",
+                "collectionType": null
+            },
+            {
+                "name": "endDate",
+                "type": "java.util.Date",
+                "collectionType": null
+            }
+        ];
 
         $scope.rowQueries = [];
 
