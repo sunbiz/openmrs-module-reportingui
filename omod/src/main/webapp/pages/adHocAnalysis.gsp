@@ -123,18 +123,15 @@
             <button class="confirm" ng-click="preview()">Download Report</button>
         </div>
     </div>
-</div>
-
-<div id="search-criteria-dialog" class="dialog" style="display: none">
-    <div class="dialog-header">
-        <h3>Select a search criteria to add</h3>
-    </div>
-    <div class="dialog-content form">
-        <ul>
-            <li class="item" ng-repeat="rowQuery in rowQueries">
-            {{ rowQuery.name }}
-            </li>
-        </ul>
+    <div id="search-criteria-dialog" class="dialog" style="display: none">
+        <div class="dialog-header">
+            <h3>Select a search criteria to add</h3>
+        </div>
+        <div class="dialog-content form">
+            <ul>
+                <a ng-click="addRow(criteria)" ng-repeat="criteria in getDefinitions()">{{ criteria.name }}</a>
+            </ul>
+        </div>
     </div>
 </div>
 

@@ -91,6 +91,10 @@ var app = angular.module('adHocAnalysis', [ ]).
             array[idx2] = temp;
         }
 
+        $scope.getDefinitions = function() {
+            return window.adHocAnalysis.queryResults['org.openmrs.module.reporting.cohort.definition.CohortDefinition'];
+        }
+
         $scope.next = function() {
             if($scope.currentView == 'timeframe') {
                 $scope.currentView = 'searches';
