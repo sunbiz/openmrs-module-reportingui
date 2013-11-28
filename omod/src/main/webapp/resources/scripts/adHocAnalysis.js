@@ -92,7 +92,35 @@ var app = angular.module('adHocAnalysis', [ ]).
         }
 
         $scope.getDefinitions = function() {
-            return window.adHocAnalysis.queryResults['org.openmrs.module.reporting.cohort.definition.CohortDefinition'];
+            var originalCriterias = window.adHocAnalysis.queryResults['org.openmrs.module.reporting.cohort.definition.CohortDefinition'];
+            var returnCriterias = originalCriterias && originalCriterias.slice(0);
+            
+            for(indexOriginal in originalCriterias) {
+                for(indexSelected in $scope.rowQueries) {
+                    if(originalCriterias[indexOriginal].key == $scope.rowQueries[indexSelected].key) {
+                        var index = returnCriterias.indexOf($scope.rowQueries[indexSelected]);
+                        returnCriterias.splice(index, 1);
+                    }
+                }
+            }
+
+            return returnCriterias;
+        }
+
+        $scope.getColumns = function() {
+            var originalColumns = window.adHocAnalysis.queryResults['org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition'];
+            var returnColumns = originalColumns && originalColumns.slice(0);
+            
+            for(indexOriginal in originalColumns) {
+                for(indexSelected in $scope.columns) {
+                    if(originalColumns[indexOriginal].key == $scope.columns[indexSelected].key) {
+                        var index = returnColumns.indexOf($scope.columns[indexSelected]);
+                        returnColumns.splice(index, 1);
+                    }
+                }
+            }
+
+            return returnColumns;
         }
 
         $scope.next = function() {
@@ -110,8 +138,24 @@ var app = angular.module('adHocAnalysis', [ ]).
             }
         }
 
+         $scope.back = function() {
+            if($scope.currentView == 'searches') {
+                $scope.currentView = 'timeframe';
+            }
+
+            else if($scope.currentView == 'columns') {
+                $scope.currentView = 'searches';
+            }
+
+            else if($scope.currentView == 'preview') {
+                $scope.currentView = 'columns';
+            }
+        }
+
         $scope.addRow = function(definition) {
-            $scope.rowQueries.push(definition);
+            if(jq.inArray(definition, $scope.rowQueries) < 0) {
+                $scope.rowQueries.push(definition);
+            }
         }
 
         $scope.removeRow = function(idx) {
@@ -119,7 +163,9 @@ var app = angular.module('adHocAnalysis', [ ]).
         }
 
         $scope.addColumn = function(definition) {
-            $scope.columns.push(definition);
+            if(jq.inArray(definition, $scope.columns) < 0) {
+                $scope.columns.push(definition);
+            }
         }
 
         $scope.removeColumn = function(idx) {

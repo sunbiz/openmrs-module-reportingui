@@ -79,6 +79,11 @@ img.small {
   margin-left: 5px;
 }
 /* line 82, ../../../compass/sass/runReport.scss */
+.ad-hoc-report .view-all {
+  margin-left: 10px;
+  font-size: 0.9em;
+}
+/* line 87, ../../../compass/sass/runReport.scss */
 .ad-hoc-report .item {
   background: #363463;
   color: white;
@@ -89,29 +94,42 @@ img.small {
   display: inline-block;
   margin-right: 10px;
 }
-/* line 93, ../../../compass/sass/runReport.scss */
+/* line 98, ../../../compass/sass/runReport.scss */
+.ad-hoc-report .ui-autocomplete-input {
+  width: 350px;
+  height: 24px;
+}
+/* line 103, ../../../compass/sass/runReport.scss */
 .ad-hoc-report .item label {
   padding-right: 10px;
 }
-/* line 97, ../../../compass/sass/runReport.scss */
+/* line 107, ../../../compass/sass/runReport.scss */
 .ad-hoc-report .actions a, .ad-hoc-report .actions a:active, .ad-hoc-report .actions a:visited {
   color: white;
   cursor: pointer;
 }
-/* line 102, ../../../compass/sass/runReport.scss */
+/* line 112, ../../../compass/sass/runReport.scss */
 .ad-hoc-report .summary {
+  min-height: 70px;
+  font-size: 0.8em;
   padding: 5px;
   margin-bottom: 10px;
-  background: #292550;
-  color: white;
+  background: #FDFCD6;
+  color: #333;
 }
-/* line 108, ../../../compass/sass/runReport.scss */
+/* line 120, ../../../compass/sass/runReport.scss */
 .ad-hoc-report .summary .summary-parameter {
   display: inline-block;
   vertical-align: top;
   margin-right: 15px;
 }
-/* line 114, ../../../compass/sass/runReport.scss */
+/* line 126, ../../../compass/sass/runReport.scss */
 .ad-hoc-report .summary h5 {
-  color: white;
+  color: #333;
+}
+
+/* line 133, ../../../compass/sass/runReport.scss */
+#search-criteria-dialog a, #columns-dialog a {
+  display: block;
+  cursor: pointer;
 }

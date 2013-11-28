@@ -10,7 +10,7 @@
 
     <div class="summary">
         <span ng-show="parameters.length > 0" class="summary-parameter">
-            <em>Timeframe</em>
+            <strong>Timeframe</strong>
             <div>
                 Start date
                 <span>20 April 2013</span>
@@ -21,7 +21,7 @@
             </div>
         </span>
         <span ng-show="rowQueries.length > 0" class="summary-parameter">
-            <em>Searches</em>
+            <strong>Searches</strong>
             <ul>
                 <li ng-repeat="rowQuery in rowQueries">
                     {{ rowQuery.name }}
@@ -29,7 +29,7 @@
             </ul>
         </span>
         <span ng-show="columns.length > 0" class="summary-parameter">
-            <em>Columns</em>
+            <strong>Columns</strong>
             <ul>
                 <li ng-repeat="col in columns">
                     {{ col.name }}
@@ -39,7 +39,7 @@
     </div>
 
     <div ng-show="currentView == 'timeframe'">
-        <h3>Timeframe</h3>
+        <h2>Timeframe</h2>
         ${ ui.includeFragment("uicommons", "field/datetimepicker", [
             id: "startDate",
             label: "Start Date",
@@ -57,11 +57,11 @@
     </div>
 
     <div ng-show="currentView == 'searches'">
-        <h2>Patient Search</h2>
+        <h2>Search Criteria</h2>
         <input type="text" id="row-search" placeholder="add search criteria" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
 
-        <a class="view-all" href="javascript:void(0)">view all</a>
+        <a class="view-all view-all-criterias" href="javascript:void(0)">view all search criterias</a>
 
         <ul>
             <li class="item" ng-repeat="rowQuery in rowQueries">
@@ -73,15 +73,16 @@
             </li>
         </ul>
 
+        <button ng-click="back()">Back</button>
         <button ng-click="next()">Next</button>
     </div>
     <div ng-show="currentView == 'columns'">
-        <h3>Columns</h3>
+        <h2>Columns</h2>
 
         <input type="text" id="column-search" placeholder="add a column" definitionsearch action="addColumn"
                definition-type="org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition" />
 
-        <a class="view-all" href="javascript:void(0)">view all</a>
+        <a class="view-all view-all-columns" href="javascript:void(0)">view all columns</a>
 
         <ul>
             <li class="item" ng-repeat="col in columns">
@@ -98,6 +99,7 @@
             </li>
         </ul>
 
+        <button ng-click="back()">Back</button>
         <button ng-click="next()">Next</button>
     </div>
 
@@ -120,6 +122,7 @@
                 </tbody>
             </table>
 
+            <button ng-click="back()">Back</button>
             <button class="confirm" ng-click="preview()">Download Report</button>
         </div>
     </div>
@@ -133,18 +136,37 @@
             </ul>
         </div>
     </div>
+    <div id="columns-dialog" class="dialog" style="display: none">
+        <div class="dialog-header">
+            <h3>Select columns to add</h3>
+        </div>
+        <div class="dialog-content form">
+            <ul>
+                <a ng-click="addColumn(column)" ng-repeat="column in getColumns()">{{ column.name }}</a>
+            </ul>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
-    viewAllDialog = null;
+    criteriasDialog = null;
+    columnsDialog = null;
 
     jq(function() {
-        viewAllDialog = emr.setupConfirmationDialog({
+        criteriasDialog = emr.setupConfirmationDialog({
             selector: '#search-criteria-dialog'
+        });
+
+        columnsDialog = emr.setupConfirmationDialog({
+            selector: '#columns-dialog'
         });
     });
 
-    jq('.view-all').click(function() {
-        viewAllDialog.show();
+    jq('.view-all-criterias').click(function() {
+        criteriasDialog.show();
+    })
+
+    jq('.view-all-columns').click(function() {
+        columnsDialog.show();
     })
 </script>

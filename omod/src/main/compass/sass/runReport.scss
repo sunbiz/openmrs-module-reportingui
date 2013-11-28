@@ -79,6 +79,11 @@ img.small {
     }
   }  
 
+  .view-all {
+    margin-left: 10px;
+    font-size: 0.9em;
+  }
+
   .item {
     background: darken(#5B57A6, 20%);
     color: white;
@@ -88,6 +93,11 @@ img.small {
     margin-bottom: 10px;
     display: inline-block;
     margin-right: 10px;
+  }
+
+  .ui-autocomplete-input {
+    width: 350px;
+    height: 24px;
   }
 
   .item label {
@@ -100,10 +110,12 @@ img.small {
   }
 
   .summary {
+    min-height: 70px;
+    font-size: 0.8em;
     padding: 5px;
     margin-bottom: 10px;
-    background: #292550;
-    color: white;
+    background: #FDFCD6;
+    color: #333;
 
     .summary-parameter {
       display: inline-block;
@@ -112,7 +124,14 @@ img.small {
     }
 
     h5 {
-      color: white;
+      color: #333;
     }
+  }
+}
+
+#search-criteria-dialog, #columns-dialog {
+  a {
+    display: block;
+    cursor: pointer;
   }
 }
