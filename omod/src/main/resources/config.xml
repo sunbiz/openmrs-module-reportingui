@@ -21,13 +21,13 @@
     <require_version>${openmrsCoreVersion}</require_version>
 
     <require_modules>
-        <require_module version="0.7.8">
+        <require_module version="${reportingModuleVersion}">
             org.openmrs.module.reporting
         </require_module>
-        <require_module version="3.0">
+        <require_module version="${uiframeworkModuleVersion}">
             org.openmrs.module.uiframework
         </require_module>
-        <require_module version="1.0">
+        <require_module version="${appuiModuleVersion}">
             org.openmrs.module.appui
         </require_module>
     </require_modules>
