@@ -14,7 +14,7 @@ window.adHocAnalysis = {
     }
 }
 
-var app = angular.module('adHocAnalysis', [ ]).
+var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
 
     run(function($http) {
         window.adHocAnalysis.fetchData($http, window.adHocAnalysis, 'org.openmrs.module.reporting.cohort.definition.CohortDefinition');
@@ -82,6 +82,16 @@ var app = angular.module('adHocAnalysis', [ ]).
 
         $scope.results = null;
 
+        $scope.maxDay = moment().startOf('day').toDate();
+
+        $scope.openStartDatePicker = function() {
+            $scope.isStartDatePickerOpen = true;
+        };
+
+        $scope.openEndDatePicker = function() {
+            $scope.isEndDatePickerOpen = true;
+        };
+
         var swap = function(array, idx1, idx2) {
             if (idx1 < 0 || idx2 < 0 || idx1 >= array.length || idx2 >= array.length) {
                 return;
@@ -89,6 +99,14 @@ var app = angular.module('adHocAnalysis', [ ]).
             var temp = array[idx1];
             array[idx1] = array[idx2];
             array[idx2] = temp;
+        }
+
+        $scope.getFormattedStartDate = function() {
+            return moment($scope.parameters[0].value).format("DD MMM YYYY");
+        }
+
+        $scope.getFormattedEndDate = function() {
+            return moment($scope.parameters[1].value).format("DD MMM YYYY");
         }
 
         $scope.getDefinitions = function() {

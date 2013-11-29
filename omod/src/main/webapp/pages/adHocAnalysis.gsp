@@ -1,8 +1,11 @@
 <%
     ui.decorateWith("appui", "standardEmrPage")
+    ui.includeJavascript("uicommons", "moment.min.js")
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeJavascript("reportingui", "adHocAnalysis.js")
+    ui.includeJavascript("mirebalaisreports", "ui-bootstrap-tpls-0.6.0.min.js")
     ui.includeCss("reportingui", "runReport.css")
+    ui.includeCss("mirebalaisreports", "dailyReport.css")
 %>
 
 <div class="ad-hoc-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController">
@@ -13,11 +16,11 @@
             <strong>Timeframe</strong>
             <div>
                 Start date
-                <span>20 April 2013</span>
+                <span>{{ getFormattedStartDate() }}</span>
             </div>
             <div>
                 End date
-                <span>23 April 2013</span>
+                <span>{{ getFormattedEndDate() }}</span>
             </div>
         </span>
         <span ng-show="rowQueries.length > 0" class="summary-parameter">
@@ -40,20 +43,23 @@
 
     <div ng-show="currentView == 'timeframe'">
         <h2>Timeframe</h2>
-        ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-            id: "startDate",
-            label: "Start Date",
-            formFieldName: "startDate",
-            useTime: false
-        ])}
-        ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-            id: "endDate",
-            label: "End Date",
-            formFieldName: "endDate",
-            useTime: false
-        ])}
+        <div class="angular-datepicker">
+            <div class="form-horizontal">
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[0].value" is-open="isStartDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" />
+                <button class="btn" ng-click="openDatePicker()"><i class="icon-calendar"></i></button>
+            </div>
+        </div>
 
-        <button ng-click="next()">Next</button>
+        <div class="angular-datepicker">
+            <div class="form-horizontal">
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[1].value" is-open="isEndDatePickerOpen2" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" />
+                <button class="btn" ng-click="openDatePicker()"><i class="icon-calendar"></i></button>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button ng-click="next()">Next</button>
+        </div>
     </div>
 
     <div ng-show="currentView == 'searches'">
@@ -73,8 +79,10 @@
             </li>
         </ul>
 
-        <button ng-click="back()">Back</button>
-        <button ng-click="next()">Next</button>
+        <div class="navigation">
+            <button ng-click="back()">Back</button>
+            <button ng-click="next()">Next</button>
+        <div>
     </div>
     <div ng-show="currentView == 'columns'">
         <h2>Columns</h2>
@@ -101,8 +109,10 @@
             </div>
         </ul>
 
-        <button ng-click="back()">Back</button>
-        <button ng-click="next()">Next</button>
+        <div class="navigation">
+            <button ng-click="back()">Back</button>
+            <button ng-click="next()">Next</button>
+        </div>
     </div>
 
     <div ng-show="currentView == 'preview'">
@@ -128,8 +138,10 @@
                 </tbody>
             </table>
 
-            <button ng-click="back()">Back</button>
-            <button class="confirm" ng-click="preview()">Download Report</button>
+            <div class="navigation">
+                <button ng-click="back()">Back</button>
+                <button class="confirm" ng-click="preview()">Download Report</button>
+            </div>
         </div>
     </div>
     <div id="search-criteria-dialog" class="dialog" style="display: none">
