@@ -82,7 +82,7 @@
         <div class="navigation">
             <button ng-click="back()">Back</button>
             <button ng-click="next()">Next</button>
-        <div>
+        </div>
     </div>
     <div ng-show="currentView == 'columns'">
         <h2>Columns</h2>
