@@ -85,18 +85,20 @@
         <a class="view-all view-all-columns" href="javascript:void(0)">view all columns</a>
 
         <ul>
-            <li class="item" ng-repeat="col in columns">
-                <label>
-                    {{ \$index + 1 }}.
-                </label>
-                {{ col.name }}
+            <div ng-repeat="col in columns">
+                <li class="item">
+                    <label>
+                        {{ \$index + 1 }}.
+                    </label>
+                    {{ col.name }}
 
-                <span class="actions">
-                    <a ng-hide="\$first" ng-click="moveColumnUp(\$index)">Move up</a>
-                    <a ng-hide="\$last" ng-click="moveColumnDown(\$index)">Move down</a>
-                    <a ng-click="removeColumn(\$index)"><i class="icon-remove"></i></a>
-                </span>
-            </li>
+                    <span class="actions">
+                        <a ng-hide="\$first" ng-click="moveColumnUp(\$index)"><i class="icon-chevron-up"></i></a>
+                        <a ng-hide="\$last" ng-click="moveColumnDown(\$index)"><i class="icon-chevron-down"></i></a>
+                        <a ng-click="removeColumn(\$index)"><i class="icon-remove"></i></a>
+                    </span>
+                </li>
+            </div>
         </ul>
 
         <button ng-click="back()">Back</button>
@@ -104,7 +106,11 @@
     </div>
 
     <div ng-show="currentView == 'preview'">
-        <div ng-show="results">
+        <div class="no-results" ng-show="results == null || results.allRows.length == 0"> 
+            No results were found. Please review your search criteria.
+            <button ng-click="back()">Back</button>
+        </div>
+        <div ng-show="results.allRows.length > 0">
             <label>
                 Preview of {{ results.allRows.length }} results
             </label>

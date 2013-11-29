@@ -51,10 +51,6 @@ img.small {
     display: block;
     margin-top: 10px;
     margin-bottom: 10px;
-
-    ul {
-
-    }
   }
 
   h3 {
@@ -87,12 +83,10 @@ img.small {
   .item {
     background: darken(#5B57A6, 20%);
     color: white;
-    margin: 5px;
+    margin: 5px 10px 0 5px;
     padding: 5px;
     border-radius: 3px;
-    margin-bottom: 10px;
     display: inline-block;
-    margin-right: 10px;
   }
 
   .ui-autocomplete-input {
@@ -104,9 +98,14 @@ img.small {
     padding-right: 10px;
   }
 
-  .actions a, .actions a:active, .actions a:visited {
-    color: white;
-    cursor: pointer;
+  .actions {
+    margin-left: 10px;
+
+    a, a:active, a:visited {
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+    }
   }
 
   .summary {
@@ -120,7 +119,7 @@ img.small {
     .summary-parameter {
       display: inline-block;
       vertical-align: top;
-      margin-right: 15px;
+      margin-right: 25px;
     }
 
     h5 {
@@ -148,4 +147,8 @@ img.small {
   ul {
     margin-bottom: 0;
   }
+}
+
+.no-results button {
+  display: block;
 }
