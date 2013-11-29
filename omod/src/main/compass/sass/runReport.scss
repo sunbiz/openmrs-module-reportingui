@@ -109,6 +109,7 @@ img.small {
   }
 
   .summary {
+    display: inline-block;
     min-height: 70px;
     font-size: 0.8em;
     padding: 5px;
@@ -124,6 +125,10 @@ img.small {
 
     h5 {
       color: #333;
+    }
+
+    .disabled {
+      color: lighten(#333, 50%);
     }
   }
 }

@@ -102,10 +102,12 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         }
 
         $scope.getFormattedStartDate = function() {
+            if($scope.parameters[0].value == null) { return; }
             return moment($scope.parameters[0].value).format("DD MMM YYYY");
         }
 
         $scope.getFormattedEndDate = function() {
+            if($scope.parameters[1].value == null) { return; }
             return moment($scope.parameters[1].value).format("DD MMM YYYY");
         }
 

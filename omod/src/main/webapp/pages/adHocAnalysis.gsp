@@ -12,16 +12,23 @@
     <h1>Patient Ad Hoc Report</h1>
 
     <div class="summary">
-        <span ng-show="parameters.length > 0" class="summary-parameter">
+        <span ng-show="parameters[0].value == null && parameters[1].value == null" class="summary-parameter">
+            <span class="disabled">Timeframe</span>
+        </span>
+        <span ng-show="parameters[0].value != null || parameters[1].value != null" class="summary-parameter">
             <strong>Timeframe</strong>
-            <div>
-                Start date
+            <div ng-show="parameters[0].value != null" >
+                Start date: 
                 <span>{{ getFormattedStartDate() }}</span>
             </div>
-            <div>
-                End date
+            <div ng-show="parameters[1].value != null" >
+                End date: 
                 <span>{{ getFormattedEndDate() }}</span>
             </div>
+        </span>
+        
+        <span ng-show="rowQueries.length == 0" class="summary-parameter">
+            <span class="disabled">Searches</span>
         </span>
         <span ng-show="rowQueries.length > 0" class="summary-parameter">
             <strong>Searches</strong>
@@ -30,6 +37,9 @@
                     {{ rowQuery.name }}
                 </li>
             </ul>
+        </span>
+        <span ng-show="columns.length == 0" class="summary-parameter">
+            <span class="disabled">Columns</span>
         </span>
         <span ng-show="columns.length > 0" class="summary-parameter">
             <strong>Columns</strong>
