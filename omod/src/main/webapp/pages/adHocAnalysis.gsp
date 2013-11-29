@@ -129,6 +129,7 @@
     <div id="search-criteria-dialog" class="dialog" style="display: none">
         <div class="dialog-header">
             <h3>Select a search criteria to add</h3>
+            <i class="icon-remove"></i>
         </div>
         <div class="dialog-content form">
             <ul>
@@ -139,6 +140,7 @@
     <div id="columns-dialog" class="dialog" style="display: none">
         <div class="dialog-header">
             <h3>Select columns to add</h3>
+            <i class="icon-remove"></i>
         </div>
         <div class="dialog-content form">
             <ul>
@@ -169,4 +171,9 @@
     jq('.view-all-columns').click(function() {
         columnsDialog.show();
     })
+
+    jq('.dialog .icon-remove').click(function() {
+        criteriasDialog.close();
+        columnsDialog.close();
+    });
 </script>

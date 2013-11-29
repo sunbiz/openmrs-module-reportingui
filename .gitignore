@@ -1,9 +1,9 @@
 *.iml
 *.idea
 
-target
-api/target
-omod/target
+target/
+api/target/
+omod/target/
 omod/src/main/compass/.sass-cache
 
 /.settings
@@ -13,3 +13,18 @@ omod/src/main/compass/.sass-cache
 omod/.DS_Store
 
 /.classpath
+ 
+
+activemq-data
+
+api/.project
+api/.classpath
+api/.settings/
+api/activemq-data
+
+omod/.project
+omod/.classpath
+omod/.settings/
+omod/src/main/compass/sass-external/
+omod/src/main/webapp/resources/styles/
+*.sass-cache

@@ -130,8 +130,22 @@ img.small {
 }
 
 #search-criteria-dialog, #columns-dialog {
+  width: auto;
+
+  .icon-remove {
+    right: 10px;
+    position: absolute;
+    font-size: 1em;
+    top: 10px;
+    cursor: pointer;
+  }
+
   a {
     display: block;
     cursor: pointer;
+  }
+
+  ul {
+    margin-bottom: 0;
   }
 }
