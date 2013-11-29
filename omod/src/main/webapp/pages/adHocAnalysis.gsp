@@ -121,7 +121,7 @@
 
         <div class="navigation">
             <button ng-click="back()">Back</button>
-            <button ng-click="next()">Next</button>
+            <button class="confirm" ng-click="next()">Preview</button>
         </div>
     </div>
 
