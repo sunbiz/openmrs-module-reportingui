@@ -55,15 +55,15 @@
         <h2>Timeframe</h2>
         <div class="angular-datepicker">
             <div class="form-horizontal">
-                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[0].value" is-open="isStartDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" />
-                <button class="btn" ng-click="openDatePicker()"><i class="icon-calendar"></i></button>
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[0].value" is-open="isStartDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="Start Date" />
+                <button class="btn" ng-click="openStartDatePicker()"><i class="icon-calendar"></i></button>
             </div>
         </div>
 
         <div class="angular-datepicker">
             <div class="form-horizontal">
-                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[1].value" is-open="isEndDatePickerOpen2" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" />
-                <button class="btn" ng-click="openDatePicker()"><i class="icon-calendar"></i></button>
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[1].value" is-open="isEndDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="End Date" />
+                <button class="btn" ng-click="openEndDatePicker()"><i class="icon-calendar"></i></button>
             </div>
         </div>
 
@@ -74,7 +74,7 @@
 
     <div ng-show="currentView == 'searches'">
         <h2>Search Criteria</h2>
-        <input type="text" id="row-search" placeholder="add search criteria" definitionsearch action="addRow"
+        <input type="text" id="row-search" placeholder="Add Search Criteria" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
 
         <a class="view-all view-all-criterias" href="javascript:void(0)">view all search criterias</a>
@@ -97,7 +97,7 @@
     <div ng-show="currentView == 'columns'">
         <h2>Columns</h2>
 
-        <input type="text" id="column-search" placeholder="add a column" definitionsearch action="addColumn"
+        <input type="text" id="column-search" placeholder="Add a Column" definitionsearch action="addColumn"
                definition-type="org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition" />
 
         <a class="view-all view-all-columns" href="javascript:void(0)">view all columns</a>
@@ -111,8 +111,8 @@
                     {{ col.name }}
 
                     <span class="actions">
-                        <a ng-hide="\$first" ng-click="moveColumnUp(\$index)"><i class="icon-chevron-up"></i></a>
                         <a ng-hide="\$last" ng-click="moveColumnDown(\$index)"><i class="icon-chevron-down"></i></a>
+                        <a ng-hide="\$first" ng-click="moveColumnUp(\$index)"><i class="icon-chevron-up"></i></a>
                         <a ng-click="removeColumn(\$index)"><i class="icon-remove"></i></a>
                     </span>
                 </li>
