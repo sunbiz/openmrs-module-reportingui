@@ -9,29 +9,29 @@
 %>
 
 <div class="ad-hoc-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController">
-    <h1>Patient Ad Hoc Report</h1>
+    <h1>${ ui.message("reportingui.adHocReport.title") }</h1>
 
     <div class="summary">
         <span ng-show="parameters[0].value == null && parameters[1].value == null" class="summary-parameter">
-            <span class="disabled">Timeframe</span>
+            <span class="disabled">${ ui.message("reportingui.adHocReport.timeframe.label") }</span>
         </span>
         <span ng-show="parameters[0].value != null || parameters[1].value != null" class="summary-parameter">
-            <strong>Timeframe</strong>
+            <strong>${ ui.message("reportingui.adHocReport.timeframe.label") }</strong>
             <div ng-show="parameters[0].value != null" >
-                Start date: 
+                ${ ui.message("reportingui.adHocReport.timeframe.startDate") }
                 <span>{{ getFormattedStartDate() }}</span>
             </div>
             <div ng-show="parameters[1].value != null" >
-                End date: 
+                ${ ui.message("reportingui.adHocReport.timeframe.endDate") }
                 <span>{{ getFormattedEndDate() }}</span>
             </div>
         </span>
         
         <span ng-show="rowQueries.length == 0" class="summary-parameter">
-            <span class="disabled">Searches</span>
+            <span class="disabled">${ ui.message("reportingui.adHocReport.searches") }</span>
         </span>
         <span ng-show="rowQueries.length > 0" class="summary-parameter">
-            <strong>Searches</strong>
+            <strong>${ ui.message("reportingui.adHocReport.searches") }</strong>
             <ul>
                 <li ng-repeat="rowQuery in rowQueries">
                     {{ rowQuery.name }}
@@ -39,10 +39,10 @@
             </ul>
         </span>
         <span ng-show="columns.length == 0" class="summary-parameter">
-            <span class="disabled">Columns</span>
+            <span class="disabled">${ ui.message("reportingui.adHocReport.columns") }</span>
         </span>
         <span ng-show="columns.length > 0" class="summary-parameter">
-            <strong>Columns</strong>
+            <strong>${ ui.message("reportingui.adHocReport.columns") }</strong>
             <ul>
                 <li ng-repeat="col in columns">
                     {{ col.name }}
@@ -52,32 +52,33 @@
     </div>
 
     <div ng-show="currentView == 'timeframe'">
-        <h2>Timeframe</h2>
+        <h2>${ ui.message("reportingui.adHocReport.timeframe.label") }</h2>
         <div class="angular-datepicker">
             <div class="form-horizontal">
-                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[0].value" is-open="isStartDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="Start Date" />
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[0].value" is-open="isStartDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="${ ui.message('reportingui.adHocReport.timeframe.startDateLabel')}" />
                 <button class="btn" ng-click="openStartDatePicker()"><i class="icon-calendar"></i></button>
             </div>
         </div>
 
         <div class="angular-datepicker">
             <div class="form-horizontal">
-                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[1].value" is-open="isEndDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="End Date" />
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[1].value" is-open="isEndDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="${ ui.message('reportingui.adHocReport.timeframe.endDateLabel')}" />
                 <button class="btn" ng-click="openEndDatePicker()"><i class="icon-calendar"></i></button>
             </div>
         </div>
 
         <div class="navigation">
-            <button ng-click="next()">Next</button>
+            <button ng-click="next()">${ ui.message("reportingui.adHocReport.next") }</button>
         </div>
     </div>
 
     <div ng-show="currentView == 'searches'">
-        <h2>Search Criteria</h2>
-        <input type="text" id="row-search" placeholder="Add Search Criteria" definitionsearch action="addRow"
+
+        <h2>${ ui.message("reportingui.adHocReport.searchCriteria")}</h2>
+        <input type="text" id="row-search" placeholder="${ ui.message('reportingui.adHocReport.addSearchCriteria') }" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
 
-        <a class="view-all view-all-criterias" href="javascript:void(0)">view all search criterias</a>
+        <a class="view-all view-all-criterias" href="javascript:void(0)">${ ui.message('reportingui.adHocReport.viewAllCriteria') }</a>
 
         <ul>
             <li class="item" ng-repeat="rowQuery in rowQueries">
@@ -90,17 +91,17 @@
         </ul>
 
         <div class="navigation">
-            <button ng-click="back()">Back</button>
-            <button ng-click="next()">Next</button>
+            <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
+            <button ng-click="next()">${ ui.message("reportingui.adHocReport.next") }</button>
         </div>
     </div>
     <div ng-show="currentView == 'columns'">
-        <h2>Columns</h2>
+        <h2>${ ui.message("reportingui.adHocReport.columns") }</h2>
 
-        <input type="text" id="column-search" placeholder="Add a Column" definitionsearch action="addColumn"
+        <input type="text" id="column-search" placeholder="${ ui.message('reportingui.adHocReport.addColumns') }" definitionsearch action="addColumn"
                definition-type="org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition" />
 
-        <a class="view-all view-all-columns" href="javascript:void(0)">view all columns</a>
+        <a class="view-all view-all-columns" href="javascript:void(0)">${ ui.message('reportingui.adHocReport.viewAllColumns') }</a>
 
         <ul>
             <div ng-repeat="col in columns">
@@ -120,19 +121,19 @@
         </ul>
 
         <div class="navigation">
-            <button ng-click="back()">Back</button>
-            <button class="confirm" ng-click="next()">Preview</button>
+            <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
+            <button class="confirm" ng-click="next()">${ ui.message("reportingui.adHocReport.preview") }</button>
         </div>
     </div>
 
     <div ng-show="currentView == 'preview'">
         <div class="no-results" ng-show="results == null || results.allRows.length == 0"> 
-            No results were found. Please review your search criteria.
-            <button ng-click="back()">Back</button>
+            ${ ui.message("reportingui.adHocReport.noResults") }
+            <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
         </div>
         <div ng-show="results.allRows.length > 0">
             <label>
-                Preview of {{ results.allRows.length }} results
+            <openmrs:message code="reportingui.adHocReport.resultsPreview" arguments='{{ results.allRows.length }}' />
             </label>
 
             <table>
@@ -149,14 +150,14 @@
             </table>
 
             <div class="navigation">
-                <button ng-click="back()">Back</button>
-                <button class="confirm" ng-click="preview()">Download Report</button>
+                <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
+                <button class="confirm" ng-click="preview()">${ ui.message("reportingui.adHocReport.download") }</button>
             </div>
         </div>
     </div>
     <div id="search-criteria-dialog" class="dialog" style="display: none">
         <div class="dialog-header">
-            <h3>Select a search criteria to add</h3>
+            <h3>${ ui.message("reportingui.adHocReport.addSearchCriteria") }</h3>
             <i class="icon-remove"></i>
         </div>
         <div class="dialog-content form">
@@ -167,7 +168,7 @@
     </div>
     <div id="columns-dialog" class="dialog" style="display: none">
         <div class="dialog-header">
-            <h3>Select columns to add</h3>
+            <h3>${ ui.message("reportingui.adHocReport.addColumns") }</h3>
             <i class="icon-remove"></i>
         </div>
         <div class="dialog-content form">
