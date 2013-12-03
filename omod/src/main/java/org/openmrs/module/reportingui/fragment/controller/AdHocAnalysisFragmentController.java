@@ -16,6 +16,7 @@ import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
 import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinitionService;
 import org.openmrs.module.reporting.definition.library.AllDefinitionLibraries;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
+import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.util.OpenmrsUtil;
@@ -56,7 +57,7 @@ public class AdHocAnalysisFragmentController {
             // }
             i += 1;
             CohortDefinition cohortDefinition = allDefinitionLibraries.getDefinition(CohortDefinition.class, rowQuery.get("key").getTextValue());
-            composition.addSearch("" + i, cohortDefinition, "");
+            composition.addSearch("" + i, Mapped.map(cohortDefinition, ""));
         }
 
         composition.setCompositionString(OpenmrsUtil.join(composition.getSearches().keySet(), " AND "));
