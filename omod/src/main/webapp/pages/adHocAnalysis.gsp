@@ -62,7 +62,7 @@
 
         <div class="angular-datepicker">
             <div class="form-horizontal">
-                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[1].value" is-open="isEndDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="${ ui.message('reportingui.adHocReport.timeframe.endDateLabel')}" />
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="parameters[1].value" is-open="isEndDatePickerOpen" min="parameters[0].value" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="${ ui.message('reportingui.adHocReport.timeframe.endDateLabel')}" />
                 <button class="btn" ng-click="openEndDatePicker()"><i class="icon-calendar"></i></button>
             </div>
         </div>
