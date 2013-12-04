@@ -127,13 +127,14 @@
     </div>
 
     <div ng-show="currentView == 'preview'">
+        <img ng-show="results.loading" />
         <div class="no-results" ng-show="results == null || results.allRows.length == 0"> 
-            ${ ui.message("reportingui.adHocReport.noResults") }
+            <div class="no-results-message">${ ui.message("reportingui.adHocReport.noResults") }</div>
             <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
         </div>
         <div ng-show="results.allRows.length > 0">
             <label>
-            <openmrs:message code="reportingui.adHocReport.resultsPreview" arguments='{{ results.allRows.length }}' />
+                ${ ui.message("reportingui.adHocReport.resultsPreview") }
             </label>
 
             <table>
