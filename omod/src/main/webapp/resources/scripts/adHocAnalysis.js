@@ -59,7 +59,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         };
     }).
 
-    controller('AdHocAnalysisController', ['$scope', '$http', function($scope, $http) {
+    controller('AdHocAnalysisController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 
         $scope.parameters = [
             {
@@ -85,11 +85,15 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         $scope.maxDay = moment().startOf('day').toDate();
 
         $scope.openStartDatePicker = function() {
-            $scope.isStartDatePickerOpen = true;
+            $timeout(function() {
+                $scope.isStartDatePickerOpen = true;
+            });
         };
 
         $scope.openEndDatePicker = function() {
-            $scope.isEndDatePickerOpen = true;
+            $timeout(function() {
+               $scope.isEndDatePickerOpen = true;
+            });
         };
 
         var swap = function(array, idx1, idx2) {
