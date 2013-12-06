@@ -78,7 +78,7 @@
         <input type="text" id="row-search" placeholder="${ ui.message('reportingui.adHocReport.addSearchCriteria') }" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
 
-        <a class="view-all view-all-criterias" href="javascript:void(0)">${ ui.message('reportingui.adHocReport.viewAllCriteria') }</a>
+        <a class="view-all view-all-criteria" href="javascript:void(0)">${ ui.message('reportingui.adHocReport.viewAllCriteria') }</a>
 
         <ul>
             <li class="item" ng-repeat="rowQuery in rowQueries">
@@ -194,7 +194,7 @@
         });
     });
 
-    jq('.view-all-criterias').click(function() {
+    jq('.view-all-criteria').click(function() {
         criteriasDialog.show();
     })
 
