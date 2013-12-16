@@ -8,6 +8,14 @@
     ui.includeCss("mirebalaisreports", "dailyReport.css")
 %>
 
+<script type="text/javascript">
+    var breadcrumbs = [
+        { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
+        { label: "${ ui.message("mirebalaisreports.home.title") }", link: "${ ui.pageLink("mirebalaisreports", "home") }" },
+        { label: "${ ui.message("mirebalaisreports.adhocreport") }", link: "${ ui.escapeJs(ui.thisUrl()) }" }
+    ];
+</script>
+
 <div class="ad-hoc-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController">
     <h1>${ ui.message("reportingui.adHocReport.title") }</h1>
 
