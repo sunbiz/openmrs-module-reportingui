@@ -16,12 +16,9 @@ package org.openmrs.module.reportingui.adhoc;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import org.openmrs.module.reporting.dataset.definition.RowPerObjectDataSetDefinition;
-import org.openmrs.module.reporting.definition.library.AllDefinitionLibraries;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class AdHocDataSetTest {
 
@@ -88,9 +85,4 @@ public class AdHocDataSetTest {
         assertThat(adHocDataSet.getName(), is("Females"));
     }
 
-    @Test
-    public void testToDSD() throws Exception {
-        AdHocDataSet adHocDataSet = new ObjectMapper().readValue(JSON, AdHocDataSet.class);
-        RowPerObjectDataSetDefinition dsd = adHocDataSet.toDataSetDefinition(mock(AdHocExportManager.class), mock(AllDefinitionLibraries.class));
-    }
 }
