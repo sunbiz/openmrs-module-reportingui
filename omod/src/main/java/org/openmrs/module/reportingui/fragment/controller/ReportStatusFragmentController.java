@@ -79,7 +79,7 @@ public class ReportStatusFragmentController {
             }
         });
 
-        return simplify(ui, requests, queueStatus);
+        return simplify(ui, requests, queueStatus, null);
 
     }
 
@@ -94,7 +94,21 @@ public class ReportStatusFragmentController {
 
         List<ReportRequest> requests = reportService.getReportRequests(reportDefinition, null, null, 10, ReportRequest.Status.FAILED, ReportRequest.Status.COMPLETED, ReportRequest.Status.SAVED);
 
-        return simplify(ui, requests, null);
+        Map<ReportRequest, String> errorMessages = new HashMap<ReportRequest, String>();
+        for (ReportRequest request : requests) {
+            if (ReportRequest.Status.FAILED.equals(request.getStatus())) {
+                errorMessages.put(request, reportService.loadReportError(request));
+            }
+        }
+
+        Collections.sort(requests, new Comparator<ReportRequest>() {
+            @Override
+            public int compare(ReportRequest left, ReportRequest right) {
+                return OpenmrsUtil.compareWithNullAsGreatest(right.getEvaluateStartDatetime(), left.getEvaluateStartDatetime());
+            }
+        });
+
+        return simplify(ui, requests, null, errorMessages);
     }
 
     public FragmentActionResult cancelRequest(@RequestParam("reportRequest") String reportRequestUuid,
@@ -122,16 +136,16 @@ public class ReportStatusFragmentController {
     }
 
 
-    public List<SimpleObject> simplify(UiUtils ui, List<ReportRequest> requests, Map<ReportRequest, QueueStatus> queueStatus) {
+    public List<SimpleObject> simplify(UiUtils ui, List<ReportRequest> requests, Map<ReportRequest, QueueStatus> queueStatus, Map<ReportRequest, String> errorMessages) {
         List<SimpleObject> ret = new ArrayList<SimpleObject>();
         for (ReportRequest request : requests) {
-            ret.add(simplify(ui, request, queueStatus == null ? null : queueStatus.get(request)));
+            ret.add(simplify(ui, request, queueStatus == null ? null : queueStatus.get(request), errorMessages == null ? null : errorMessages.get(request)));
         }
 
         return ret;
     }
 
-    private SimpleObject simplify(UiUtils ui, ReportRequest request, QueueStatus queueStatus) {
+    private SimpleObject simplify(UiUtils ui, ReportRequest request, QueueStatus queueStatus, String error) {
         SimpleObject simple = SimpleObject.fromObject(request, ui,
                 "uuid", "renderingMode.label", "priority", "schedule",
                 "requestedBy", "requestDate", "status",
@@ -146,6 +160,7 @@ public class ReportStatusFragmentController {
         ((SimpleObject) simple.get("renderingMode")).put("interactive", request.getRenderingMode().getRenderer() instanceof InteractiveReportRenderer);
         simple.put("reportDefinition", simplify(ui, request.getReportDefinition()));
         simple.put("baseCohort", simplify(ui, request.getBaseCohort()));
+        simple.put("errorMessage", error);
 
         return simple;
     }

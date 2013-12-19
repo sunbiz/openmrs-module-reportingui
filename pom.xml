@@ -40,6 +40,7 @@
         <serializationxstreamModuleVersion>0.2.7</serializationxstreamModuleVersion>
         <appframeworkModuleVersion>2.0</appframeworkModuleVersion>
         <calculationModuleVersion>1.0</calculationModuleVersion>
+        <jacksonVersion>1.5.0</jacksonVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -110,6 +111,20 @@
             <version>${appuiModuleVersion}</version>
             <scope>test</scope>
             <type>test-jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>${jacksonVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jacksonVersion}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- we explicitly use version 3.2.10 since 3.2.11 has a bug which was giving us issues,

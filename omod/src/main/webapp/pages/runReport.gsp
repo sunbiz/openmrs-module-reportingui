@@ -159,7 +159,7 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
                     <% if (it.type == java.util.Date) { %>
                     ${ ui.includeFragment("uicommons", "field/datetimepicker", [
                             formFieldName: "parameterValues[" + it.name + "]",
-                            label: it.label,
+                            label: it.labelOrName,
                             useTime: false,
                             defaultDate: it.defaultValue
                     ])}
