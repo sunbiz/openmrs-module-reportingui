@@ -15,6 +15,16 @@
 
 var app = angular.module('runAdHocExport', ['ui.bootstrap']).
 
+    filter('translate', function() {
+        return function(input, prefix) {
+            if (input && input.uuid) {
+                input = input.uuid;
+            }
+            var code = prefix ? prefix + input : input;
+            return emr.message(code, input);
+        }
+    }).
+
     controller('RunAdHocExportController', ['$scope', '$http', function($scope, $http) {
 
         $scope.exports = adHocExports;

@@ -12,6 +12,12 @@
     }
 %>
 
+<%= ui.includeFragment("appui", "messages", [ codes: [
+        "reportingui.adHocReport.timeframe.startDateLabel",
+        "reportingui.adHocReport.timeframe.endDateLabel"
+].flatten()
+]) %>
+
 <script type="text/javascript">
     var breadcrumbs = [
         { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
@@ -37,38 +43,36 @@
     </h1>
 
     <div class="summary">
-        <span ng-show="dataExport.parameters[0].value == null && dataExport.parameters[1].value == null" class="summary-parameter">
-            <span class="disabled">${ ui.message("reportingui.adHocReport.timeframe.label") }</span>
-        </span>
-        <span ng-show="dataExport.parameters[0].value != null || dataExport.parameters[1].value != null" class="summary-parameter">
-            <strong>${ ui.message("reportingui.adHocReport.timeframe.label") }</strong>
-            <div ng-show="dataExport.parameters[0].value != null" >
-                ${ ui.message("reportingui.adHocReport.timeframe.startDate") }
-                <span>{{ getFormattedStartDate() }}</span>
-            </div>
-            <div ng-show="dataExport.parameters[1].value != null" >
-                ${ ui.message("reportingui.adHocReport.timeframe.endDate") }
-                <span>{{ getFormattedEndDate() }}</span>
+        <span class="summary-parameter">
+            <strong>
+                <a ng-show="currentView != 'parameters'" ng-click="currentView = 'parameters'">${ ui.message("reportingui.adHocReport.parameters.label") }</a>
+                <span ng-show="currentView == 'parameters'">${ ui.message("reportingui.adHocReport.parameters.label") }</span>
+            </strong>
+            <div ng-repeat="parameter in dataExport.parameters">
+                {{ parameter.label | translate }}
             </div>
         </span>
-        
-        <span ng-show="dataExport.rowFilters.length == 0" class="summary-parameter">
-            <span class="disabled">${ ui.message("reportingui.adHocReport.searches") }</span>
-        </span>
-        <span ng-show="dataExport.rowFilters.length > 0" class="summary-parameter">
-            <strong>${ ui.message("reportingui.adHocReport.searches") }</strong>
+
+        <span  class="summary-parameter">
+            <strong>
+                <a ng-show="currentView != 'searches'" ng-click="currentView = 'searches'">${ ui.message("reportingui.adHocReport.searches") }</a>
+                <span ng-show="currentView == 'searches'">${ ui.message("reportingui.adHocReport.searches") }</span>
+            </strong>
             <ul>
+                <li ng-show="dataExport.rowFilters.length == 0">None</li>
                 <li ng-repeat="rowQuery in dataExport.rowFilters">
                     {{ rowQuery.name }}
                 </li>
             </ul>
         </span>
-        <span ng-show="dataExport.columns.length == 0" class="summary-parameter">
-            <span class="disabled">${ ui.message("reportingui.adHocReport.columns") }</span>
-        </span>
-        <span ng-show="dataExport.columns.length > 0" class="summary-parameter">
-            <strong>${ ui.message("reportingui.adHocReport.columns") }</strong>
+
+        <span class="summary-parameter">
+            <strong>
+                <a ng-show="currentView != 'columns'" ng-click="currentView = 'columns'">${ ui.message("reportingui.adHocReport.columns") }</a>
+                <span ng-show="currentView == 'columns'">${ ui.message("reportingui.adHocReport.columns") }</span>
+            </strong>
             <ul>
+                <li ng-show="dataExport.columns.length == 0">None</li>
                 <li ng-repeat="col in dataExport.columns">
                     {{ col.name }}
                 </li>
@@ -77,16 +81,18 @@
 
         <span class="summary-parameter">
             <span ng-show="dirty">
-                Modified
-                <span ng-show="dirty.saving">
-                    Saving...
-                </span>
-                <span ng-hide="dirty.saving">
-                    <button ng-click="saveDataExport()" ng-disabled="!canSave()">
-                        <i class="icon-save"></i>
-                        Save
-                    </button>
-                </span>
+                <strong>Modified</strong>
+                <ul>
+                    <li ng-show="dirty.saving">
+                        Saving...
+                    </li>
+                    <li ng-hide="dirty.saving">
+                        <button ng-click="saveDataExport()" ng-disabled="!canSave()">
+                            <i class="icon-save"></i>
+                            Save
+                        </button>
+                    </li>
+                </ul>
             </span>
             <span ng-hide="dirty">
                 <button ng-click="runDataExport()" ng-disabled="!canRun()">
@@ -97,21 +103,16 @@
         </span>
     </div>
 
-    <div id="timeframe" ng-show="currentView == 'timeframe'">
-        <h2>${ ui.message("reportingui.adHocReport.timeframe.label") }</h2>
-        <div class="angular-datepicker">
-            <div class="form-horizontal">
-                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="dataExport.parameters[0].value" is-open="isStartDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="${ ui.message('reportingui.adHocReport.timeframe.startDateLabel')}" />
-                <button class="btn" ng-click="openStartDatePicker()"><i class="icon-calendar"></i></button>
-            </div>
-        </div>
+    <div id="parameters" ng-show="currentView == 'parameters'">
+        <h2>${ ui.message("reportingui.adHocReport.parameters.label") }</h2>
 
-        <div class="angular-datepicker">
-            <div class="form-horizontal">
-                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="dataExport.parameters[1].value" is-open="isEndDatePickerOpen" min="dataExport.parameters[0].value" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="${ ui.message('reportingui.adHocReport.timeframe.endDateLabel')}" />
-                <button class="btn" ng-click="openEndDatePicker()"><i class="icon-calendar"></i></button>
-            </div>
-        </div>
+        <ul>
+            <li class="item" ng-repeat="parameter in dataExport.parameters">
+                {{ parameter.label | translate }}:
+                <span ng-show="parameter.collectionType">{{ parameter.collectionType }} of </span>
+                {{ parameter.type }}
+            </li>
+        </ul>
 
         <div class="navigation">
             <button class="focus-first" ng-click="next()">${ ui.message("reportingui.adHocReport.next") }</button>
@@ -179,16 +180,35 @@
     </div>
 
     <div ng-show="currentView == 'preview'">
+        <h3>
+            Parameter values for preview
+        </h3>
+        <div class="angular-datepicker">
+            <div class="form-horizontal">
+                {{ dataExport.parameters[0].label | translate }}
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="dataExport.parameters[0].value" is-open="isStartDatePickerOpen" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="${ ui.message('reportingui.adHocReport.timeframe.startDateLabel')}" />
+                <button class="btn" ng-click="openStartDatePicker()"><i class="icon-calendar"></i></button>
+            </div>
+        </div>
+
+        <div class="angular-datepicker">
+            <div class="form-horizontal">
+                {{ dataExport.parameters[1].label | translate }}
+                <input type="text" class="datepicker-input" datepicker-popup="dd-MMMM-yyyy" ng-model="dataExport.parameters[1].value" is-open="isEndDatePickerOpen" min="dataExport.parameters[0].value" max="maxDay" date-disabled="disabled(date, mode)" ng-required="true" show-weeks="false" placeholder="${ ui.message('reportingui.adHocReport.timeframe.endDateLabel')}" />
+                <button class="btn" ng-click="openEndDatePicker()"><i class="icon-calendar"></i></button>
+            </div>
+        </div>
+
+        <h3>
+            ${ ui.message("reportingui.adHocReport.resultsPreview") }
+        </h3>
         <img ng-show="results.loading" src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
         <div class="no-results" ng-show="results.allRows.length == 0">
             <div class="no-results-message">${ ui.message("reportingui.adHocReport.noResults") }</div>
             <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
         </div>
         <div ng-show="results.allRows.length > 0">
-            <label>
-                ${ ui.message("reportingui.adHocReport.resultsPreview") }
-            </label>
-
+            The full export would have {{ results.allRows.length }} row(s).
             <table>
                 <thead>
                     <tr>
@@ -206,9 +226,6 @@
 
             <div class="navigation">
                 <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
-                <!--
-                <button class="confirm focus-first" ng-click="openSaveDataExportDialog()">${ ui.message("reportingui.adHocReport.saveDataExport") }</button>
-                -->
             </div>
         </div>
     </div>

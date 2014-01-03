@@ -52,6 +52,7 @@ public class AdHocHomePageController {
         ReportRequest reportRequest = adHocExportManager.buildExportRequest(dsdUuids, paramValues, null);
         reportRequest.setDescription("[Ad Hoc Export]");
         reportRequest = reportService.queueReport(reportRequest);
+        reportService.processNextQueuedReports();
 
         return SimpleObject.create("uuid", reportRequest.getUuid());
     }

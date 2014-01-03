@@ -22,6 +22,7 @@ import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinition
 import org.openmrs.module.reporting.definition.DefinitionSummary;
 import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.module.reporting.evaluation.parameter.Parameter;
+import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.ReportRequest;
 import org.openmrs.module.reporting.report.definition.ReportDefinition;
 import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
@@ -84,11 +85,10 @@ public class AdHocExportManager {
     public ReportRequest buildExportRequest(List<String> dsdUuids, Map<String, Object> paramValues, RenderingMode renderingMode) {
         ReportDefinition rd = new ReportDefinition();
         List<String> datasetNames = new ArrayList<String>();
-        int i = 0;
         for (String uuid : dsdUuids) {
             RowPerObjectDataSetDefinition dsd = getAdHocDataSetByUuid(uuid);
             datasetNames.add(dsd.getName());
-            rd.addDataSetDefinition(Integer.toString(++i), Mapped.mapStraightThrough(dsd));
+            rd.addDataSetDefinition(removeNamePrefix(dsd.getName()), Mapped.mapStraightThrough(dsd));
         }
         copyParametersFromDsds(rd);
 
@@ -106,6 +106,15 @@ public class AdHocExportManager {
         request.setRenderingMode(renderingMode);
 
         return request;
+    }
+
+    private static String removeNamePrefix(String withPrefix) {
+        if (withPrefix.startsWith(NAME_PREFIX)) {
+            return withPrefix.substring(NAME_PREFIX.length());
+        }
+        else {
+            return withPrefix;
+        }
     }
 
     public static void verifyAdHoc(DataSetDefinition dsd) {
@@ -146,6 +155,42 @@ public class AdHocExportManager {
             }
         }
         parameters.add(p);
+    }
+
+    /**
+     * Deletes any ReportDefinitions that:
+     * <ul>
+     *     <li>Are tagged as [AdHocDataExport]</li>
+     *     <li>Are not referenced by any existing ReportRequest</li>
+     * </ul>
+     *
+     * The intended lifecycle is that:
+     * <ol>
+     *     <li>When running an Ad Hoc Export, we create a (transient) ReportDefinition, and a ReportRequest to evaluate it</li>
+     *     <li>The ReportRequest is evaluated</li>
+     *     <li>Eventually the ReportRequest is deleted due to age (unless a user marked it as Saved)</li>
+     *     <li>At that point, org.openmrs.module.reportingui.task.DeleteOldOldAdHocReportDefinitionsTask will call this method, which deletes the ReportRequest</li>
+     * </ol>
+     */
+    public void deleteTransientReportDefinitions() {
+        for (DefinitionSummary summary : reportDefinitionService.getAllDefinitionSummaries(true)) {
+            if (summary.getName().startsWith(NAME_PREFIX)) {
+                // tagged as [AdHocDataExport]
+                ReportDefinition candidate = reportDefinitionService.getDefinitionByUuid(summary.getUuid());
+                List<ReportRequest> requestsForCandidate = reportService.getReportRequests(candidate, null, null, 1);
+                if (requestsForCandidate.size() == 0) {
+                    // not referenced by any existing ReportRequest
+                    deleteReportDefinitionAndDesigns(candidate);
+                }
+            }
+        }
+    }
+
+    private void deleteReportDefinitionAndDesigns(ReportDefinition definition) {
+        for (ReportDesign design : reportService.getReportDesigns(definition, null, true)) {
+            reportService.purgeReportDesign(design);
+        }
+        reportDefinitionService.purgeDefinition(definition);
     }
 
 

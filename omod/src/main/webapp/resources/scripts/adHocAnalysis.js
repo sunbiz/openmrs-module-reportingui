@@ -19,10 +19,15 @@ window.adHocAnalysis = {
 
 var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
 
-//    run(function($http) {
-//        window.adHocAnalysis.fetchData($http, window.adHocAnalysis, 'org.openmrs.module.reporting.cohort.definition.CohortDefinition');
-//        window.adHocAnalysis.fetchData($http, window.adHocAnalysis, 'org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition');
-//    }).
+    filter('translate', function() {
+        return function(input, prefix) {
+            if (input && input.uuid) {
+                input = input.uuid;
+            }
+            var code = prefix ? prefix + input : input;
+            return emr.message(code, input);
+        }
+    }).
 
     directive('definitionsearch', function($compile) {
         // expect { type: ..., key: ..., name: ..., description: ..., parameters: [ ... ] }
@@ -61,6 +66,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             });
         };
     }).
+
     controller('AdHocAnalysisController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 
         // ----- private helper functions ----------
@@ -120,12 +126,14 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             $scope.dataExport.parameters = [
                 {
                     name: "startDate",
+                    label: "reportingui.adHocReport.timeframe.startDateLabel",
                     type: "java.util.Date",
                     collectionType: null,
                     value: moment().startOf('day').toDate()
                 },
                 {
                     name: "endDate",
+                    label: "reportingui.adHocReport.timeframe.endDateLabel",
                     type: "java.util.Date",
                     collectionType: null,
                     value: moment().startOf('day').toDate()
@@ -206,7 +214,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
 
         // ----- View and ViewModel ----------
 
-        $scope.currentView = 'timeframe';
+        $scope.currentView = 'parameters';
 
         $scope.maxDay = moment().startOf('day').toDate();
 
@@ -217,6 +225,8 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
                 $('#' + $scope.currentView + ' .focus-first').focus();
             });
         }
+
+        $scope.$watch('currentView', $scope.focusFirstElement);
 
         $scope.openStartDatePicker = function() {
             $timeout(function() {
@@ -230,11 +240,13 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             });
         };
 
+        // TODO remove this
         $scope.getFormattedStartDate = function() {
             if($scope.dataExport.parameters[0].value == null) { return; }
             return moment($scope.dataExport.parameters[0].value).format("DD MMM YYYY");
         }
 
+        // TODO remove this
         $scope.getFormattedEndDate = function() {
             if($scope.dataExport.parameters[1].value == null) { return; }
             return moment($scope.dataExport.parameters[1].value).format("DD MMM YYYY");
@@ -281,7 +293,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         }
 
         $scope.next = function() {
-            if($scope.currentView == 'timeframe') {
+            if($scope.currentView == 'parameters') {
                 $scope.currentView = 'searches';
             }
 
@@ -293,13 +305,11 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
                 $scope.currentView = 'preview';
                 $scope.preview();
             }
-
-            $scope.focusFirstElement();
         }
 
         $scope.back = function() {
             if($scope.currentView == 'searches') {
-                $scope.currentView = 'timeframe';
+                $scope.currentView = 'parameters';
             }
 
             else if($scope.currentView == 'columns') {
@@ -309,8 +319,6 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             else if($scope.currentView == 'preview') {
                 $scope.currentView = 'columns';
             }
-
-            $scope.focusFirstElement();
         }
 
         $scope.preview = function() {

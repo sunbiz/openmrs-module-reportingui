@@ -7,6 +7,12 @@
     ui.includeCss("reportingui", "runReport.css")
 %>
 
+<%= ui.includeFragment("appui", "messages", [ codes: [
+        "reportingui.adHocReport.timeframe.startDateLabel",
+        "reportingui.adHocReport.timeframe.endDateLabel"
+].flatten()
+]) %>
+
 <script type="text/javascript">
     var adHocExports = ${ ui.toJson(exports) };
 </script>
@@ -31,6 +37,7 @@
                 <li>
                     <a href="adHocAnalysis.page?definition=${ it.uuid }">
                         ${ it.name }
+                        <em>${ it.description }</em>
                     </a>
                 </li>
             <% } %>
@@ -58,7 +65,7 @@
 
         <ul>
             <li ng-repeat="param in requiredParameters()">
-                {{ param.name }}:
+                {{ param.label | translate }}:
                 <span ng-include="'paramWidget/' + param.type + '.page'"/>
             </li>
         </ul>
