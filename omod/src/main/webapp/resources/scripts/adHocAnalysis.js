@@ -92,6 +92,15 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             });
         }
 
+        function post(url, dataObject) {
+            return $http({
+                method: 'POST',
+                url: url,
+                data: $.param(dataObject),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+        }
+
         function setDirty() {
             $scope.dirty = true;
         }
@@ -329,12 +338,12 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
                 parameterValues[item.name] = item.value;
             });
 
-            $http.get(emr.fragmentActionLink('reportingui', 'adHocAnalysis', 'preview',
-                    {
-                        rowQueries: angular.toJson($scope.dataExport.rowFilters),
-                        columns: angular.toJson($scope.dataExport.columns),
-                        parameterValues: angular.toJson(parameterValues)
-                    })).
+            post(emr.fragmentActionLink('reportingui', 'adHocAnalysis', 'preview'),
+                {
+                    rowQueries: angular.toJson($scope.dataExport.rowFilters),
+                    columns: angular.toJson($scope.dataExport.columns),
+                    parameterValues: angular.toJson(parameterValues)
+                }).
                 success(function(data, status, headers, config) {
                     $scope.results = data;
                 });
@@ -346,10 +355,10 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
 
         $scope.saveDataExport = function() {
             $scope.dirty = { saving: true };
-            $http.post(emr.fragmentActionLink('reportingui', 'adHocAnalysis', 'saveDataExport',
+            post(emr.fragmentActionLink('reportingui', 'adHocAnalysis', 'saveDataExport'),
                     {
                         dataSet: angular.toJson($scope.dataExport)
-                    })).
+                    }).
                 success(function(data, status, headers, config) {
                     $scope.dataExport.uuid = data.uuid;
                     $scope.dataExport.name = data.name;
