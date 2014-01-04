@@ -37,10 +37,8 @@
 </script>
 
 <div id="ad-hoc-report" class="ad-hoc-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController" ng-init="focusFirstElement()">
-    <h1>
-        <input ng-model="dataExport.name" ng-change="dirty = true" placeholder="Data Set Name"/>
-        <input ng-model="dataExport.description" ng-change="dirty = true" placeholder="Description" size="40"/>
-    </h1>
+    <input ng-model="dataExport.name" ng-change="dirty = true" placeholder="Data Set Name"/>
+    <input ng-model="dataExport.description" ng-change="dirty = true" placeholder="Description" size="40"/>
 
     <div class="summary">
         <span class="summary-parameter">
@@ -48,9 +46,9 @@
                 <a ng-show="currentView != 'parameters'" ng-click="currentView = 'parameters'">${ ui.message("reportingui.adHocReport.parameters.label") }</a>
                 <span ng-show="currentView == 'parameters'">${ ui.message("reportingui.adHocReport.parameters.label") }</span>
             </strong>
-            <div ng-repeat="parameter in dataExport.parameters">
-                {{ parameter.label | translate }}
-            </div>
+            <span>
+                {{ dataExport.parameters.length }}
+            </span>
         </span>
 
         <span  class="summary-parameter">
@@ -58,12 +56,9 @@
                 <a ng-show="currentView != 'searches'" ng-click="currentView = 'searches'">${ ui.message("reportingui.adHocReport.searches") }</a>
                 <span ng-show="currentView == 'searches'">${ ui.message("reportingui.adHocReport.searches") }</span>
             </strong>
-            <ul>
-                <li ng-show="dataExport.rowFilters.length == 0">None</li>
-                <li ng-repeat="rowQuery in dataExport.rowFilters">
-                    {{ rowQuery.name }}
-                </li>
-            </ul>
+            <span>
+                {{ dataExport.rowFilters.length }}
+            </span>
         </span>
 
         <span class="summary-parameter">
@@ -71,12 +66,9 @@
                 <a ng-show="currentView != 'columns'" ng-click="currentView = 'columns'">${ ui.message("reportingui.adHocReport.columns") }</a>
                 <span ng-show="currentView == 'columns'">${ ui.message("reportingui.adHocReport.columns") }</span>
             </strong>
-            <ul>
-                <li ng-show="dataExport.columns.length == 0">None</li>
-                <li ng-repeat="col in dataExport.columns">
-                    {{ col.name }}
-                </li>
-            </ul>
+            <span>
+                {{ dataExport.columns.length }}
+            </span>
         </span>
 
         <span class="summary-parameter">
@@ -125,23 +117,25 @@
         <input type="text" class="focus-first" id="row-search" placeholder="${ ui.message('reportingui.adHocReport.addSearchCriteria') }" definitionsearch action="addRow"
                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" />
 
-        <a class="view-all view-all-criteria" href="javascript:void(0)">${ ui.message('reportingui.adHocReport.viewAllCriteria') }</a>
-
+        <div>
         <ul>
             <li class="item" ng-repeat="rowQuery in dataExport.rowFilters">
                 <label>{{ \$index + 1 }}.</label>
                 <span class="definition-name">
                     {{ rowQuery.name }}
                 </span>
-                <span class="definition-description">
-                    {{ rowQuery.description }}
-                </span>
                 <span class="actions">
                     <a ng-click="removeRow(\$index)"><i class="icon-remove"></i></a>
                 </span>
             </li>
         </ul>
-
+        <ul>
+            <li ng-repeat="criteria in availableSearches()" ng-show="isAllowed(criteria)">
+                <a ng-click="addRow(criteria)">{{ criteria.name }}</a>
+                <span class="definition-description">{{ criteria.description }}</span>
+            </li>
+        </ul>
+        </div>
         <div class="navigation">
             <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
             <button ng-click="next()">${ ui.message("reportingui.adHocReport.next") }</button>
@@ -154,8 +148,7 @@
         <input type="text" class="focus-first" id="column-search" placeholder="${ ui.message('reportingui.adHocReport.addColumns') }" definitionsearch action="addColumn"
                definition-type="org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition" />
 
-        <a class="view-all view-all-columns" href="javascript:void(0)">${ ui.message('reportingui.adHocReport.viewAllColumns') }</a>
-
+        <div>
         <ul>
             <div ng-repeat="col in dataExport.columns">
                 <li class="item">
@@ -172,6 +165,14 @@
                 </li>
             </div>
         </ul>
+
+        <ul>
+            <li ng-repeat="column in getColumns()" ng-show="isAllowed(column)">
+                <a ng-click="addColumn(column)" >{{ column.name }}</a>
+                <span class="definition-description">{{ column.description }}</span>
+            </li>
+        </ul>
+        </div>
 
         <div class="navigation">
             <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
@@ -229,36 +230,6 @@
             </div>
         </div>
     </div>
-
-    <div id="search-criteria-dialog" class="dialog" style="display: none">
-        <div class="dialog-header">
-            <h3>${ ui.message("reportingui.adHocReport.addSearchCriteria") }</h3>
-            <i class="icon-remove"></i>
-        </div>
-        <div class="dialog-content form">
-            <ul>
-                <li ng-repeat="criteria in availableSearches()" ng-show="isAllowed(criteria)">
-                    <a ng-click="addRow(criteria)">{{ criteria.name }}</a>
-                    <span>{{ criteria.description }}</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="columns-dialog" class="dialog" style="display: none">
-        <div class="dialog-header">
-            <h3>${ ui.message("reportingui.adHocReport.addColumns") }</h3>
-            <i class="icon-remove"></i>
-        </div>
-        <div class="dialog-content form">
-            <ul>
-                <li ng-repeat="column in getColumns()" ng-show="isAllowed(column)">
-                    <a ng-click="addColumn(column)" >{{ column.name }}</a>
-                    <span>{{ column.description }}</span>
-                </li>
-            </ul>
-        </div>
-    </div>
 </div>
 
 <script type="text/javascript">
@@ -294,6 +265,4 @@
         columnsDialog.close();
         saveDataExportDialog.close();
     });
-
-
 </script>

@@ -81,12 +81,8 @@ img.small {
   }
 
   .item {
-    background: darken(#5B57A6, 20%);
-    color: white;
-    margin: 5px 10px 0 5px;
-    padding: 5px;
-    border-radius: 3px;
-    display: inline-block;
+    width: 100%;
+    float: right;
   }
 
   .ui-autocomplete-input {
@@ -94,15 +90,11 @@ img.small {
     height: 24px;
   }
 
-  .item label {
-    padding-right: 10px;
-  }
-
   .actions {
-    margin-left: 10px;
+    float: right;
+    margin-left: 5px;
 
     a, a:active, a:visited {
-      color: white;
       cursor: pointer;
       text-decoration: none;
     }
@@ -154,10 +146,22 @@ img.small {
   }
 }
 
+#searches, #columns {
+  ul {
+    width: 48%;
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
 .no-results-message { 
   margin: 10px 0 10px 0;
 }
 
 .no-results button {
   display: block;
+}
+
+.definition-description {
+  font-size: 0.75em;
 }
