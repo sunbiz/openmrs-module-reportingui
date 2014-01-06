@@ -89,26 +89,7 @@
         </span>
 
         <span class="summary-parameter">
-            <span ng-show="dirty">
-                <strong>Modified</strong>
-                <ul>
-                    <li ng-show="dirty.saving">
-                        Saving...
-                    </li>
-                    <li ng-hide="dirty.saving">
-                        <button ng-click="saveDataExport()" ng-show="canSave()">
-                            <i class="icon-save"></i>
-                            Save
-                        </button>
-                    </li>
-                </ul>
-            </span>
-            <span ng-hide="dirty">
-                <button ng-click="runDataExport()" ng-disabled="!canRun()">
-                    <i class="icon-run"></i>
-                    Run
-                </button>
-            </span>
+            
         </span>
     </div>
 
@@ -142,6 +123,7 @@
 
     <div id="searches" class="step"  ng-show="currentView == 'searches'">
         <h2>${ ui.message("reportingui.adHocReport.searchCriteria")}</h2>
+        <span>Select the values bellow to add Search Criterias</span>
         
         <div>
             <ul>
@@ -153,7 +135,6 @@
                 </li>
             </ul>
             <ul>
-                <span ng-show="dataExport.rowFilters.length == 0">Click on the values on the left to add Search Criterias</span>
                 <li class="item" ng-repeat="rowQuery in dataExport.rowFilters">
                     <label>{{ \$index + 1 }}.</label>
                     <span class="definition-name">
@@ -174,6 +155,7 @@
 
     <div id="columns" class="step"  ng-show="currentView == 'columns'">
         <h2>${ ui.message("reportingui.adHocReport.columns") }</h2>
+        <span>Select the values bellow to add Columns</span>
 
         <div>
             <ul>
@@ -185,7 +167,6 @@
                 </li>
             </ul>
             <ul>
-                <span ng-show="dataExport.columns.length == 0">Click on the values on the left to add Columns</span>
                 <div ng-repeat="col in dataExport.columns">
                     <li class="item">
                         <label>
@@ -256,6 +237,26 @@
 
             <div class="navigation">
                 <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
+                <span ng-show="dirty">
+                <strong>Modified</strong>
+                <ul>
+                    <li ng-show="dirty.saving">
+                        Saving...
+                    </li>
+                    <li ng-hide="dirty.saving">
+                        <button ng-click="saveDataExport()" ng-show="canSave()">
+                            <i class="icon-save"></i>
+                            Save
+                        </button>
+                    </li>
+                </ul>
+            </span>
+            <span ng-hide="dirty">
+                <button ng-click="runDataExport()" ng-disabled="!canRun()">
+                    <i class="icon-run"></i>
+                    Run
+                </button>
+            </span>
             </div>
         </div>
     </div>

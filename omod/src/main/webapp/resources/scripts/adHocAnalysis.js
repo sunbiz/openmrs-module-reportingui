@@ -262,20 +262,19 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         }
 
         $scope.availableSearches = function() {
-            return filterAvailable(window.adHocAnalysis.queryResults['org.openmrs.module.reporting.cohort.definition.CohortDefinition'], $scope.rowFilters);
             var originalCriterias = window.adHocAnalysis.queryResults['org.openmrs.module.reporting.cohort.definition.CohortDefinition'];
             var returnCriterias = originalCriterias && originalCriterias.slice(0);
 
             for(indexOriginal in originalCriterias) {
-                for(indexSelected in $scope.rowFilters) {
-                    if(originalCriterias[indexOriginal].key == $scope.rowFilters[indexSelected].key) {
-                        var index = returnCriterias.indexOf($scope.rowFilters[indexSelected]);
+                for(indexSelected in $scope.dataExport.rowFilters) {
+                    if(originalCriterias[indexOriginal].key == $scope.dataExport.rowFilters[indexSelected].key) {
+                        var index = returnCriterias.indexOf($scope.dataExport.rowFilters[indexSelected]);
                         returnCriterias.splice(index, 1);
                     }
                 }
             }
 
-            return returnCriterias;
+            return filterAvailable(returnCriterias, $scope.dataExport.rowFilters);
         }
 
         $scope.getColumns = function() {
@@ -283,9 +282,9 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             var returnColumns = originalColumns && originalColumns.slice(0);
 
             for(indexOriginal in originalColumns) {
-                for(indexSelected in $scope.columns) {
-                    if(originalColumns[indexOriginal].key == $scope.columns[indexSelected].key) {
-                        var index = returnColumns.indexOf($scope.columns[indexSelected]);
+                for(indexSelected in $scope.dataExport.columns) {
+                    if(originalColumns[indexOriginal].key == $scope.dataExport.columns[indexSelected].key) {
+                        var index = returnColumns.indexOf($scope.dataExport.columns[indexSelected]);
                         returnColumns.splice(index, 1);
                     }
                 }
