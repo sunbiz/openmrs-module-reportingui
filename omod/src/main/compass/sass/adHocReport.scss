@@ -1,0 +1,136 @@
+.ad-hoc-report {
+  h1 {
+    margin-bottom: 5px;
+  }
+
+  h6 {
+    margin-top: 20px;
+    font-size: 1em;
+  }
+
+  fieldset {
+    padding: 5px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    margin-left: 5px;
+    margin-top: 0;
+  }
+
+  a.button {
+    min-width: 80px;
+  }
+
+  .step {
+    min-height: 400px;
+  }
+
+  .navigation {
+    margin: 20px 0;
+  }
+
+  p {
+    margin-bottom: 10px;
+
+    label {
+      display: block;
+      margin-left: 5px;
+    }
+  }  
+
+  .view-all {
+    margin-left: 10px;
+    font-size: 0.9em;
+  }
+
+  .item {
+    width: 100%;
+    float: right;
+  }
+
+  .ui-autocomplete-input {
+    width: 350px;
+    height: 24px;
+  }
+
+  .actions {
+    float: right;
+    margin-left: 5px;
+
+    a, a:active, a:visited {
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+
+  .summary {
+    display: inline-block;
+    font-size: 0.8em;
+    padding: 5px;
+    margin-bottom: 10px;
+    background: #FDFCD6;
+    color: #333;
+
+    .summary-parameter {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 25px;
+    }
+
+    h5 {
+      color: #333;
+    }
+
+    .disabled {
+      color: lighten(#333, 50%);
+    }
+  }
+}
+
+#search-criteria-dialog, #columns-dialog {
+  width: auto;
+
+  .icon-remove {
+    right: 10px;
+    position: absolute;
+    font-size: 1em;
+    top: 10px;
+    cursor: pointer;
+  }
+
+  a {
+    display: block;
+    cursor: pointer;
+  }
+
+  ul {
+    margin-bottom: 0;
+  }
+}
+
+#searches, #columns {
+  ul {
+    width: 48%;
+    display: inline-block;
+    vertical-align: top;
+    border: 1px solid #ccc;
+    padding: 5px;
+    height: 400px;
+    overflow: auto;
+  }
+}
+
+.no-results-message { 
+  margin: 10px 0 10px 0;
+}
+
+.no-results button {
+  display: block;
+}
+
+.definition-description {
+  font-size: 0.75em;
+}

@@ -4,7 +4,7 @@
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeJavascript("reportingui", "adHocAnalysis.js")
     ui.includeJavascript("mirebalaisreports", "ui-bootstrap-tpls-0.6.0.min.js")
-    ui.includeCss("reportingui", "runReport.css")
+    ui.includeCss("reportingui", "adHocReport.css")
     ui.includeCss("mirebalaisreports", "dailyReport.css")
 
     def jsString = {
@@ -85,11 +85,15 @@
 
     <div id="description" class="step" ng-show="currentView == 'description'">
         <h2>${ ui.message("reportingui.adHocReport.description.label") }</h2>
-
-        <input ng-model="dataExport.name" ng-change="dirty = true" placeholder="Data Set Name"/>
-        <input ng-model="dataExport.description" ng-change="dirty = true" placeholder="Description" size="40"/>
-
-         <div class="navigation">
+        <p>
+            <label>Data Set Name</label>
+            <input ng-model="dataExport.name" ng-change="dirty = true"/>
+        </p>
+        <p>
+            <label>Description</label>
+            <input ng-model="dataExport.description" ng-change="dirty = true" size="40"/>
+        </p>
+        <div class="navigation">
             <button ng-click="next()">${ ui.message("reportingui.adHocReport.next") }</button>
         </div>
     </div>
