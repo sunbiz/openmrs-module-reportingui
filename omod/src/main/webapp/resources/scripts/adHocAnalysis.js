@@ -223,7 +223,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
 
         // ----- View and ViewModel ----------
 
-        $scope.currentView = 'parameters';
+        $scope.currentView = 'description';
 
         $scope.maxDay = moment().startOf('day').toDate();
 
@@ -302,7 +302,11 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         }
 
         $scope.next = function() {
-            if($scope.currentView == 'parameters') {
+            if($scope.currentView == 'description') {
+                $scope.currentView = 'parameters';
+            }
+
+            else if($scope.currentView == 'parameters') {
                 $scope.currentView = 'searches';
             }
 
@@ -317,7 +321,11 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         }
 
         $scope.back = function() {
-            if($scope.currentView == 'searches') {
+            if($scope.currentView == 'parameters') {
+                $scope.currentView = 'description';
+            }
+
+            else if($scope.currentView == 'searches') {
                 $scope.currentView = 'parameters';
             }
 

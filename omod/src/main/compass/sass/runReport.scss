@@ -32,11 +32,6 @@ img.small {
 }
 
 .ad-hoc-report {
-  input {
-    margin-left: 5px;
-    margin-bottom: 5px;
-  }
-
   h1 {
     margin-bottom: 5px;
   }
@@ -60,6 +55,10 @@ img.small {
 
   a.button {
     min-width: 80px;
+  }
+
+  .step {
+    min-height: 400px;
   }
 
   .navigation {
@@ -102,7 +101,6 @@ img.small {
 
   .summary {
     display: inline-block;
-    min-height: 70px;
     font-size: 0.8em;
     padding: 5px;
     margin-bottom: 10px;
@@ -151,6 +149,10 @@ img.small {
     width: 48%;
     display: inline-block;
     vertical-align: top;
+    border: 1px solid #ccc;
+    padding: 5px;
+    height: 400px;
+    overflow: auto;
   }
 }
 
