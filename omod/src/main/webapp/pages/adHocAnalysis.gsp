@@ -44,9 +44,6 @@
                 <a ng-show="currentView != 'description'" ng-click="currentView = 'description'">1. ${ ui.message("reportingui.adHocReport.description.label") }</a>
                 <span ng-show="currentView == 'description'">1. ${ ui.message("reportingui.adHocReport.description.label") }</span>
             </strong>
-            <span>
-                {{ dataExport.parameters.length }}
-            </span>
         </span>
         <span class="summary-parameter">
             <strong>
@@ -83,13 +80,6 @@
                 <a ng-show="currentView != 'preview'" ng-click="currentView = 'preview'">5. ${ ui.message("reportingui.adHocReport.preview") }</a>
                 <span ng-show="currentView == 'preview'">5. ${ ui.message("reportingui.adHocReport.preview") }</span>
             </strong>
-            <span>
-                {{ dataExport.columns.length }}
-            </span>
-        </span>
-
-        <span class="summary-parameter">
-            
         </span>
     </div>
 
