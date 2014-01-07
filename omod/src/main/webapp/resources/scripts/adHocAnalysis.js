@@ -303,18 +303,22 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         $scope.next = function() {
             if($scope.currentView == 'description') {
                 $scope.currentView = 'parameters';
+                $('span[data-step="parameters"]').addClass('done');
             }
 
             else if($scope.currentView == 'parameters') {
                 $scope.currentView = 'searches';
+                $('span[data-step="searches"]').addClass('done');
             }
 
             else if($scope.currentView == 'searches') {
                 $scope.currentView = 'columns';
+                $('span[data-step="columns"]').addClass('done');
             }
 
             else if($scope.currentView == 'columns') {
                 $scope.currentView = 'preview';
+                $('span[data-step="preview"]').addClass('done');
                 $scope.preview();
             }
         }
@@ -322,18 +326,22 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         $scope.back = function() {
             if($scope.currentView == 'parameters') {
                 $scope.currentView = 'description';
+                $('span[data-step="parameters"]').removeClass('done');
             }
 
             else if($scope.currentView == 'searches') {
                 $scope.currentView = 'parameters';
+                $('span[data-step="searches"]').removeClass('done');
             }
 
             else if($scope.currentView == 'columns') {
                 $scope.currentView = 'searches';
+                $('span[data-step="columns"]').removeClass('done');
             }
 
             else if($scope.currentView == 'preview') {
                 $scope.currentView = 'columns';
+                $('span[data-step="preview"]').removeClass('done');
             }
         }
 
