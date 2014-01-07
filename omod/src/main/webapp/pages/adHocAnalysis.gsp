@@ -103,9 +103,10 @@
         
         <div>
             <ul>
-                <div class="ul-header"><input type="text" class="focus-first" id="row-search" placeholder="${ ui.message('reportingui.adHocReport.addSearchCriteria') }" definitionsearch action="addRow"
-                definition-type="org.openmrs.module.reporting.cohort.definition.CohortDefinition" /></div>
-                <li ng-click="addRow(criteria)" ng-repeat="criteria in availableSearches()" ng-show="isAllowed(criteria)" class="option">
+                <div class="ul-header">
+                    <input type="text" class="focus-first" id="row-search" placeholder="${ ui.message('reportingui.adHocReport.addSearchCriteria') }" ng-model="searchcriteria" />
+                </div>
+                <li ng-click="addRow(criteria)" ng-repeat="criteria in availableSearches() | filter:searchcriteria" ng-show="isAllowed(criteria)" class="option">
                     <span>{{ criteria.name }}</span>
                     <small class="definition-description">{{ criteria.description }}</small>
                 </li>
@@ -137,9 +138,10 @@
 
         <div>
             <ul>
-                <div class="ul-header"><input type="text" class="focus-first" id="column-search" placeholder="${ ui.message('reportingui.adHocReport.addColumns') }" definitionsearch action="addColumn"
-                definition-type="org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition" /></div>
-                <li ng-click="addColumn(column)" ng-repeat="column in getColumns()" ng-show="isAllowed(column)" class="option">
+                <div class="ul-header">
+                    <input type="text" class="focus-first" id="column-search" placeholder="${ ui.message('reportingui.adHocReport.addColumns') }" ng-model="columns" />
+                </div>
+                <li ng-click="addColumn(column)" ng-repeat="column in getColumns() | filter:columns" ng-show="isAllowed(column)" class="option">
                     <span>{{ column.name }}</span>
                     <small class="definition-description">{{ column.description }}</small>
                 </li>
