@@ -37,6 +37,7 @@
         <reportingModuleVersion>0.8.1-SNAPSHOT</reportingModuleVersion>
         <uiframeworkModuleVersion>3.2-SNAPSHOT</uiframeworkModuleVersion>
         <appuiModuleVersion>1.0</appuiModuleVersion>
+        <uicommonsModuleVersion>1.1</uicommonsModuleVersion>
         <serializationxstreamModuleVersion>0.2.7</serializationxstreamModuleVersion>
         <appframeworkModuleVersion>2.0</appframeworkModuleVersion>
         <calculationModuleVersion>1.0</calculationModuleVersion>
