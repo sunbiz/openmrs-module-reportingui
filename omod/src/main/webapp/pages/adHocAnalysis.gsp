@@ -203,13 +203,13 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th ng-repeat="colName in results.columnNames">{{ colName }}</th>
+                            <th ng-repeat="colName in results.columnNames" ng-show="\$index < 5">{{ colName }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="row in results.data">
-                            <td>{{ \$index + 1 }}</td>
-                            <td ng-repeat="col in row">{{ col }}</td>
+                        <tr ng-repeat="row in results.data" ng-show="\$index < 5">
+                            <td  ng-show="\$index < 5">{{ \$index + 1 }}</td>
+                            <td ng-repeat="col in row" ng-show="\$index < 5">{{ col }}</td>
                         </tr>
                     </tbody>
                 </table>
