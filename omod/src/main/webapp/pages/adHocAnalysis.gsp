@@ -84,6 +84,7 @@
         <div class="step-content">
             <ul>
                 <li class="parameter" ng-repeat="parameter in dataExport.parameters">
+                    {{ \$index + 1 }}.
                     {{ parameter.label | translate }}:
                     <span ng-show="parameter.collectionType">{{ parameter.collectionType }} of </span>
                     {{ parameter.type }}
