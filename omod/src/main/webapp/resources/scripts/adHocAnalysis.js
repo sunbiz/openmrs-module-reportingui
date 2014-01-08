@@ -183,7 +183,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         window.adHocAnalysis.fetchData($http, window.adHocAnalysis, 'org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition', $scope.initialColumnSetup);
 
         $scope.dataExport.valid = function() {
-            return $scope.dataExport.name && $scope.dataExport.rowFilters.length > 0 && $scope.dataExport.columns.length > 0;
+            return $scope.dataExport.name && $scope.dataExport.columns.length > 0;
         }
 
         $scope.addRow = function(definition) {
@@ -223,7 +223,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
 
         // ----- View and ViewModel ----------
 
-        $scope.currentView = 'description';
+        $scope.currentView = 'parameters';
 
         $scope.maxDay = moment().startOf('day').toDate();
 
@@ -300,13 +300,37 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             return notAllowed.length == 0;
         }
 
-        $scope.next = function() {
-            if($scope.currentView == 'description') {
-                $scope.currentView = 'parameters';
-                $('span[data-step="parameters"]').addClass('done');
+        $scope.changeStep = function(stepName) {
+            var steps = [
+                'parameters',
+                'searches',
+                'columns',
+                'preview',
+                'description'                
+            ];
+            var isAfterCurrentStep = false;
+
+            $scope.currentView = stepName;
+
+            if(stepName == 'preview') {
+                $scope.preview();
             }
 
-            else if($scope.currentView == 'parameters') {
+            for(var i=0; i < steps.length; i++) {
+                if(!isAfterCurrentStep) {
+                    $('span[data-step="' + steps[i] + '"]').addClass('done');
+
+                    if(steps[i] == stepName) {
+                        isAfterCurrentStep = true;
+                    }
+                } else {
+                    $('span[data-step="' + steps[i] + '"]').removeClass('done');    
+                }
+            }
+        }
+
+        $scope.next = function() {
+            if($scope.currentView == 'parameters') {
                 $scope.currentView = 'searches';
                 $('span[data-step="searches"]').addClass('done');
             }
@@ -321,15 +345,15 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
                 $('span[data-step="preview"]').addClass('done');
                 $scope.preview();
             }
+
+            else if($scope.currentView == 'preview') {
+                $scope.currentView = 'description';
+                $('span[data-step="description"]').addClass('done');
+            }
         }
 
         $scope.back = function() {
-            if($scope.currentView == 'parameters') {
-                $scope.currentView = 'description';
-                $('span[data-step="parameters"]').removeClass('done');
-            }
-
-            else if($scope.currentView == 'searches') {
+            if($scope.currentView == 'searches') {
                 $scope.currentView = 'parameters';
                 $('span[data-step="searches"]').removeClass('done');
             }
@@ -342,6 +366,11 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             else if($scope.currentView == 'preview') {
                 $scope.currentView = 'columns';
                 $('span[data-step="preview"]').removeClass('done');
+            }
+
+            else if($scope.currentView == 'description') {
+                $scope.currentView = 'preview';
+                $('span[data-step="description"]').removeClass('done');
             }
         }
 

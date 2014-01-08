@@ -36,6 +36,10 @@
     margin: 20px 0;
   }
 
+  .big-table {
+    overflow-y: scroll;
+  }
+
   .step-content {
     min-height: 300px;
     margin-top: 15px;
@@ -186,10 +190,6 @@
     input {
       margin: 0;
       width: 98%;
-    }
-
-    strong {
-      margin-right: 5px;
     }
 
     background: #eee;
