@@ -371,6 +371,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
             else if($scope.currentView == 'description') {
                 $scope.currentView = 'preview';
                 $('span[data-step="description"]').removeClass('done');
+                $scope.preview();
             }
         }
 
