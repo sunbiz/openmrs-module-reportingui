@@ -5,6 +5,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.type.TypeReference;
 import org.openmrs.Cohort;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
 import org.openmrs.module.reporting.cohort.definition.AllPatientsCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
@@ -21,7 +22,11 @@ import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinition
 import org.openmrs.module.reporting.definition.library.AllDefinitionLibraries;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.module.reporting.evaluation.parameter.Mapped;
+import org.openmrs.module.reporting.report.ReportRequest;
 import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
+import org.openmrs.module.reporting.report.renderer.RenderingMode;
+import org.openmrs.module.reporting.report.renderer.ReportRenderer;
+import org.openmrs.module.reporting.report.service.ReportService;
 import org.openmrs.module.reportingui.adhoc.AdHocDataSet;
 import org.openmrs.module.reportingui.adhoc.AdHocExportManager;
 import org.openmrs.ui.framework.SimpleObject;
@@ -30,8 +35,12 @@ import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -140,6 +149,52 @@ public class AdHocAnalysisFragmentController {
         result.setData(transform(data, ui));
 
         return result;
+    }
+
+    public SimpleObject runAdHocExport(@RequestParam("dataset") List<String> dsdUuids,
+                                       @RequestParam("outputFormat") String outputFormat,
+                                       //@MethodParam("getParamValues") Map<String, Object> paramValues, // UIFR-137
+                                       HttpServletRequest req,
+                                       @SpringBean AdHocExportManager adHocExportManager,
+                                       @SpringBean
+                                       ReportService reportService,
+                                       UiUtils ui) throws Exception {
+        if (dsdUuids.size() == 0) {
+            return SimpleObject.create("error", ui.message("reportingui.adHocRun.error.noDatasets"));
+        }
+
+        RenderingMode mode = new RenderingMode((ReportRenderer) Context.loadClass(outputFormat).newInstance(), outputFormat, null, 0);
+
+        Map<String, Object> paramValues = getParamValues(req);
+        ReportRequest reportRequest = adHocExportManager.buildExportRequest(dsdUuids, paramValues, mode);
+        reportRequest.setDescription("[Ad Hoc Export]");
+        reportRequest = reportService.queueReport(reportRequest);
+        reportService.processNextQueuedReports();
+
+        return SimpleObject.create("uuid", reportRequest.getUuid());
+    }
+
+    /**
+     * Used by runAdHocDataExport. TODO: refactor so that page can also use #parseParameterValues
+     * @param request
+     * @return
+     */
+    private Map<String, Object> getParamValues(HttpServletRequest request) {
+        Map<String, Object> paramValues = new HashMap<String, Object>();
+        for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements(); ) {
+            String name = e.nextElement();
+            if (name.startsWith("param[")) {
+                Object value = request.getParameter(name);
+                name = name.substring(name.indexOf("[") + 1, name.lastIndexOf("]"));
+                try {
+                    value = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String) value);
+                } catch (Exception e1) {
+                    // pass
+                }
+                paramValues.put(name, value);
+            }
+        }
+        return paramValues;
     }
 
     private Map<String, Object> parseParameterValues(ObjectMapper jackson, String json) throws IOException {

@@ -3,8 +3,7 @@
     ui.includeJavascript("uicommons", "moment.min.js")
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeJavascript("mirebalaisreports", "ui-bootstrap-tpls-0.6.0.min.js")
-    ui.includeJavascript("reportingui", "adHocHome.js")
-    ui.includeCss("reportingui", "runReport.css")
+    ui.includeJavascript("reportingui", "adHocRun.js")
 %>
 
 <%= ui.includeFragment("appui", "messages", [ codes: [
@@ -16,53 +15,29 @@
 <script type="text/javascript">
     var adHocExports = ${ ui.toJson(exports) };
 
+    var initialSelection = [ <%= selected.collect { "\"${ ui.escapeJs(it) }\"" }.join(", ") %> ];
+
     var breadcrumbs = [
         { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
         { label: "${ ui.escapeJs(ui.message("reportingui.reportsapp.home.title")) }", link: emr.pageLink("reportingui", "reportsapp/home") },
-        { label: "${ ui.escapeJs(ui.message("reportingui.adHocAnalysis.label")) }", link: "${ ui.escapeJs(ui.thisUrl()) }" }
+        { label: "${ ui.escapeJs(ui.message("reportingui.adHocAnalysis.label")) }", link: emr.pageLink("reportingui", "adHocManage") },
+        { label: "${ ui.escapeJs(ui.message("reportingui.adHocRun.label")) }", link: "${ ui.escapeJs(ui.thisUrl()) }" }
     ];
 </script>
 
-<h1>Ad Hoc Exports</h1>
-
-<div id="design-ad-hoc">
-    <h3>Design your exports</h3>
-
-    <fieldset>
-        <legend>
-            <i class="icon-user"></i>
-            Patient
-        </legend>
-
-        <ul>
-            <li>
-                <a class="button" href="${ui.pageLink("reportingui", "adHocAnalysis", [ definitionClass: "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition" ]) }">New</a>
-            </li>
-
-            <% exports.findAll { it.type == "PatientDataSetDefinition" } .each { %>
-                <li>
-                    <a href="adHocAnalysis.page?definition=${ it.uuid }">
-                        ${ it.name }
-                        <em>${ it.description }</em>
-                    </a>
-                </li>
-            <% } %>
-
-        </ul>
-    </fieldset>
-</div>
-
 <div id="run-ad-hoc" ng-app="runAdHocExport" ng-controller="RunAdHocExportController">
-    <h3>Run an export</h3>
+
+    <h1>${ ui.message("reportingui.adHocRun.label") }</h1>
 
     <span ng-hide="exports">
-        Create some exports first
+        There are no ad hoc data sets available to run. You should create some, or have someone else share their exports
+        with you.
     </span>
 
     <div ng-show="exports">
         <form>
             <p>
-                <label>Data Sets to include</label>
+                <label>Data sets to include</label>
                 <ul>
                     <li ng-repeat="export in exports">
                         <input type="checkbox" name="dataset" ng-model="export.selected" id="export-{{\$index}}"/>
@@ -86,7 +61,8 @@
                 </select>
             </p>
 
-            <button ng-click="run()" ng-disabled="!canRun()">
+            <button class=".confirm" ng-click="run()" ng-disabled="!canRun()">
+                <i class="icon-play"></i>
                 Run
             </button>
         </form>

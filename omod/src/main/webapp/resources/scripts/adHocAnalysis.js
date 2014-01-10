@@ -418,12 +418,12 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
 
         $scope.runDataExport = function() {
             var data = {
-                reportDefinition: $scope.dataExport.uuid
+                dataset: $scope.dataExport.uuid
             };
             _.each($scope.parameters, function(item) {
                 data["parameterValues[" + item.name + "]"] = item.value;
             });
-            location.href = emr.pageLink('reportingui', 'adHocHome', data);
+            location.href = emr.pageLink('reportingui', 'adHocRun', data);
 
         }
     }]);

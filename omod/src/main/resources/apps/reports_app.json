@@ -36,7 +36,7 @@
                 "extensionPointId": "org.openmrs.module.reportingui.reports.dataexport",
                 "type": "link",
                 "label": "reportingui.adHocAnalysis.label",
-                "url": "reportingui/adHocHome.page",
+                "url": "reportingui/adHocManage.page",
                 "order": 9999,
                 "requiredPrivilege": "App: reportingui.adHocAnalysis"
             }

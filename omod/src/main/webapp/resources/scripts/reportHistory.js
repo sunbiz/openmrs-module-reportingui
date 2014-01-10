@@ -14,6 +14,8 @@ runReportApp.controller('ReportHistoryController', ['$scope', '$http', '$window'
 
     $scope.completed = [];
 
+    $scope.highlight = window.highlight;
+
     $scope.refreshHistory = function() {
         $http.get("reportStatus/getQueuedRequests.action").
             success(function(data, status, headers, config) {

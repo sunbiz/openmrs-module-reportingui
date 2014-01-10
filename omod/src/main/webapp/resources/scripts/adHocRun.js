@@ -32,7 +32,7 @@ var app = angular.module('runAdHocExport', ['ui.bootstrap']).
         $scope.exports = adHocExports;
 
         _.each($scope.exports, function(item) {
-            item.selected = false;
+            item.selected = initialSelection.indexOf(item.uuid) >= 0;
         });
 
         $scope.paramValues = { };
@@ -83,9 +83,17 @@ var app = angular.module('runAdHocExport', ['ui.bootstrap']).
                 params['param[' + key + ']'] = serverFriendly($scope.paramValues[key]);
             }
 
-            $http.post(emr.pageLink('reportingui', 'adHocHome', params)).
+            $http.post(emr.fragmentActionLink('reportingui', 'adHocAnalysis', 'runAdHocExport', params)).
                 success(function(data) {
-                    location.href = emr.pageLink('reportingui', 'reportHistory', { request: data.uuid });
+                    if (data.uuid) {
+                        location.href = emr.pageLink('reportingui', 'reportHistory', { request: data.uuid });
+                    }
+                    else {
+                        emr.errorAlert(data.error);
+                    }
+                }).
+                error(function() {
+                    emr.errorAlert('ERROR!');
                 });
         }
 

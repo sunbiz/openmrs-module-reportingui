@@ -5,18 +5,25 @@
     ui.includeJavascript("mirebalaisreports", "ui-bootstrap-tpls-0.6.0.min.js")
     ui.includeJavascript("reportingui", "reportHistory.js")
 
-
     def interactiveClass = context.loadClass("org.openmrs.module.reporting.report.renderer.InteractiveReportRenderer")
     def isInteractive = {
         interactiveClass.isInstance(it.renderer)
     }
 %>
 
+<style type="text/css">
+    tr.focused {
+        background-color: yellow !important; // TODO Glauber, improve this and put it somewhere better
+    }
+</style>
+
 <script type="text/javascript">
     var breadcrumbs = [
         { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
         { label: "${ ui.message("reportingui.reportHistory.title") }", link: "${ ui.escapeJs(ui.thisUrl()) }" }
     ];
+
+    var highlight = <%= param.request ? """ "${ ui.escapeJs(param.request[0])}" """ : "null" %>
 </script>
 
 <div ng-app="reportHistoryApp" ng-controller="ReportHistoryController" ng-init="refreshHistory()">
@@ -34,7 +41,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="request in queue">
+            <tr ng-repeat="request in queue" ng-class="{ focused: request.uuid == highlight }">
                 <td>
                     {{ request.reportDefinition.name }}
                 </td>
@@ -94,7 +101,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="request in completed">
+            <tr ng-repeat="request in completed" ng-class="{ focused: request.uuid == highlight }">
                 <td>
                     {{ request.reportDefinition.name }}
                 </td>
