@@ -60,24 +60,35 @@
     </span>
 
     <div ng-show="exports">
-        <ul>
-            <li ng-repeat="export in exports">
-                <input type="checkbox" name="dataset" ng-model="export.selected" id="export-{{\$index}}"/>
-                <label for="export-{{\$index}}">
-                    {{ export.name }} <em>{{ export.description }}</em>
-                </label>
-            </li>
-        </ul>
+        <form>
+            <p>
+                <label>Data Sets to include</label>
+                <ul>
+                    <li ng-repeat="export in exports">
+                        <input type="checkbox" name="dataset" ng-model="export.selected" id="export-{{\$index}}"/>
+                        <label for="export-{{\$index}}">
+                            {{ export.name }} <em>{{ export.description }}</em>
+                        </label>
+                    </li>
+                </ul>
+            </p>
 
-        <ul>
-            <li ng-repeat="param in requiredParameters()">
-                {{ param.label | translate }}:
+            <p ng-repeat="param in requiredParameters()">
+                <label>{{ param.label | translate }}</label>
                 <span ng-include="'paramWidget/' + param.type + '.page'"/>
-            </li>
-        </ul>
+            </p>
 
-        <button ng-click="run()" ng-disabled="!canRun()">
-            Run
-        </button>
+            <p>
+                <label for="output-format">${ ui.message("reportingui.reportRequest.outputFormat") }</label>
+                <select id="output-format" ng-model="outputFormat">
+                    <option value="org.openmrs.module.reporting.report.renderer.CsvReportRenderer">CSV</option>
+                    <option value="org.openmrs.module.reporting.report.renderer.XlsReportRenderer">Excel</option>
+                </select>
+            </p>
+
+            <button ng-click="run()" ng-disabled="!canRun()">
+                Run
+            </button>
+        </form>
     </div>
 </div>

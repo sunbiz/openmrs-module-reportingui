@@ -27,6 +27,8 @@ var app = angular.module('runAdHocExport', ['ui.bootstrap']).
 
     controller('RunAdHocExportController', ['$scope', '$http', function($scope, $http) {
 
+        $scope.outputFormat = 'org.openmrs.module.reporting.report.renderer.CsvReportRenderer';
+
         $scope.exports = adHocExports;
 
         _.each($scope.exports, function(item) {
@@ -73,15 +75,16 @@ var app = angular.module('runAdHocExport', ['ui.bootstrap']).
 
         $scope.run = function() {
             var uuids = _.pluck(_.where($scope.exports, { selected: true }), 'uuid');
-            var params = { dataset: uuids };
-            console.log($scope.paramValues);
+            var params = {
+                dataset: uuids,
+                outputFormat: $scope.outputFormat
+            };
             for (key in $scope.paramValues) {
                 params['param[' + key + ']'] = serverFriendly($scope.paramValues[key]);
             }
 
             $http.post(emr.pageLink('reportingui', 'adHocHome', params)).
                 success(function(data) {
-                    console.log(data);
                     location.href = emr.pageLink('reportingui', 'reportHistory', { request: data.uuid });
                 });
         }

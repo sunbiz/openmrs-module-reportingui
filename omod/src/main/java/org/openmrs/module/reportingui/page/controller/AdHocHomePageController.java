@@ -16,6 +16,8 @@ package org.openmrs.module.reportingui.page.controller;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.report.ReportRequest;
+import org.openmrs.module.reporting.report.renderer.RenderingMode;
+import org.openmrs.module.reporting.report.renderer.ReportRenderer;
 import org.openmrs.module.reporting.report.service.ReportService;
 import org.openmrs.module.reportingui.adhoc.AdHocExportManager;
 import org.openmrs.ui.framework.SimpleObject;
@@ -40,16 +42,20 @@ public class AdHocHomePageController {
     }
 
     public Object post(@RequestParam("dataset") List<String> dsdUuids,
+                       @RequestParam("outputFormat") String outputFormat,
                        //@MethodParam("getParamValues") Map<String, Object> paramValues, // UIFR-137
                        HttpServletRequest req,
                        @SpringBean AdHocExportManager adHocExportManager,
                        @SpringBean ReportService reportService,
-                       UiUtils ui) {
+                       UiUtils ui) throws Exception {
         if (dsdUuids.size() == 0) {
             return "redirect:" + ui.pageLink("reportingui", "home");
         }
+
+        RenderingMode mode = new RenderingMode((ReportRenderer) Context.loadClass(outputFormat).newInstance(), outputFormat, null, 0);
+
         Map<String, Object> paramValues = getParamValues(req);
-        ReportRequest reportRequest = adHocExportManager.buildExportRequest(dsdUuids, paramValues, null);
+        ReportRequest reportRequest = adHocExportManager.buildExportRequest(dsdUuids, paramValues, mode);
         reportRequest.setDescription("[Ad Hoc Export]");
         reportRequest = reportService.queueReport(reportRequest);
         reportService.processNextQueuedReports();
