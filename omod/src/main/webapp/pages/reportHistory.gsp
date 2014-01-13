@@ -11,12 +11,6 @@
     }
 %>
 
-<style type="text/css">
-    tr.focused {
-        background-color: yellow !important; // TODO Glauber, improve this and put it somewhere better
-    }
-</style>
-
 <script type="text/javascript">
     var breadcrumbs = [
         { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
@@ -41,7 +35,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="request in queue" ng-class="{ focused: request.uuid == highlight }">
+            <tr ng-repeat="request in queue" ng-class="{ selected: request.uuid == highlight }">
                 <td>
                     {{ request.reportDefinition.name }}
                 </td>
@@ -101,7 +95,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="request in completed" ng-class="{ focused: request.uuid == highlight }">
+            <tr ng-repeat="request in completed" ng-class="{ selected: request.uuid == highlight }">
                 <td>
                     {{ request.reportDefinition.name }}
                 </td>
