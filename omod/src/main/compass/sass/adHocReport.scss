@@ -106,6 +106,14 @@
     }
   }
 
+  .link {
+    margin-top: 10px;
+  }
+
+  em {
+    margin: 0 5px;
+  }
+
   .summary {
     display: inline-block;
     font-size: 0.8em;
@@ -120,7 +128,7 @@
       text-align: center;
       vertical-align: top;
 
-      &:before {
+      &:not(:last-child):before {
         content: " ";
         display: block;
         width: 0;
@@ -146,6 +154,15 @@
         margin-top: -25px;
         margin-left: 89px;
         z-index: 2;
+      }
+
+      &.current {
+        color: white;
+        background: #007FFF;
+
+        &:after {
+          border-left: 17px solid #007FFF;
+        }
       }
 
       &.done {
@@ -227,4 +244,25 @@
 
 .definition-description {
   font-size: 0.75em;
+  display: block;
+}
+
+.manage-adhoc-reports {
+  li {
+    margin: 5px 0;
+  }
+
+  .button.confirm {
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  i {
+    padding: 0;
+    margin: 0;
+  }
+
+  a {
+    margin-right: 4px;
+  }
 }

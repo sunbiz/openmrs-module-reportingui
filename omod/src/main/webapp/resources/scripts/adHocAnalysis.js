@@ -296,13 +296,14 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
 
             for(var i=0; i < steps.length; i++) {
                 if(!isAfterCurrentStep) {
-                    $('span[data-step="' + steps[i] + '"]').addClass('done');
-
                     if(steps[i] == stepName) {
                         isAfterCurrentStep = true;
+                        $('span[data-step="' + steps[i] + '"]').addClass('current').removeClass('done');
+                    } else {
+                        $('span[data-step="' + steps[i] + '"]').addClass('done').removeClass('current');
                     }
                 } else {
-                    $('span[data-step="' + steps[i] + '"]').removeClass('done');    
+                    $('span[data-step="' + steps[i] + '"]').removeClass('done').removeClass('current');    
                 }
             }
         }
@@ -310,45 +311,53 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         $scope.next = function() {
             if($scope.currentView == 'parameters') {
                 $scope.currentView = 'searches';
-                $('span[data-step="searches"]').addClass('done');
+                $('span[data-step="parameters"]').addClass('done').removeClass('current');
+                $('span[data-step="searches"]').addClass('current');
             }
 
             else if($scope.currentView == 'searches') {
                 $scope.currentView = 'columns';
-                $('span[data-step="columns"]').addClass('done');
+                $('span[data-step="columns"]').addClass('current');
+                $('span[data-step="searches"]').addClass('done').removeClass('current');
             }
 
             else if($scope.currentView == 'columns') {
                 $scope.currentView = 'preview';
-                $('span[data-step="preview"]').addClass('done');
+                $('span[data-step="preview"]').addClass('current');
+                $('span[data-step="columns"]').addClass('done').removeClass('current');
                 $scope.preview();
             }
 
             else if($scope.currentView == 'preview') {
                 $scope.currentView = 'description';
-                $('span[data-step="description"]').addClass('done');
+                $('span[data-step="description"]').addClass('current');
+                $('span[data-step="preview"]').addClass('done').removeClass('current');
             }
         }
 
         $scope.back = function() {
             if($scope.currentView == 'searches') {
                 $scope.currentView = 'parameters';
-                $('span[data-step="searches"]').removeClass('done');
+                $('span[data-step="searches"]').removeClass('current');
+                $('span[data-step="parameters"]').addClass('current').removeClass('done');
             }
 
             else if($scope.currentView == 'columns') {
                 $scope.currentView = 'searches';
-                $('span[data-step="columns"]').removeClass('done');
+                $('span[data-step="columns"]').removeClass('current');
+                $('span[data-step="searches"]').addClass('current').removeClass('done');
             }
 
             else if($scope.currentView == 'preview') {
                 $scope.currentView = 'columns';
-                $('span[data-step="preview"]').removeClass('done');
+                $('span[data-step="preview"]').removeClass('current');
+                $('span[data-step="columns"]').addClass('current').removeClass('done');
             }
 
             else if($scope.currentView == 'description') {
                 $scope.currentView = 'preview';
-                $('span[data-step="description"]').removeClass('done');
+                $('span[data-step="description"]').removeClass('current');
+                $('span[data-step="preview"]').addClass('current').removeClass('done');
                 $scope.preview();
             }
         }

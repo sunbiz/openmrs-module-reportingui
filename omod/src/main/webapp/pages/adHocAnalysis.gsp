@@ -40,7 +40,7 @@
 <div id="ad-hoc-report" class="ad-hoc-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController" ng-init="focusFirstElement()">
    
     <div class="summary">
-        <span class="summary-parameter done" ng-click="changeStep('parameters')" data-step="parameters">
+        <span class="summary-parameter current" ng-click="changeStep('parameters')" data-step="parameters">
             <span>${ ui.message("reportingui.adHocReport.parameters.label") }: </span>
             {{ dataExport.parameters.length }}
         </span>
@@ -158,7 +158,7 @@
             Preview
         </h2>
 
-        <div  ng-show="results.allRows.length > 0" class="step-content">
+        <div ng-show="results.allRows.length > 0" class="step-content">
             <span class="angular-datepicker">
                 <div class="form-horizontal">
                     <label>{{ dataExport.parameters[0].label | translate }}</label>
@@ -220,22 +220,24 @@
             <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
             
             <span ng-show="dirty">        
-                <button ng-click="saveDataExport()" ng-show="!canSave()" ng-disabled="!canSave()">
+                <button ng-click="saveDataExport()" ng-disabled="!canSave()">
                     <i class="icon-save"></i>
                     Save
                 </button>
                 <span ng-show="!canSave()">Save is not enabled because you need to add columns and name.</span>
-                <button ng-click="saveDataExport()" ng-show="canSave()">
+            </span>
+            <span ng-show="!dirty">
+                <button ng-disabled="true">
                     <i class="icon-save"></i>
                     Save
                 </button>
             </span>
             <span ng-hide="dirty">
-                <button ng-click="runDataExport()" ng-disabled="!canRun()">
-                    <i class="icon-run"></i>
-                    Run
-                </button>
+                <em>Data set saved sucessfully!<em>
             </span>
+            <div class="link" ng-hide="dirty">
+                <a href="${ ui.pageLink('reportingui', 'adHocManage') }">Go to ad hoc report home page</a>
+            </div>
         </div>
     </div>
 </div>

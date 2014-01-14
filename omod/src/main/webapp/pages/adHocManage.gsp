@@ -2,6 +2,7 @@
     ui.decorateWith("appui", "standardEmrPage")
     ui.includeJavascript("uicommons", "moment.min.js")
     ui.includeJavascript("uicommons", "angular.min.js")
+    ui.includeCss("reportingui", "adHocReport.css")
     ui.includeJavascript("mirebalaisreports", "ui-bootstrap-tpls-0.6.0.min.js")
 %>
 
@@ -21,26 +22,20 @@
         Patient
     </legend>
 
-    <ul>
+    <ul class="manage-adhoc-reports">
         <li>
-            <a class="button" href="${ui.pageLink("reportingui", "adHocAnalysis", [ definitionClass: "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition" ]) }">
+            <a class="button confirm" href="${ui.pageLink("reportingui", "adHocAnalysis", [ definitionClass: "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition" ]) }">
                 <i class="icon-plus"></i>
-                New
+                New data set
             </a>
         </li>
 
         <% exports.findAll { it.type == "PatientDataSetDefinition" } .each { %>
             <li>
+                <a href="adHocRun.page?dataset=${ it.uuid }"><i class="icon-play"></i></a>
+                <a href="adHocAnalysis.page?definition=${ it.uuid }"><i class="icon-pencil"></i></a>
                 ${ it.name }
                 <em>${ it.description }</em>
-                <a href="adHocAnalysis.page?definition=${ it.uuid }">
-                    <i class="icon-pencil"></i>
-                    Edit
-                </a>
-                <a href="adHocRun.page?dataset=${ it.uuid }">
-                    <i class="icon-play"></i>
-                    Run
-                </a>
             </li>
         <% } %>
     </ul>
