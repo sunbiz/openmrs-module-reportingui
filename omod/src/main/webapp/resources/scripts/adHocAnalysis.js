@@ -262,41 +262,19 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         }
 
         $scope.availableSearches = function() {
-            var originalCriterias = window.adHocAnalysis.queryResults['org.openmrs.module.reporting.cohort.definition.CohortDefinition'];
-            var returnCriterias = originalCriterias && originalCriterias.slice(0);
-
-            for(indexOriginal in originalCriterias) {
-                for(indexSelected in $scope.dataExport.rowFilters) {
-                    if(originalCriterias[indexOriginal].key == $scope.dataExport.rowFilters[indexSelected].key) {
-                        var index = returnCriterias.indexOf($scope.dataExport.rowFilters[indexSelected]);
-                        returnCriterias.splice(index, 1);
-                    }
-                }
-            }
-
-            return filterAvailable(returnCriterias, $scope.dataExport.rowFilters);
+            var allPossible = window.adHocAnalysis.queryResults['org.openmrs.module.reporting.cohort.definition.CohortDefinition'];
+            return filterAvailable(allPossible, $scope.dataExport.rowFilters);
         }
 
         $scope.getColumns = function() {
-            var originalColumns = window.adHocAnalysis.queryResults['org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition'];
-            var returnColumns = originalColumns && originalColumns.slice(0);
-
-            for(indexOriginal in originalColumns) {
-                for(indexSelected in $scope.dataExport.columns) {
-                    if(originalColumns[indexOriginal].key == $scope.dataExport.columns[indexSelected].key) {
-                        var index = returnColumns.indexOf($scope.dataExport.columns[indexSelected]);
-                        returnColumns.splice(index, 1);
-                    }
-                }
-            }
-
-            return returnColumns;
+            var allPossible = window.adHocAnalysis.queryResults['org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition'];
+            return filterAvailable(allPossible, $scope.dataExport.columns);
         }
 
         $scope.isAllowed = function(definition) {
             var allowedParameters = _.pluck($scope.dataExport.parameters, 'name');
             var paramNames = _.pluck(definition.parameters, 'name');
-            var notAllowed = _.without(paramNames, allowedParameters);
+            var notAllowed = _.difference(paramNames, allowedParameters);
             return notAllowed.length == 0;
         }
 
