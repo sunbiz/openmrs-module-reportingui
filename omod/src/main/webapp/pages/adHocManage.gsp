@@ -16,27 +16,33 @@
 
 <h1>Ad Hoc Exports</h1>
 
-<fieldset>
-    <legend>
-        <i class="icon-user"></i>
-        Patient
-    </legend>
+<div class="report-header">
+    <h3>Patient Data Sets</h3>
 
-    <ul class="manage-adhoc-reports">
-        <li>
-            <a class="button confirm" href="${ui.pageLink("reportingui", "adHocAnalysis", [ definitionClass: "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition" ]) }">
-                <i class="icon-plus"></i>
-                New data set
-            </a>
-        </li>
+    <a class="button confirm" href="${ui.pageLink("reportingui", "adHocAnalysis", [ definitionClass: "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition" ]) }">
+        <i class="icon-plus"></i>
+        New data set
+    </a>
+</div>
 
-        <% exports.findAll { it.type == "PatientDataSetDefinition" } .each { %>
-            <li>
+<table class="manage-adhoc-reports">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% exports.findAll { it.type == "PatientDataSetDefinition" } .each { %>
+        <tr>
+            <th>${ it.name }</th>
+            <th>${ it.description }</th>
+            <th>
                 <a href="adHocRun.page?dataset=${ it.uuid }"><i class="icon-play"></i></a>
                 <a href="adHocAnalysis.page?definition=${ it.uuid }"><i class="icon-pencil"></i></a>
-                ${ it.name }
-                <em>${ it.description }</em>
-            </li>
-        <% } %>
-    </ul>
-</fieldset>
+            </th>
+        </tr>
+    <% } %>
+    </tbody>
+</table>

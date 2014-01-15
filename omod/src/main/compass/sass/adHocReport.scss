@@ -246,17 +246,24 @@
 .definition-description {
   font-size: 0.75em;
   display: block;
+  float: right;
+}
+
+.report-header {
+  h3 {
+    display: inline-block;
+  }
+}
+
+.button.confirm {
+  padding: 5px;
+  margin-left: 30px;
 }
 
 .manage-adhoc-reports {
-  li {
-    margin: 5px 0;
-  }
-
-  .button.confirm {
-    padding: 5px;
-    margin-bottom: 10px;
-  }
+  width: 60%;
+  margin: 0;
+  margin-top: 10px;
 
   i {
     padding: 0;
