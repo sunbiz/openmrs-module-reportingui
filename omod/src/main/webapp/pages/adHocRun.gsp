@@ -30,14 +30,13 @@
     <h1>${ ui.message("reportingui.adHocRun.label") }</h1>
 
     <span ng-hide="exports">
-        There are no ad hoc data sets available to run. You should create some, or have someone else share their exports
-        with you.
+        ${ ui.message("reportingui.adHocRun.noneAvailable") }
     </span>
 
     <div ng-show="exports">
         <form>
             <p>
-                <label>Data sets to include</label>
+                <label>${ ui.message("reportingui.adHocRun.dataSets") }</label>
                 <ul>
                     <li ng-repeat="export in exports">
                         <input type="checkbox" name="dataset" ng-model="export.selected" id="export-{{\$index}}"/>
@@ -63,7 +62,7 @@
 
             <button class=".confirm" ng-click="run()" ng-disabled="!canRun()">
                 <i class="icon-play"></i>
-                Run
+                ${ ui.message("reportingui.adHocRun.runButton") }
             </button>
         </form>
     </div>
