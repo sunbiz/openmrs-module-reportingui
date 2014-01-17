@@ -14,23 +14,23 @@
     ];
 </script>
 
-<h1>Ad Hoc Exports</h1>
+<h1>${ ui.message("reportingui.adHocManage.title") }</h1>
 
 <div class="report-header">
-    <h3>Patient Data Sets</h3>
+    <h3>${ ui.message("reportingui.adHocManage.group.title.org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition") }</h3>
 
     <a class="button confirm" href="${ui.pageLink("reportingui", "adHocAnalysis", [ definitionClass: "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition" ]) }">
         <i class="icon-plus"></i>
-        New data set
+        ${ ui.message("reportingui.adHocManage.new") }
     </a>
 </div>
 
 <table class="manage-adhoc-reports">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th>${ ui.message("reportingui.adHocReport.name") }</th>
+            <th>${ ui.message("reportingui.adHocReport.description") }</th>
+            <th>${ ui.message("reportingui.adHocManage.actions") }</th>
         </tr>
     </thead>
     <tbody>
