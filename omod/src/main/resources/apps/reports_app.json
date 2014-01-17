@@ -38,7 +38,8 @@
                 "label": "reportingui.adHocAnalysis.label",
                 "url": "reportingui/adHocManage.page",
                 "order": 9999,
-                "requiredPrivilege": "App: reportingui.adHocAnalysis"
+                "requiredPrivilege": "App: reportingui.adHocAnalysis",
+                "featureToggle": "reportingui_adHocAnalysis"
             }
         ],
         "requiredPrivilege": "App: reportingui.reports"
