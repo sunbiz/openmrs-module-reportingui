@@ -4,6 +4,8 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.type.TypeReference;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.openmrs.Cohort;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
@@ -49,6 +51,8 @@ import java.util.Set;
  *
  */
 public class AdHocAnalysisFragmentController {
+
+    private DateTimeFormatter iso8601= ISODateTimeFormat.dateTime();
 
     public SimpleObject saveDataExport(@RequestParam("dataSet") String dataSetJson,
                                        @SpringBean ReportDefinitionService reportDefinitionService,
@@ -199,7 +203,15 @@ public class AdHocAnalysisFragmentController {
 
     private Map<String, Object> parseParameterValues(ObjectMapper jackson, String json) throws IOException {
         // Expected json: { "startDate": "2013-12-01", "endDate": "2013-12-07" }
-        return jackson.readValue(json, new TypeReference<Map<String, Object>>() { });
+        Map<String, Object> map = jackson.readValue(json, new TypeReference<Map<String, Object>>() { });
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            try {
+                entry.setValue(iso8601.parseDateTime((String) entry.getValue()).toDate());
+            } catch (Exception e1) {
+                // pass
+            }
+        }
+        return map;
     }
 
     private List<String> getColumnNames(DataSet data) {
