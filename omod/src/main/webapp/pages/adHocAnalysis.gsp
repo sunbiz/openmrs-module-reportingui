@@ -3,9 +3,8 @@
     ui.includeJavascript("uicommons", "moment.min.js")
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeJavascript("reportingui", "adHocAnalysis.js")
-    ui.includeJavascript("mirebalaisreports", "ui-bootstrap-tpls-0.6.0.min.js")
+    ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.6.0.min.js")
     ui.includeCss("reportingui", "adHocReport.css")
-    ui.includeCss("mirebalaisreports", "dailyReport.css")
 
     def jsString = {
         it ? """ "${ ui.escapeJs(it) }" """ : "null"
@@ -58,6 +57,7 @@
         <span class="summary-parameter" ng-click="changeStep('preview')" data-step="preview">
             <span>${ ui.message("reportingui.adHocReport.preview") }</span>
         </span>
+
          <span class="summary-parameter" ng-click="changeStep('description')" data-step="description">
             <span>${ ui.message("reportingui.adHocReport.description.label") }</span>
         </span>
@@ -82,12 +82,12 @@
 
     <div id="searches" class="step" ng-show="currentView == 'searches'">
         <h2>${ ui.message("reportingui.adHocReport.searchCriteria")}</h2>
-        <span>Select the values bellow to add Search Criterias</span>
-        
+        <span>${ ui.message("reportingui.adHocReport.searchCriteria.description") }</span>
+
         <div>
             <ul>
                 <div class="ul-header">
-                    <input type="text" class="focus-first" id="row-search" placeholder="${ ui.message('reportingui.adHocReport.addSearchCriteria') }" ng-model="searchcriteria" />
+                    <input type="text" class="focus-first" id="row-search" placeholder="${ ui.message('reportingui.adHocReport.searchCriteria.filter.placeholder') }" ng-model="searchcriteria" />
                 </div>
                 <li ng-click="addRow(criteria)" ng-repeat="criteria in availableSearches() | filter:searchcriteria" ng-show="isAllowed(criteria)" class="option">
                     <span>{{ criteria.name }}</span>
@@ -96,7 +96,7 @@
             </ul>
             <i class="icon-chevron-right"></i>
             <ul>
-                <div ng-show="dataExport.rowFilters.length > 0" class="ul-header selected">intersection of <strong>{{ dataExport.rowFilters.length }}</strong> search criteria(s)</div>
+                <div ng-show="dataExport.rowFilters.length > 0" class="ul-header selected">${ ui.message("reportingui.adHocReport.searchCriteria.combination") }</div>
                 <li class="item" ng-repeat="rowQuery in dataExport.rowFilters">
                     <label>{{ \$index + 1 }}.</label>
                     <span class="definition-name">
@@ -117,12 +117,12 @@
 
     <div id="columns" class="step"  ng-show="currentView == 'columns'">
         <h2>${ ui.message("reportingui.adHocReport.columns") }</h2>
-        <span>Select the values bellow to add Columns</span>
+        <span>${ ui.message("reportingui.adHocReport.columns.description") }</span>
 
         <div>
             <ul>
                 <div class="ul-header">
-                    <input type="text" class="focus-first" id="column-search" placeholder="${ ui.message('reportingui.adHocReport.addColumns') }" ng-model="columns" />
+                    <input type="text" class="focus-first" id="column-search" placeholder="${ ui.message('reportingui.adHocReport.columns.filter.placeholder') }" ng-model="columns" />
                 </div>
                 <li ng-click="addColumn(column)" ng-repeat="column in getColumns() | filter:columns" ng-show="isAllowed(column)" class="option">
                     <span>{{ column.name }}</span>
@@ -149,14 +149,12 @@
 
         <div class="navigation">
             <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
-            <button ng-click="next()">${ ui.message("reportingui.adHocReport.preview") }</button>
+            <button ng-click="next()">${ ui.message("reportingui.adHocReport.next") }</button>
         </div>
     </div>
 
     <div class="step" ng-show="currentView == 'preview'">
-        <h2>
-            Preview
-        </h2>
+        <h2>${ ui.message("reportingui.adHocReport.preview") }</h2>
 
         <div ng-show="results.allRows.length > 0" class="step-content">
             <span class="angular-datepicker">
@@ -181,11 +179,11 @@
                 <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
             </div>
             <div class="big-table" ng-show="results.allRows.length > 0">
-                <small>The full export would have {{ results.allRows.length }} row(s).</small>
+                <span>${ ui.message("reportingui.adHocReport.preview.description") }</span>
                 <table>
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th></th>
                             <th ng-repeat="colName in results.columnNames">{{ colName }}</th>
                         </tr>
                     </thead>
@@ -199,7 +197,7 @@
             </div>
             <div class="navigation">
                 <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
-                <button ng-click="next()">${ ui.message("reportingui.adHocReport.next") }</button>
+                <button ng-click="next()" class="focus-first">${ ui.message("reportingui.adHocReport.next") }</button>
             </div>
         </div>
     </div>
@@ -208,11 +206,11 @@
         <h2>${ ui.message("reportingui.adHocReport.description.label") }</h2>
         <div class="step-content">
             <p>
-                <label>Data Set Name</label>
+                <label>${ ui.message("reportingui.adHocReport.name") }</label>
                 <input ng-model="dataExport.name" ng-change="dirty = true"/>
             </p>
             <p>
-                <label>Description</label>
+                <label>${ ui.message("reportingui.adHocReport.description") }</label>
                 <textarea ng-model="dataExport.description" ng-change="dirty = true" cols="40" rows="4"></textarea>
             </p>
         </div>
@@ -222,21 +220,21 @@
             <span ng-show="dirty">        
                 <button ng-click="saveDataExport()" ng-disabled="!canSave()">
                     <i class="icon-save"></i>
-                    Save
+                    ${ ui.message("emr.save") }
                 </button>
-                <span ng-show="!canSave()">Save is not enabled because you need to add columns and name.</span>
+                <span ng-show="!canSave()">${ ui.message("reportingui.adHocReport.save.requirements") }</span>
             </span>
             <span ng-show="!dirty">
                 <button ng-disabled="true">
                     <i class="icon-save"></i>
-                    Save
+                    ${ ui.message("emr.save") }
                 </button>
             </span>
             <span ng-hide="dirty">
-                <em>Data set saved sucessfully!<em>
+                <em>${ ui.message("reportingui.adHocReport.save.success") }<em>
             </span>
             <div class="link" ng-hide="dirty">
-                <a href="${ ui.pageLink('reportingui', 'adHocManage') }">Go to ad hoc report home page</a>
+                <a ng-click="runDataExport()">${ ui.message("reportingui.adHocReport.runLink") }</a>
             </div>
         </div>
     </div>

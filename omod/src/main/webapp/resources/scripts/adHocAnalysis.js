@@ -411,7 +411,6 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
                 data["parameterValues[" + item.name + "]"] = item.value;
             });
             location.href = emr.pageLink('reportingui', 'adHocRun', data);
-
         }
     }]);
 
