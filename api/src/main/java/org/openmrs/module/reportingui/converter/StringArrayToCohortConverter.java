@@ -22,15 +22,23 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class StringToCohortConverter implements Converter<String, Cohort> {
+public class StringArrayToCohortConverter implements Converter<String[], Cohort> {
 
     /**
-     * @param source a comma-separated list of member ids
+     * Accepts elemants like "135" and "135,203,415"
+     * @param source each element must be parseable to an Integer, or else a comma-separated list of Integers
      * @return
      */
     @Override
-    public Cohort convert(String source) {
-        return new Cohort(source);
+    public Cohort convert(String[] source) {
+        Cohort cohort = new Cohort();
+        for (String maybeCommaSeparated : source) {
+            String[] patientIds = maybeCommaSeparated.split(",");
+            for (String patientId : patientIds) {
+                cohort.addMember(Integer.valueOf(patientId));
+            }
+        }
+        return cohort;
     }
 
 }

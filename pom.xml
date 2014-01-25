@@ -76,6 +76,13 @@
         </dependency>
         <dependency>
             <groupId>org.openmrs.module</groupId>
+            <artifactId>reporting-api</artifactId>
+            <version>${reportingModuleVersion}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
             <artifactId>serialization.xstream-api</artifactId>
             <version>${serializationxstreamModuleVersion}</version>
             <scope>provided</scope>
