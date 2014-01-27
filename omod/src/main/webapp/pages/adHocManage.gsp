@@ -39,8 +39,8 @@
             <th>${ it.name }</th>
             <th>${ it.description ?: "" }</th>
             <th>
-                <a href="adHocRun.page?dataset=${ it.uuid }"><i class="icon-play"></i></a>
-                <a href="adHocAnalysis.page?definition=${ it.uuid }"><i class="icon-pencil"></i></a>
+                <a href="adHocRun.page?dataset=${ it.uuid }"><i class="icon-play small"></i></a>
+                <a href="adHocAnalysis.page?definition=${ it.uuid }"><i class="icon-pencil small"></i></a>
             </th>
         </tr>
     <% } %>

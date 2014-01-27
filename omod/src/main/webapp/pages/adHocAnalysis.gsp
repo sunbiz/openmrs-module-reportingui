@@ -103,7 +103,7 @@
                         {{ rowQuery.name }}
                     </span>
                     <span class="actions">
-                        <i ng-click="removeRow(\$index)"class="icon-remove"></i>
+                        <i ng-click="removeRow(\$index)"class="icon-remove small"></i>
                     </span>
                 </li>
             </ul>
@@ -139,9 +139,9 @@
                     {{ col.name }}
 
                     <span class="actions">
-                        <i ng-click="removeColumn(\$index)" class="icon-remove"></i>
-                        <i ng-hide="\$first" ng-click="moveColumnUp(\$index)" class="icon-chevron-up"></i>
-                        <i ng-hide="\$last" ng-click="moveColumnDown(\$index)"class="icon-chevron-down"></i>
+                        <i ng-click="removeColumn(\$index)" class="icon-remove small"></i>
+                        <i ng-hide="\$first" ng-click="moveColumnUp(\$index)" class="icon-chevron-up small"></i>
+                        <i ng-hide="\$last" ng-click="moveColumnDown(\$index)"class="icon-chevron-down small"></i>
                     </span>
                 </li>
             </ul>
@@ -156,7 +156,7 @@
     <div class="step" ng-show="currentView == 'preview'">
         <h2>${ ui.message("reportingui.adHocReport.preview") }</h2>
 
-        <div ng-show="results.allRows.length > 0" class="step-content">
+        <div class="step-content">
             <span class="angular-datepicker">
                 <div class="form-horizontal">
                     <label>{{ dataExport.parameters[0].label | translate }}</label>
@@ -178,9 +178,9 @@
                 <div class="no-results-message">${ ui.message("reportingui.adHocReport.noResults") }</div>
                 <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
             </div>
-            <div class="big-table" ng-show="results.allRows.length > 0">
+            <div class="big-table" ng-show="results.allRows">
                 <span>${ ui.message("reportingui.adHocReport.preview.description") }</span>
-                <table>
+                <table ng-show="results.allRows.length > 0">
                     <thead>
                         <tr>
                             <th></th>
