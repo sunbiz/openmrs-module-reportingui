@@ -2,7 +2,7 @@
     ui.decorateWith("appui", "standardEmrPage")
 
     ui.includeJavascript("uicommons", "angular.min.js")
-    ui.includeJavascript("mirebalaisreports", "ui-bootstrap-tpls-0.6.0.min.js")
+    ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.6.0.min.js")
     ui.includeJavascript("reportingui", "reportHistory.js")
 
     def interactiveClass = context.loadClass("org.openmrs.module.reporting.report.renderer.InteractiveReportRenderer")
