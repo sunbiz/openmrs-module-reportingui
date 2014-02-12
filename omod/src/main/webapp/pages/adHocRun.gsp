@@ -8,7 +8,12 @@
 
 <%= ui.includeFragment("appui", "messages", [ codes: [
         "reportingui.adHocReport.timeframe.startDateLabel",
-        "reportingui.adHocReport.timeframe.endDateLabel"
+        "reportingui.adHocReport.timeframe.endDateLabel",
+        "reportingui.parameter.type.java.util.Date",
+        "reportingui.parameter.type.org.openmrs.VisitType",
+        "reportingui.parameter.type.org.openmrs.Location",
+        "reportingui.parameter.type.org.openmrs.EncounterType"
+
 ].flatten()
 ]) %>
 
