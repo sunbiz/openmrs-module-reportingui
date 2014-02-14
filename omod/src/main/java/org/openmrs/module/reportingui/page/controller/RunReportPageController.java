@@ -45,10 +45,9 @@ public class RunReportPageController {
                      @SpringBean ReportService reportService,
                      UiUtils ui,
                      HttpServletRequest request,
-                     @RequestParam("reportDefinition") String reportDefinitionUuid,
+                     @RequestParam("reportDefinition") ReportDefinition reportDefinition,
                      @RequestParam("renderingMode") String renderingModeDescriptor) {
 
-        ReportDefinition reportDefinition = reportDefinitionService.getDefinitionByUuid(reportDefinitionUuid);
         RenderingMode renderingMode = null;
         for (RenderingMode candidate : reportService.getRenderingModes(reportDefinition)) {
             if (candidate.getDescriptor().equals(renderingModeDescriptor)) {
@@ -77,7 +76,7 @@ public class RunReportPageController {
         }
         if (missingParameters.size() > 0) {
             request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, ui.message("reportingui.runReport.missingParameter"));
-            return "redirect:" + ui.pageLink("reportingui", "runReport", SimpleObject.create("reportDefinition", reportDefinitionUuid));
+            return "redirect:" + ui.pageLink("reportingui", "runReport", SimpleObject.create("reportDefinition", reportDefinition.getUuid()));
         }
 
         ReportRequest reportRequest = new ReportRequest();
@@ -91,7 +90,7 @@ public class RunReportPageController {
         reportRequest = reportService.queueReport(reportRequest);
         reportService.processNextQueuedReports();
 
-        return "redirect:" + ui.pageLink("reportingui", "runReport", SimpleObject.create("reportDefinition", reportDefinitionUuid));
+        return "redirect:" + ui.pageLink("reportingui", "runReport", SimpleObject.create("reportDefinition", reportDefinition.getUuid()));
     }
 
 }

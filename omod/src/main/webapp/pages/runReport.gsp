@@ -156,18 +156,21 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
                 <% reportDefinition.parameters.each { %>
                 <p>
                     <% if (it.collectionType) { %>
-                    Parameters of type = collection are not yet implemented
+                        Parameters of type = collection are not yet implemented
+                    <% } else if (it?.widgetConfiguration?.uiframeworkFragmentProvider) { %>
+                        ${ ui.includeFragment(it.widgetConfiguration.uiframeworkFragmentProvider, it.widgetConfiguration.uiframeworkFragment, [
+                                formFieldName: "parameterValues[" + it.name + "]",
+                                label: it.labelOrName
+                        ])}
+                    <% } else if (it.type == java.util.Date) { %>
+                        ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                formFieldName: "parameterValues[" + it.name + "]",
+                                label: it.labelOrName,
+                                useTime: false,
+                                defaultDate: it.defaultValue
+                        ])}
                     <% } else { %>
-                    <% if (it.type == java.util.Date) { %>
-                    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                            formFieldName: "parameterValues[" + it.name + "]",
-                            label: it.labelOrName,
-                            useTime: false,
-                            defaultDate: it.defaultValue
-                    ])}
-                    <% } else { %>
-                    Unknown parameter type: ${ it.type }
-                    <% } %>
+                        Unknown parameter type: ${ it.type }
                     <% } %>
                 </p>
                 <% } %>
