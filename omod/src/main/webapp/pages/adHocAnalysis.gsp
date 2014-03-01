@@ -109,8 +109,8 @@
                     <span ng-show="editingCombination">
                         ${ ui.message("reportingui.adHocReport.searchCriteria.combination.edit") }:
                         <input type="text" id="custom-combination" placeholder="${ ui.message('reportingui.adHocReport.searchCriteria.combination.example') }"/>
-                        <button ng-click="cancelEditCombination()">Cancel</button>
-                        <button ng-click="applyEditCombination()">Apply</button>
+                        <button class="button right" ng-click="applyEditCombination()">${ ui.message("uicommons.apply") }</button>
+                        <button class="button cancel" ng-click="cancelEditCombination()">${ ui.message("uicommons.cancel") }</button>
                     </span>
                 </div>
                 <li class="item" ng-repeat="rowQuery in dataExport.rowFilters">
@@ -192,7 +192,6 @@
             <img ng-show="results.loading" src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
             <div class="no-results" ng-show="results.allRows.length == 0">
                 <div class="no-results-message">${ ui.message("reportingui.adHocReport.noResults") }</div>
-                <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
             </div>
             <div class="big-table" ng-show="results.allRows">
                 <span>${ ui.message("reportingui.adHocReport.preview.description") }</span>
