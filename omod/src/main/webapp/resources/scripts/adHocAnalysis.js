@@ -134,6 +134,7 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
                     item.value = moment().startOf('day').toDate();
                 }
             });
+            $scope.dataExport.customRowFilterCombination = initialSetup.customRowFilterCombination;
         }
         else {
             $scope.dataExport.parameters = [
@@ -225,16 +226,17 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
         }
 
         $scope.editCombination = function() {
+            $('#custom-combination').val($scope.dataExport.customRowFilterCombination);
             $scope.editingCombination = true;
         }
 
         $scope.applyEditCombination = function() {
             $scope.dataExport.customRowFilterCombination = $('#custom-combination').val();
             $scope.editingCombination = false;
+            setDirty();
         }
 
         $scope.cancelEditCombination = function() {
-            $('#custom-combination').val($scope.dataExport.customRowFilterCombination);
             $scope.editingCombination = false;
         }
 
@@ -391,10 +393,14 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
                 {
                     rowQueries: angular.toJson($scope.dataExport.rowFilters),
                     columns: angular.toJson($scope.dataExport.columns),
-                    parameterValues: angular.toJson(parameterValues)
+                    parameterValues: angular.toJson(parameterValues),
+                    customCombination: $scope.dataExport.customRowFilterCombination
                 }).
                 success(function(data, status, headers, config) {
                     $scope.results = data;
+                }).
+                error(function(data, status, headers, config) {
+                    emr.handleParsedError(data);
                 });
         }
 

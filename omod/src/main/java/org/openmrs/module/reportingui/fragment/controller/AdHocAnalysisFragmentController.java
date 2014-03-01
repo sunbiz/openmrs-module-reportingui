@@ -35,6 +35,7 @@ import org.openmrs.module.reportingui.adhoc.AdHocExportManager;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.SpringBean;
+import org.openmrs.ui.framework.fragment.action.FailureResult;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -72,10 +73,10 @@ public class AdHocAnalysisFragmentController {
         return ret;
     }
 
-    public Result preview(@RequestParam("rowQueries") String rowQueriesJson,
+    public Object preview(@RequestParam("rowQueries") String rowQueriesJson,
                           @RequestParam("columns") String columnsJson,
                           @RequestParam("parameterValues") String parameterValuesJson,
-                          @RequestParam("customCombination") String customCombination,
+                          @RequestParam(value = "customCombination", required = false) String customCombination,
                           UiUtils ui,
                           @SpringBean AllDefinitionLibraries definitionLibraries,
                           @SpringBean CohortDefinitionService cohortDefinitionService,
@@ -121,7 +122,13 @@ public class AdHocAnalysisFragmentController {
             composedRowQuery = new AllPatientsCohortDefinition();
         }
 
-        EvaluatedCohort cohort = cohortDefinitionService.evaluate(composedRowQuery, new EvaluationContext());
+        EvaluatedCohort cohort;
+        try {
+            cohort = cohortDefinitionService.evaluate(composedRowQuery, new EvaluationContext());
+        }
+        catch (Exception ex) {
+            return new FailureResult(ex.getMessage());
+        }
         result.setAllRows(cohort.getMemberIds());
 
         // for preview purposes, just get a small number of rows
@@ -154,11 +161,16 @@ public class AdHocAnalysisFragmentController {
         previewEvaluationContext.setBaseCohort(previewCohort);
         previewEvaluationContext.setParameterValues(paramValues);
 
-        DataSet data = dataSetDefinitionService.evaluate(dsd, previewEvaluationContext);
-        result.setColumnNames(getColumnNames(data));
-        result.setData(transform(data, ui));
+        try {
+            DataSet data = dataSetDefinitionService.evaluate(dsd, previewEvaluationContext);
+            result.setColumnNames(getColumnNames(data));
+            result.setData(transform(data, ui));
 
-        return result;
+            return result;
+        }
+        catch (Exception ex) {
+            return new FailureResult(ex.getMessage());
+        }
     }
 
     public SimpleObject runAdHocExport(@RequestParam("dataset") List<String> dsdUuids,
