@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
+import org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.DefinitionLibraryCohortDefinition;
 import org.openmrs.module.reporting.dataset.column.definition.RowPerObjectColumnDefinition;
 import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
@@ -25,12 +26,13 @@ import org.openmrs.module.reporting.dataset.definition.RowPerObjectDataSetDefini
 import org.openmrs.module.reporting.definition.library.AllDefinitionLibraries;
 import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.module.reporting.evaluation.parameter.Parameter;
-import org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition;
 import org.openmrs.util.OpenmrsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class AdHocDataSet {
 
@@ -78,14 +80,21 @@ public class AdHocDataSet {
         if (definition instanceof PatientDataSetDefinition) {
             PatientDataSetDefinition dsd = (PatientDataSetDefinition) definition;
             List<Mapped<? extends CohortDefinition>> filters = dsd.getRowFilters();
-            if(filters.size() == 1 && filters.get(0).getParameterizable() instanceof CompositionCohortDefinition) {
+            if (filters.size() == 1 && filters.get(0).getParameterizable() instanceof CompositionCohortDefinition) {
+                // this composition will have the individual searches we want represented as "1", "2", etc
                 CompositionCohortDefinition ccd = (CompositionCohortDefinition) filters.get(0).getParameterizable();
-                //get each individual row filter out, as well as the customRowFilterCombination
-                Map<String, Mapped<CohortDefinition>> searches = ccd.getSearches();
-                customRowFilterCombination = ccd.getCompositionString();
-                for(java.util.Map.Entry<String, Mapped<CohortDefinition>>  cd : searches.entrySet()) {
-                    addRowFilter(new AdHocRowFilter(cd.getValue()));
+
+                // ccd.searches is a HashMap with Strings like "1", "2", etc as keys
+                // we transform this to be sorted by the parsed integer values
+                SortedMap<Integer, Mapped<CohortDefinition>> sortedSearches = new TreeMap<Integer, Mapped<CohortDefinition>>();
+                for (Map.Entry<String, Mapped<CohortDefinition>> e : ccd.getSearches().entrySet()) {
+                    sortedSearches.put(Integer.valueOf(e.getKey()), e.getValue());
                 }
+
+                for (Mapped<CohortDefinition> search : sortedSearches.values()) {
+                    addRowFilter(new AdHocRowFilter(search));
+                }
+                customRowFilterCombination = ccd.getCompositionString();
             } else {
                 for (Mapped<? extends CohortDefinition> query : dsd.getRowFilters()) {
                     addRowFilter(new AdHocRowFilter(query));
