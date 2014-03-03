@@ -26,6 +26,7 @@ import org.openmrs.module.reporting.dataset.definition.RowPerObjectDataSetDefini
 import org.openmrs.module.reporting.definition.library.AllDefinitionLibraries;
 import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.module.reporting.evaluation.parameter.Parameter;
+import org.openmrs.module.reporting.query.Query;
 import org.openmrs.util.OpenmrsUtil;
 
 import java.util.ArrayList;
@@ -137,21 +138,24 @@ public class AdHocDataSet {
         }
         if (rowFilters != null) {
             if (dsd instanceof PatientDataSetDefinition) {
-                CompositionCohortDefinition composition = new CompositionCohortDefinition();
-                int i = 0;
-                for (AdHocRowFilter filter : rowFilters) {
-                    i += 1;
-                    DefinitionLibraryCohortDefinition cohortDefinition = new DefinitionLibraryCohortDefinition(filter.getKey());
-                    cohortDefinition.loadParameters(definitionLibraries);
-                    Map<String, Object> mappings = Mapped.straightThroughMappings(cohortDefinition);
-                    composition.addSearch("" + i, cohortDefinition, mappings);
-                    if (StringUtils.isNotBlank(customRowFilterCombination)) {
+                if(StringUtils.isNotBlank(customRowFilterCombination)) {
+                    CompositionCohortDefinition composition = new CompositionCohortDefinition();
+                    int i = 0;
+                    for (AdHocRowFilter filter : rowFilters) {
+                        i += 1;
+                        DefinitionLibraryCohortDefinition cohortDefinition = new DefinitionLibraryCohortDefinition(filter.getKey());
+                        cohortDefinition.loadParameters(definitionLibraries);
+                        Map<String, Object> mappings = Mapped.straightThroughMappings(cohortDefinition);
+                        composition.addSearch("" + i, cohortDefinition, mappings);
                         composition.setCompositionString(customRowFilterCombination);
-                    } else {
-                        composition.setCompositionString(OpenmrsUtil.join(composition.getSearches().keySet(), " AND "));
+                    }
+                    ((PatientDataSetDefinition) dsd).addRowFilter(Mapped.mapStraightThrough((CohortDefinition) composition));
+                } else {
+                    for (AdHocRowFilter filter : rowFilters) {
+                        Query query = filter.toQuery(dsd.getClass(), definitionLibraries);
+                        ((PatientDataSetDefinition) dsd).addRowFilter(Mapped.mapStraightThrough((CohortDefinition) query));
                     }
                 }
-                ((PatientDataSetDefinition) dsd).addRowFilter(Mapped.mapStraightThrough((CohortDefinition) composition));
             }
         }
         return dsd;
