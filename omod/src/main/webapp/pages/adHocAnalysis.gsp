@@ -41,7 +41,7 @@
 </script>
 
 <div id="ad-hoc-report" class="ad-hoc-report" ng-app="adHocAnalysis" ng-controller="AdHocAnalysisController" ng-init="focusFirstElement()">
-   
+
     <div class="summary">
         <span class="summary-parameter current" ng-click="changeStep('parameters')" data-step="parameters">
             <span>${ ui.message("reportingui.adHocReport.parameters.label") }: </span>
@@ -66,6 +66,8 @@
             <span>${ ui.message("reportingui.adHocReport.description.label") }</span>
         </span>
     </div>
+
+    <div ng-controller="ModalCtrl" ng-include="adHocAnalysisParameterPopup.page"></div>
 
     <div id="parameters" class="step" ng-show="currentView == 'parameters'">
         <h2>${ ui.message("reportingui.adHocReport.parameters.label") }</h2>
@@ -93,7 +95,7 @@
                 <div class="ul-header">
                     <input type="text" class="focus-first" id="row-search" placeholder="${ ui.message('reportingui.adHocReport.searchCriteria.filter.placeholder') }" ng-model="searchcriteria" />
                 </div>
-                <li ng-click="addRow(criteria)" ng-repeat="criteria in availableSearches() | filter:searchcriteria" ng-show="isAllowed(criteria)" class="option">
+                <li ng-click="addRow(criteria)" ng-repeat="criteria in availableSearches() | filter:searchcriteria" class="option">
                     <span>{{ criteria.name }}</span>
                     <small class="definition-description">{{ criteria.description }}</small>
                 </li>
@@ -121,10 +123,13 @@
                     <span class="actions">
                         <i ng-click="removeRow(\$index)"class="icon-remove small"></i>
                     </span>
+                    <span class="definition-param" ng-repeat="param in rowQuery.parameters" ng-hide="isParameterGloballySet(param)">
+                        {{ param.name }}: {{ rowQuery.parameterValues[param.name] }}
+                    </span>
                 </li>
             </ul>
-            
         </div>
+
         <div class="navigation">
             <button ng-click="back()">${ ui.message("reportingui.adHocReport.back") }</button>
             <button ng-click="next()">${ ui.message("reportingui.adHocReport.next") }</button>
@@ -140,7 +145,7 @@
                 <div class="ul-header">
                     <input type="text" class="focus-first" id="column-search" placeholder="${ ui.message('reportingui.adHocReport.columns.filter.placeholder') }" ng-model="columns" />
                 </div>
-                <li ng-click="addColumn(column)" ng-repeat="column in getColumns() | filter:columns" ng-show="isAllowed(column)" class="option">
+                <li ng-click="addColumn(column)" ng-repeat="column in getColumns() | filter:columns" class="option">
                     <span>{{ column.name }}</span>
                     <small class="definition-description">{{ column.description }}</small>
                 </li>
@@ -158,6 +163,9 @@
                         <i ng-click="removeColumn(\$index)" class="icon-remove small"></i>
                         <i ng-hide="\$first" ng-click="moveColumnUp(\$index)" class="icon-chevron-up small"></i>
                         <i ng-hide="\$last" ng-click="moveColumnDown(\$index)"class="icon-chevron-down small"></i>
+                    </span>
+                    <span class="definition-param" ng-repeat="param in col.parameters" ng-hide="isParameterGloballySet(param)">
+                        {{ param.name }}: {{ col.parameterValues[param.name] }}
                     </span>
                 </li>
             </ul>
@@ -190,20 +198,20 @@
             </span>
 
             <img ng-show="results.loading" src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
-            <div class="no-results" ng-show="results.allRows.length == 0">
+            <div class="no-results" ng-show="results.rows.length == 0">
                 <div class="no-results-message">${ ui.message("reportingui.adHocReport.noResults") }</div>
             </div>
-            <div class="big-table" ng-show="results.allRows">
+            <div class="big-table" ng-show="results.rows">
                 <span>${ ui.message("reportingui.adHocReport.preview.description") }</span>
-                <table ng-show="results.allRows.length > 0">
+                <table ng-show="results.rows.length > 0">
                     <thead>
                         <tr>
                             <th></th>
-                            <th ng-repeat="colName in results.columnNames">{{ colName }}</th>
+                            <th ng-repeat="col in results.metadata.columns">{{ col.label }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="row in results.data">
+                        <tr ng-repeat="row in results.rows">
                             <td>{{ \$index + 1 }}</td>
                             <td ng-repeat="col in row">{{ col }}</td>
                         </tr>

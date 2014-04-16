@@ -35,6 +35,8 @@
     <properties>
         <openmrsCoreVersion>1.9.4</openmrsCoreVersion>
         <reportingModuleVersion>0.8.2-SNAPSHOT</reportingModuleVersion>
+        <reportingrestModuleVersion>1.3-SNAPSHOT</reportingrestModuleVersion>
+        <webservicesrestModuleVersion>2.5-SNAPSHOT</webservicesrestModuleVersion>
         <uiframeworkModuleVersion>3.2</uiframeworkModuleVersion>
         <appuiModuleVersion>1.0</appuiModuleVersion>
         <uicommonsModuleVersion>1.1</uicommonsModuleVersion>
@@ -91,6 +93,13 @@
             <groupId>org.openmrs.module</groupId>
             <artifactId>calculation-api</artifactId>
             <version>${calculationModuleVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>reportingrest-api</artifactId>
+            <version>${reportingrestModuleVersion}</version>
             <scope>provided</scope>
         </dependency>
 

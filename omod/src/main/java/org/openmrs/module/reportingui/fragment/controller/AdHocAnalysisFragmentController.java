@@ -30,8 +30,8 @@ import org.openmrs.module.reporting.report.definition.service.ReportDefinitionSe
 import org.openmrs.module.reporting.report.renderer.RenderingMode;
 import org.openmrs.module.reporting.report.renderer.ReportRenderer;
 import org.openmrs.module.reporting.report.service.ReportService;
-import org.openmrs.module.reportingui.adhoc.AdHocDataSet;
-import org.openmrs.module.reportingui.adhoc.AdHocExportManager;
+import org.openmrs.module.reportingrest.adhoc.AdHocDataSet;
+import org.openmrs.module.reportingrest.adhoc.AdHocExportManager;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.SpringBean;
@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -151,10 +152,23 @@ public class AdHocAnalysisFragmentController {
             //   "description":"reporting.patientDataCalculation.patientId.description",
             //   "parameters":[]
             // }
+            // if we have parameters they are like
+            // {
+            //   "name":"effectiveDate",
+            //   "type":"java.util.Date",
+            //   "collectionType":null,
+            //   "value":"2013-04-03T04:00:00.000Z"
+            // }
 
             DefinitionLibraryPatientDataDefinition definition = new DefinitionLibraryPatientDataDefinition(column.get("key").getTextValue());
             definition.loadParameters(definitionLibraries);
-            dsd.addColumn(column.get("name").getTextValue(), definition, Mapped.straightThroughMappings(definition));
+            Map<String, Object> mappings = Mapped.straightThroughMappings(definition);
+            for (JsonNode p : column.get("parameters")) {
+                if (notNull(p.get("value"))) {
+                    mappings.put(p.get("name").getTextValue(), parseParameterValue(p));
+                }
+            }
+            dsd.addColumn(column.get("name").getTextValue(), definition, mappings);
         }
 
         EvaluationContext previewEvaluationContext = new EvaluationContext();
@@ -170,6 +184,30 @@ public class AdHocAnalysisFragmentController {
         }
         catch (Exception ex) {
             return new FailureResult(ex.getMessage());
+        }
+    }
+
+    private boolean notNull(JsonNode node) {
+        return node != null && !node.isMissingNode() && !node.isNull();
+    }
+
+    private Object parseParameterValue(JsonNode param) throws Exception {
+        // param looks like
+        // {
+        //   "name":"effectiveDate",
+        //   "type":"java.util.Date",
+        //   "collectionType":null,
+        //   "value":"2013-04-03T04:00:00.000Z"
+        // }
+        if (notNull(param.get("collectionType"))) {
+            throw new IllegalStateException("collection parameters are not yet implemented");
+        }
+        Class<?> clazz = Context.loadClass(param.get("type").getTextValue());
+        if (Date.class.equals(clazz)) {
+            return new SimpleDateFormat("yyyy-MM-dd").parse(param.get("value").getValueAsText());
+        }
+        else {
+            throw new IllegalStateException("type " + clazz.getName() + " is not yet implemented");
         }
     }
 

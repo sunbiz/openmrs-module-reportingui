@@ -4,6 +4,8 @@
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeCss("reportingui", "adHocReport.css")
     ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.6.0.min.js")
+
+    def patientDataExports = exports.findAll { it.type == "PatientDataSetDefinition" }
 %>
 
 <script type="text/javascript">
@@ -34,14 +36,19 @@
         </tr>
     </thead>
     <tbody>
-    <% exports.findAll { it.type == "PatientDataSetDefinition" } .each { %>
+    <% if (patientDataExports.size() == 0) { %>
         <tr>
-            <th>${ it.name }</th>
-            <th>${ it.description ?: "" }</th>
-            <th>
+            <td colspan="3">${ ui.message("emr.none") }</td>
+        </tr>
+    <% } %>
+    <% patientDataExports.each { %>
+        <tr>
+            <td>${ it.name }</td>
+            <td>${ it.description ?: "" }</td>
+            <td>
                 <a href="adHocRun.page?dataset=${ it.uuid }"><i class="icon-play small"></i></a>
                 <a href="adHocAnalysis.page?definition=${ it.uuid }"><i class="icon-pencil small"></i></a>
-            </th>
+            </td>
         </tr>
     <% } %>
     </tbody>

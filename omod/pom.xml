@@ -41,6 +41,20 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>reportingrest-omod</artifactId>
+            <version>${reportingrestModuleVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>webservices.rest-omod-common</artifactId>
+            <version>${webservicesrestModuleVersion}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

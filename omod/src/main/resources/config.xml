@@ -24,6 +24,9 @@
         <require_module version="${reportingModuleVersion}">
             org.openmrs.module.reporting
         </require_module>
+        <require_module version="${reportingrestModuleVersion}">
+            org.openmrs.module.reportingrest
+        </require_module>
         <require_module version="${uiframeworkModuleVersion}">
             org.openmrs.module.uiframework
         </require_module>
