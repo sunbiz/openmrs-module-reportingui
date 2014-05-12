@@ -17,17 +17,7 @@ window.adHocAnalysis = {
     }
 }
 
-var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
-
-    filter('translate', function() {
-        return function(input, prefix) {
-            if (input && input.uuid) {
-                input = input.uuid;
-            }
-            var code = prefix ? prefix + input : input;
-            return emr.message(code, input);
-        }
-    }).
+angular.module('reportingui').
 
     directive('definitionsearch', function($compile) {
         // expect { type: ..., key: ..., name: ..., description: ..., parameters: [ ... ] }
@@ -238,6 +228,8 @@ var app = angular.module('adHocAnalysis', ['ui.bootstrap']).
                 });
 
                 modalInstance.result.then(function(paramValues) {
+                    console.log("Adding definition with parameters");
+                    console.log(paramValues);
                     var withParameters = copyDefinitionWithParameterValues($scope.definition, paramValues);
                     $scope.$parent.addDefinitionWithParameters(withParameters, $scope.listToAddTo);
                 }, function () {

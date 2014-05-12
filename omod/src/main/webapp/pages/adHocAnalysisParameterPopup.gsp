@@ -7,8 +7,8 @@
     </div>
     <div class="modal-params">
         <div ng-repeat="param in definition.parameters | filter:paramFilter">
-            <label>{{ param.name | translate }}</label>
-            <span ng-include="'paramWidget/' + param.type + '.page'"/>
+            <label>{{ param.name | omrs.display }}</label>
+            <span ng-include="'paramWidget/' + param.type + '.page?collectionType=' + param.collectionType"/>
         </div>
     </div>
 </div>
