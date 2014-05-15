@@ -228,8 +228,6 @@ angular.module('reportingui').
                 });
 
                 modalInstance.result.then(function(paramValues) {
-                    console.log("Adding definition with parameters");
-                    console.log(paramValues);
                     var withParameters = copyDefinitionWithParameterValues($scope.definition, paramValues);
                     $scope.$parent.addDefinitionWithParameters(withParameters, $scope.listToAddTo);
                 }, function () {
