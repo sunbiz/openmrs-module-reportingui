@@ -353,11 +353,11 @@
 }
 .modal {
   position: fixed;
-  top: 10%;
+  top: 5%;
   left: 50%;
   z-index: 1050;
-  width: 560px;
-  margin-left: -280px;
+  width: 960px;
+  margin-left: -480px;
   background-color: #ffffff;
   border: 1px solid #999;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -383,7 +383,7 @@
   top: -25%;
 }
 .modal.fade.in {
-  top: 10%;
+  top: 5%;
 }
 .modal-header {
   padding: 9px 15px;
@@ -399,7 +399,7 @@
 .modal-body {
   position: relative;
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 500px;
   padding: 15px;
 }
 .modal-form {
