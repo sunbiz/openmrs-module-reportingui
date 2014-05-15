@@ -1,30 +1,16 @@
 package org.openmrs.module.reportingui.fragment.controller;
 
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.openmrs.Cohort;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.reporting.cohort.EvaluatedCohort;
-import org.openmrs.module.reporting.cohort.definition.AllPatientsCohortDefinition;
-import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
-import org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition;
-import org.openmrs.module.reporting.cohort.definition.DefinitionLibraryCohortDefinition;
-import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
-import org.openmrs.module.reporting.data.patient.definition.DefinitionLibraryPatientDataDefinition;
 import org.openmrs.module.reporting.dataset.DataSet;
 import org.openmrs.module.reporting.dataset.DataSetColumn;
 import org.openmrs.module.reporting.dataset.DataSetRow;
-import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
 import org.openmrs.module.reporting.dataset.definition.RowPerObjectDataSetDefinition;
-import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinitionService;
 import org.openmrs.module.reporting.definition.library.AllDefinitionLibraries;
-import org.openmrs.module.reporting.evaluation.EvaluationContext;
-import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.module.reporting.report.ReportRequest;
 import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
 import org.openmrs.module.reporting.report.renderer.RenderingMode;
@@ -35,8 +21,6 @@ import org.openmrs.module.reportingrest.adhoc.AdHocExportManager;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.SpringBean;
-import org.openmrs.ui.framework.fragment.action.FailureResult;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,119 +56,6 @@ public class AdHocAnalysisFragmentController {
         SimpleObject ret = SimpleObject.fromObject(dsd, ui, "uuid", "name", "description");
         ret.put("name", ((String) ret.get("name")).substring(AdHocExportManager.NAME_PREFIX.length()));
         return ret;
-    }
-
-    public Object preview(@RequestParam("rowQueries") String rowQueriesJson,
-                          @RequestParam("columns") String columnsJson,
-                          @RequestParam("parameterValues") String parameterValuesJson,
-                          @RequestParam(value = "customCombination", required = false) String customCombination,
-                          UiUtils ui,
-                          @SpringBean AllDefinitionLibraries definitionLibraries,
-                          @SpringBean CohortDefinitionService cohortDefinitionService,
-                          @SpringBean DataSetDefinitionService dataSetDefinitionService) throws Exception {
-
-        ObjectMapper jackson = new ObjectMapper();
-        ArrayNode rowQueries = jackson.readValue(rowQueriesJson, ArrayNode.class);
-        ArrayNode columns = jackson.readValue(columnsJson, ArrayNode.class);
-
-        Map<String, Object> paramValues = parseParameterValues(jackson, parameterValuesJson);
-
-        Result result = new Result();
-
-        CohortDefinition composedRowQuery = null;
-        if (rowQueries.size() > 0) {
-            CompositionCohortDefinition composition = new CompositionCohortDefinition();
-            int i = 0;
-            for (JsonNode rowQuery : rowQueries) {
-                // {
-                //   "type":"org.openmrs.module.reporting.cohort.definition.GenderCohortDefinition",
-                //   "key":"reporting.library.cohortDefinition.builtIn.males",
-                //   "name":"Male patients",
-                //   "description":"Patients whose gender is M",
-                //   "parameters":[]
-                // }
-                i += 1;
-                DefinitionLibraryCohortDefinition cohortDefinition = new DefinitionLibraryCohortDefinition(rowQuery.get("key").getTextValue());
-                cohortDefinition.loadParameters(definitionLibraries);
-
-                Map<String, Object> mappings = Mapped.straightThroughMappings(cohortDefinition);
-                composition.addSearch("" + i, cohortDefinition, mappings);
-            }
-
-            if (StringUtils.isNotBlank(customCombination)) {
-                composition.setCompositionString(customCombination);
-            } else {
-                composition.setCompositionString(OpenmrsUtil.join(composition.getSearches().keySet(), " AND "));
-            }
-
-            composedRowQuery = composition;
-        }
-        else {
-            composedRowQuery = new AllPatientsCohortDefinition();
-        }
-
-        EvaluatedCohort cohort;
-        try {
-            cohort = cohortDefinitionService.evaluate(composedRowQuery, new EvaluationContext());
-        }
-        catch (Exception ex) {
-            return new FailureResult(ex.getMessage());
-        }
-        result.setAllRows(cohort.getMemberIds());
-
-        // for preview purposes, just get a small number of rows
-        Cohort previewCohort = new Cohort();
-        int j = 0;
-        for (Integer member : cohort.getMemberIds()) {
-            j += 1;
-            previewCohort.addMember(member);
-            if (j >= 10) {
-                break;
-            }
-        }
-
-        PatientDataSetDefinition dsd = new PatientDataSetDefinition();
-        for (JsonNode column : columns) {
-            // {
-            //   "type":"org.openmrs.module.reporting.data.patient.definition.PatientIdDataDefinition",
-            //   "key":"reporting.patientDataCalculation.patientId",
-            //   "name":"reporting.patientDataCalculation.patientId.name",
-            //   "description":"reporting.patientDataCalculation.patientId.description",
-            //   "parameters":[]
-            // }
-            // if we have parameters they are like
-            // {
-            //   "name":"effectiveDate",
-            //   "type":"java.util.Date",
-            //   "collectionType":null,
-            //   "value":"2013-04-03T04:00:00.000Z"
-            // }
-
-            DefinitionLibraryPatientDataDefinition definition = new DefinitionLibraryPatientDataDefinition(column.get("key").getTextValue());
-            definition.loadParameters(definitionLibraries);
-            Map<String, Object> mappings = Mapped.straightThroughMappings(definition);
-            for (JsonNode p : column.get("parameters")) {
-                if (notNull(p.get("value"))) {
-                    mappings.put(p.get("name").getTextValue(), parseParameterValue(p));
-                }
-            }
-            dsd.addColumn(column.get("name").getTextValue(), definition, mappings);
-        }
-
-        EvaluationContext previewEvaluationContext = new EvaluationContext();
-        previewEvaluationContext.setBaseCohort(previewCohort);
-        previewEvaluationContext.setParameterValues(paramValues);
-
-        try {
-            DataSet data = dataSetDefinitionService.evaluate(dsd, previewEvaluationContext);
-            result.setColumnNames(getColumnNames(data));
-            result.setData(transform(data, ui));
-
-            return result;
-        }
-        catch (Exception ex) {
-            return new FailureResult(ex.getMessage());
-        }
     }
 
     private boolean notNull(JsonNode node) {
