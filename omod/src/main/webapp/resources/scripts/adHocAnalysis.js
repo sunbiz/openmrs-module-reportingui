@@ -347,6 +347,12 @@ angular.module('reportingui').
 
         $scope.$watch('currentView', $scope.focusFirstElement);
 
+        $scope.$watch('dataExport.parameters', function() {
+            if ($scope.currentView == 'preview') {
+                $scope.preview();
+            }
+        }, true);
+
         $scope.openStartDatePicker = function() {
             $timeout(function() {
                 $scope.isStartDatePickerOpen = true;
