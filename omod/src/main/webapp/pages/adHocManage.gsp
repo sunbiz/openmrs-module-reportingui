@@ -14,6 +14,37 @@
         { label: "${ ui.escapeJs(ui.message("reportingui.reportsapp.home.title")) }", link: emr.pageLink("reportingui", "reportsapp/home") },
         { label: "${ ui.escapeJs(ui.message("reportingui.adHocAnalysis.label")) }", link: "${ ui.escapeJs(ui.thisUrl()) }" }
     ];
+
+    jq(function() {
+        jq('.purge-ad-hoc-definition').click(function(event) {
+            var uuid = jq(event.target).closest('.purge-ad-hoc-definition').data('uuid');
+            var dialog = emr.setupConfirmationDialog({
+                selector: '#dialog-confirm',
+                actions: {
+                    confirm: function() {
+                        jq.ajax('/' + OPENMRS_CONTEXT_PATH + '/ws/rest/v1/reportingrest/adhocdataset/' + uuid + '?purge=true', {
+                            type: 'DELETE',
+                            dataType: 'json',
+                            success: function(data, status, xhr) {
+                                console.log(data);
+                                console.log(status);
+                                console.log(xhr);
+                                location.href = location.href;
+                            },
+                            error: function(xhr) {
+                                emr.handleError(xhr);
+                                dialog.close();
+                            }
+                        });
+                    },
+                    cancel: function() {
+                        dialog.close();
+                    }
+                }
+            });
+            dialog.show();
+        });
+    });
 </script>
 
 <h1>${ ui.message("reportingui.adHocManage.title") }</h1>
@@ -48,8 +79,25 @@
             <td>
                 <a href="adHocRun.page?dataset=${ it.uuid }"><i class="icon-play small"></i></a>
                 <a href="adHocAnalysis.page?definition=${ it.uuid }"><i class="icon-pencil small"></i></a>
+                <a class="purge-ad-hoc-definition" data-uuid="${ it.uuid }"><i class="icon-remove-sign"></i></a>
             </td>
         </tr>
     <% } %>
     </tbody>
 </table>
+
+<div class="dialog" id="dialog-confirm" style="display: none">
+    <div class="dialog-header">
+        ${ ui.escapeAttribute(ui.message("reportingui.adHocManage.confirmDeleteTitle")) }
+    </div>
+    <div class="dialog-content">
+        <p>
+            ${ ui.message("reportingui.adHocManage.confirmDeleteMessage") }
+        </p>
+
+        <div>
+            <button class="button confirm right">${ ui.message("emr.delete") }</button>
+            <button class="button cancel">${ ui.message("emr.cancel") }</button>
+        </div>
+    </div>
+</div>
