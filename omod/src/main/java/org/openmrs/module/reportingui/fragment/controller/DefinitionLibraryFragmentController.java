@@ -24,7 +24,7 @@ public class DefinitionLibraryFragmentController {
     }
 
     private List<SimpleObject> simplify(UiUtils ui, List<LibraryDefinitionSummary> definitions) {
-        List<SimpleObject> simplified = SimpleObject.fromCollection(definitions, ui, "type", "key", "name:message", "description:message", "parameters.name:message", "parameters.type", "parameters.collectionType");
+        List<SimpleObject> simplified = SimpleObject.fromCollection(definitions, ui, "type", "key", "name:message", "description:message", "parameters.name", "parameters.label:message", "parameters.type", "parameters.collectionType");
         return simplified;
     }
 
