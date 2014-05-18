@@ -87,8 +87,7 @@ public class AdHocAnalysisFragmentController {
                                        //@MethodParam("getParamValues") Map<String, Object> paramValues, // UIFR-137
                                        HttpServletRequest req,
                                        @SpringBean AdHocExportManager adHocExportManager,
-                                       @SpringBean
-                                       ReportService reportService,
+                                       @SpringBean ReportService reportService,
                                        UiUtils ui) throws Exception {
         if (dsdUuids.size() == 0) {
             return SimpleObject.create("error", ui.message("reportingui.adHocRun.error.noDatasets"));
