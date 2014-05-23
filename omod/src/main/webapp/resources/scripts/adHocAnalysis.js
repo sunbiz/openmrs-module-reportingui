@@ -19,6 +19,28 @@ window.adHocAnalysis = {
 
 angular.module('reportingui').
 
+    filter('insertParameterNames', ['$filter', function($filter) {
+        function escapeRegExp(string) {
+            return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+        }
+
+        function replaceAll(find, replace, str) {
+            return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+        }
+
+        return function(input, localParams, globalParams) {
+            // first, global parameters
+            _.each(globalParams, function(p) {
+                input = replaceAll("{{" + p.name + "}}", "<em>" + $filter('omrs.display')(p.label) + "</em>", input);
+            });
+            // next, parameters specific to this filter/column
+            _.each(localParams, function(p) {
+                input = replaceAll("{{" + p.name + "}}", "<em>" + $filter('omrs.display')(p.label) + "</em>", input);
+            })
+            return input;
+        }
+    }]).
+
     directive('definitionsearch', function($compile) {
         // expect { type: ..., key: ..., name: ..., description: ..., parameters: [ ... ] }
 
@@ -57,7 +79,7 @@ angular.module('reportingui').
         };
     }).
 
-    controller('AdHocAnalysisController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+    controller('AdHocAnalysisController', ['$scope', '$http', '$timeout', '$filter', function($scope, $http, $timeout, $filter) {
 
         // ----- private helper functions ----------
 
@@ -240,6 +262,7 @@ angular.module('reportingui').
             $scope.definition = definition;
             $scope.filters = filters;
             $scope.paramValues = {};
+            $scope.dataExport = window.adHocDataExport; // we use this to access the global parameters
 
             $scope.paramFilter = function(param) {
                 return _.contains(filters, param.name);

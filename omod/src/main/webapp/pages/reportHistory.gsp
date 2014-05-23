@@ -14,6 +14,7 @@
 <script type="text/javascript">
     var breadcrumbs = [
         { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
+        { label: "${ ui.escapeJs(ui.message("reportingui.reportsapp.home.title")) }", link: emr.pageLink("reportingui", "reportsapp/home") },
         { label: "${ ui.message("reportingui.reportHistory.title") }", link: "${ ui.escapeJs(ui.thisUrl()) }" }
     ];
 
@@ -75,14 +76,9 @@
     <fieldset class="report-list">
         <legend>${ ui.message("reportingui.runReport.completed.legend") }</legend>
 
-        <span ng-show="loading">
-            ${ ui.message("uicommons.loading.placeholder") }
-            <img src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
-        </span>
+        <span ng-show="loading" ng-bind="${ ui.escapeAttribute(ui.message("uicommons.loading.placeholder") + " <img src=\"" + ui.resourceLink("uicommons", "images/spinner.gif") + "\"/>") }"></span>
 
-        <span ng-show="hasNoResults()">
-            ${ ui.message("emr.none") }
-        </span>
+        <span ng-show="hasNoResults()" ng-bind="${ ui.escapeAttribute(ui.message("emr.none")) }"></span>
 
         <table ng-show="hasResults()">
             <thead>
@@ -100,8 +96,10 @@
                     {{ request.reportDefinition.name }}
                 </td>
                 <td>
-                    {{request.status | translate:'reportingui.reportRequest.Status.'}} <br/>
-                    {{request.evaluateCompleteDatetime}}
+                    <a ng-click="viewStatus(request)">
+                        {{request.status | translate:'reportingui.reportRequest.Status.'}} <br/>
+                        {{request.evaluateCompleteDatetime}}
+                    </a>
                 </td>
                 <td>
                     <span ng-repeat="param in request.reportDefinition.mappings">
@@ -131,9 +129,12 @@
                         </a>
                     </span>
                     <span ng-show="request.errorMessage">
-                        <a popover="{{ request.errorMessage }}" popover-placement="buttom">
+                        <a popover="{{ request.errorMessage }}" popover-placement="bottom">
                             Error details
                         </a>
+                    </span>
+                    <span>
+
                     </span>
                 </td>
             </tr>

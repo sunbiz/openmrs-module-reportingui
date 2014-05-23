@@ -86,7 +86,7 @@ var app = angular.module('runAdHocExport', ['ui.bootstrap']).
             $http.post(emr.fragmentActionLink('reportingui', 'adHocAnalysis', 'runAdHocExport', params)).
                 success(function(data) {
                     if (data.uuid) {
-                        location.href = emr.pageLink('reportingui', 'reportHistory', { request: data.uuid });
+                        location.href = emr.pageLink('reportingui', 'reportStatus', { request: data.uuid });
                     }
                     else {
                         emr.errorAlert(data.error);

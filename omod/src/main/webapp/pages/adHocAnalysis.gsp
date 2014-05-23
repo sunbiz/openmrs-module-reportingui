@@ -1,8 +1,9 @@
 <%
     ui.decorateWith("appui", "standardEmrPage")
     ui.includeJavascript("uicommons", "moment.min.js")
-    ui.includeJavascript("uicommons", "angular.min.js")
+    ui.includeJavascript("uicommons", "angular.js")
     ui.includeJavascript("uicommons", "angular-resource.min.js")
+    ui.includeJavascript("uicommons", "angular-sanitize.min.js")
     ui.includeJavascript("uicommons", "angular-app.js")
     ui.includeJavascript("uicommons", "filters/display.js")
     ui.includeJavascript("uicommons", "services/encounterTypeService.js")
@@ -108,7 +109,7 @@
                 </div>
                 <li ng-click="addRow(criteria)" ng-repeat="criteria in availableSearches() | filter:searchcriteria" class="option">
                     <span>{{ criteria.name }}</span>
-                    <small class="definition-description">{{ criteria.description }}</small>
+                    <small class="definition-description" ng-bind-html="criteria.description | insertParameterNames:criteria.parameters:dataExport.parameters"></small>
                 </li>
             </ul>
             <i class="icon-chevron-right"></i>
@@ -158,7 +159,7 @@
                 </div>
                 <li ng-click="addColumn(column)" ng-repeat="column in getColumns() | filter:columns" class="option">
                     <span>{{ column.name }}</span>
-                    <small class="definition-description">{{ column.description }}</small>
+                    <small class="definition-description">{{ column.description | insertParameterNames:column.parameters:dataExport.parameters }}</small>
                 </li>
             </ul>
             <i class="icon-chevron-right"></i>

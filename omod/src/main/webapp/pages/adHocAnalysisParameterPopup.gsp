@@ -3,7 +3,7 @@
 <div class="modal-body">
     <div class="modal-definition">
         <p class="modal-definition-name"> {{ definition.name }} </p>
-        <p> {{ definition.description }} </p>
+        <p ng-bind-html="definition.description | insertParameterNames:definition.parameters:dataExport.parameters"></p>
     </div>
     <div class="modal-params">
         <div ng-repeat="param in definition.parameters | filter:paramFilter">

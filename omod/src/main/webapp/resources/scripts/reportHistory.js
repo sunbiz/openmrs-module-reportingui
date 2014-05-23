@@ -74,4 +74,8 @@ runReportApp.controller('ReportHistoryController', ['$scope', '$http', '$window'
             error(defaultErrorAction);
     }
 
+    $scope.viewStatus = function(request) {
+        location.href = emr.pageLink('reportingui', 'reportStatus', { request: request.uuid });
+    }
+
 }]);
