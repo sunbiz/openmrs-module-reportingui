@@ -29,6 +29,7 @@ angular.module('reportingui').
         }
 
         return function(input, localParams, globalParams) {
+            input = _.escape(input); // input is a raw description, which might include something like "<= $startDate"
             // first, global parameters
             _.each(globalParams, function(p) {
                 input = replaceAll("{{" + p.name + "}}", "<em>" + $filter('omrs.display')(p.label) + "</em>", input);
