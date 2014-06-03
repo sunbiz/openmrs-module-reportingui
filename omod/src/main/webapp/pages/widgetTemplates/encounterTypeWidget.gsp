@@ -1,3 +1,2 @@
-<select ng-model="target">
-    <option ng-repeat="et in encounterTypes" value="{{ et.uuid }}"> {{ et.display }} </option>
+<select ng-model="\$parent.target" ng-options="et.display for et in encounterTypes">
 </select>

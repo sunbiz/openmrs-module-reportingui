@@ -5,7 +5,7 @@ angular.module('reportingui')
 
         function link(scope, element, attrs) {
             scope.uniqueId = 'locationWidget' + ++uniqueId;
-            scope.template = 'widgetTemplates/locationWidget' + (attrs.multiple ? 'Multiple' : '') + '.page';
+            scope.template = 'widgetTemplates/locationWidget' + (attrs.multiple === 'true' ? 'Multiple' : '') + '.page';
             scope.locations = [];
             LocationService.getLocations().then(function(result) {
                 scope.locations = result;
@@ -19,8 +19,8 @@ angular.module('reportingui')
             },
             controller: function($scope) {
                 $scope.collectValues = function() {
-                    $scope.selected = _.where($scope.locations, { selected: true });
-                    $scope.target = _.map($scope.selected, function(item) {
+                    var temp = _.where($scope.locations, { selected: true });
+                    $scope.target = _.map(temp, function(item) {
                         var obj = angular.copy(item);
                         delete obj.selected;
                         return obj;

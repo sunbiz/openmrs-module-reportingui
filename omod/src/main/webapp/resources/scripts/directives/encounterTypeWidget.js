@@ -5,7 +5,7 @@ angular.module('reportingui')
 
         function link(scope, element, attrs) {
             scope.uniqueId = 'encTypeWidget' + ++uniqueId;
-            scope.template = 'widgetTemplates/encounterTypeWidget' + (attrs.multiple ? 'Multiple' : '') + '.page';
+            scope.template = 'widgetTemplates/encounterTypeWidget' + (attrs.multiple === 'true' ? 'Multiple' : '') + '.page';
             scope.encounterTypes = [];
             EncounterTypeService.getEncounterTypes().then(function(result) {
                 scope.encounterTypes = result;
@@ -19,8 +19,8 @@ angular.module('reportingui')
             },
             controller: function($scope) {
                 $scope.collectValues = function() {
-                    $scope.selected = _.where($scope.encounterTypes, { selected: true });
-                    $scope.target = _.map($scope.selected, function(item) {
+                    var temp = _.where($scope.encounterTypes, { selected: true });
+                    $scope.target = _.map(temp, function(item) {
                         var obj = angular.copy(item);
                         delete obj.selected;
                         return obj;

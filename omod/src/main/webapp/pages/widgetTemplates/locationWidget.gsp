@@ -1,3 +1,2 @@
-<select ng-model="target">
-    <option ng-repeat="l in locations" value="{{ l.uuid }}"> {{ l.display }} </option>
+<select ng-model="\$parent.target" ng-options="l.display for l in locations">
 </select>
