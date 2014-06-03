@@ -121,6 +121,16 @@ angular.module('reportingui').
             });
         }
 
+        function stripTimeFromParameters(dataExport) {
+            var ret = angular.copy(dataExport);
+            _.each(ret.parameters, function(it) {
+                if (it.value instanceof Date) {
+                    it.value = it.value.toISOString().slice(0,10);
+                }
+            });
+            return ret;
+        }
+
         function setDirty() {
             $scope.dirty = true;
         }
@@ -520,12 +530,7 @@ angular.module('reportingui').
         $scope.preview = function() {
             $scope.results = { loading: true };
 
-            var parameterValues = {};
-            _.each($scope.dataExport.parameters, function(item) {
-                parameterValues[item.name] = item.value;
-            });
-
-            postJSON('/' + OPENMRS_CONTEXT_PATH + '/ws/rest/v1/reportingrest/adhocquery?v=preview', $scope.dataExport).
+            postJSON('/' + OPENMRS_CONTEXT_PATH + '/ws/rest/v1/reportingrest/adhocquery?v=preview', stripTimeFromParameters($scope.dataExport)).
                 success(function(data, status, headers, config) {
                     $scope.results = data;
                 }).
