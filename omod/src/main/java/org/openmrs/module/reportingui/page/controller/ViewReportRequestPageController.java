@@ -55,7 +55,7 @@ public class ViewReportRequestPageController {
             throw new IllegalStateException("Web Renderers not yet implemented");
         }
         else {
-            String filename = renderingMode.getRenderer().getFilename(req.getReportDefinition().getParameterizable(), renderingMode.getArgument()).replace(" ", "_");
+            String filename = renderingMode.getRenderer().getFilename(req, renderingMode.getArgument()).replace(" ", "_");
             String contentType = renderingMode.getRenderer().getRenderedContentType(req.getReportDefinition().getParameterizable(), renderingMode.getArgument());
             byte[] data = reportService.loadRenderedOutput(req);
 
