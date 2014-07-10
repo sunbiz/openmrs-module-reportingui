@@ -56,7 +56,7 @@ public class ViewReportRequestPageController {
         }
         else {
             String filename = renderingMode.getRenderer().getFilename(req).replace(" ", "_");
-            String contentType = renderingMode.getRenderer().getRenderedContentType(req.getReportDefinition().getParameterizable(), renderingMode.getArgument());
+            String contentType = renderingMode.getRenderer().getRenderedContentType(req);
             byte[] data = reportService.loadRenderedOutput(req);
 
             if (data == null) {
