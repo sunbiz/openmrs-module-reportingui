@@ -62,9 +62,11 @@ public class ReportStatusFragmentController {
                 // due to an underlying bug in the reporting module, the status on a REQUESTED request isn't updated when it starts PROCESSING
                 ReportRequest.Status statusOverride = null;
                 List<String> reportLog = reportService.loadReportLog(request);
-                for (String s : reportLog) {
-                    if (s.indexOf("Starting to process report") != -1) {
-                        statusOverride = ReportRequest.Status.PROCESSING;
+                if (reportLog != null) {
+                    for (String s : reportLog) {
+                        if (s.indexOf("Starting to process report") != -1) {
+                            statusOverride = ReportRequest.Status.PROCESSING;
+                        }
                     }
                 }
 
